@@ -1,0 +1,8 @@
+$primary: #009999;
+$secondary: #000000;
+
+// export scss vars as js object
+:export {
+  primary: $primary;
+  secondary: $secondary;
+}

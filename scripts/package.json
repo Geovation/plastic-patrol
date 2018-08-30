@@ -1,0 +1,18 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "syncLegacyDB.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^6.3.0",
+    "jimp": "^0.6.0",
+    "lodash": "^4.17.11",
+    "md5": "^2.2.1",
+    "superagent": "^4.0.0"
+  }
+}

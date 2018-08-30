@@ -59,3 +59,16 @@ typings/
 
 # next.js build output
 .next
+
+#editors
+.idea
+.DS_Store
+
+# ignoring compiled folder for now
+build/
+serviceAccountKey.json
+scripts/approved
+scripts/plasticpatrol
+scripts/config.json
+*.cache
+**/serviceAccountKey*

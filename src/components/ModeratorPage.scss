@@ -1,0 +1,17 @@
+.geovation-moderatorPage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+
+  .content {
+    flex: 1 1 100%;
+     overflow: scroll;
+  }
+}
+
+.main-image {
+  height: 100%;
+  width: 100%;
+}
