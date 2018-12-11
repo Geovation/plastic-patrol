@@ -24,5 +24,6 @@ export default {
     projectId: "plastic-patrol-fd3b3",
     storageBucket: "plastic-patrol-fd3b3.appspot.com",
     messagingSenderId: "845679623528"
-  }
+  },
+  GA_TRACKING_ID: "UA-126516084-1"
 }
