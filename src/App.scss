@@ -1,28 +1,56 @@
+@import "./custom/config";
+
 .geovation-app {
   display: flex;
   flex-flow: column;
   height: 100%;
 
-  .hidden {
-    display: none;
+  .burger {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    z-index: 1100; //app bar material-ui value
   }
 
-  header {
-    flex: 0 0 auto;
+  .camera {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .hidden {
+    display: none;
   }
 
   main {
     flex: 1 1 auto;
     position: relative; /* need this to position inner content */
-    overflow-y: auto;
+    overflow: hidden;
     height: 100%;
   }
 
   footer {
     flex: 0 0 auto;
   }
+}
 
-  .offline {
-    bottom: 50px;
-  }
+.link {
+  display: flex;
+  text-decoration: none;
+}
+
+.link:active {
+  background-color: transparent;
+}
+
+.firebaseui-textfield.mdl-textfield .firebaseui-label::after {
+  background: $secondary !important;
+}
+.firebaseui-form-actions .mdl-button--raised.mdl-button--colored.firebaseui-button {
+  background: $secondary !important;
+}
+
+// color of the link text for forgotten passwords
+.firebaseui-link.firebaseui-id-secondary-link {
+  //color: $secondary !important;
 }

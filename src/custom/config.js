@@ -1,4 +1,5 @@
 import styles from './config.scss';
+
 const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
 
@@ -25,5 +26,13 @@ export default {
     storageBucket: "plastic-patrol-fd3b3.appspot.com",
     messagingSenderId: "845679623528"
   },
-  GA_TRACKING_ID: "UA-126516084-1"
+  GA_TRACKING_ID: "UA-126516084-1",
+  PHOTO_ZOOMED_FIELDS: {
+    "updated": s => new Date(s).toDateString(),
+    "pieces": s => s
+  },
+  PHOTO_TITLE_FIELD:{
+    title: 'Number of collected plastic pieces',
+    placeholder: 'eg. 123'
+  }
 }

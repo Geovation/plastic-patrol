@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import loadImage from 'blueimp-load-image';
+import ReactGA from 'react-ga';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,16 +10,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-
-import imgHeader from '../images/logo.svg';
-
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import CloseIcon from '@material-ui/icons/Close';
 
 import config from '../custom/config';
 import './PhotoPage.scss';
 import dbFirebase from "../dbFirebase";
 
 const emptyState = {
-  imgSrc: imgHeader,
+  imgSrc: null,
   open: false,
   message: '',
   value: '',
@@ -76,8 +78,12 @@ class PhotoPage extends Component {
         try {
           const res = await dbFirebase.uploadPhoto(data);
           console.log(res);
-          this.openDialog("Photo was uploaded successfully", this.resetState);
+          this.openDialog("Photo was uploaded successfully", this.handleGoBackButton);
 
+          ReactGA.event({
+            category: 'Photo',
+            action: 'Uploaded'
+          });
         } catch (e) {
           this.openDialog(e.message || e);
         }
@@ -102,12 +108,20 @@ class PhotoPage extends Component {
     );
   }
 
+  retakePhoto = () => {
+    this.resetState();
+    this.props.handlePhotoClick();
+  }
+
+  handleGoBackButton = () => {
+    this.resetState();
+    this.props.goToPage(this.props.pages.map); // go to the map
+  };
+
+
+
   componentDidMount() {
     this.loadImage();
-    window.gtag('event', 'page_view', {
-      'event_category': 'view',
-      'event_label': 'PhotoPage'
-    });
   }
 
   componentDidUpdate(prevProps) {
@@ -119,25 +133,47 @@ class PhotoPage extends Component {
   render() {
     return (
        <div className='geovation-photos'>
+         <AppBar position="static" color="default">
+          <Toolbar>
+            <Typography className='headline-title'>
+              Photo Submission
+            </Typography>
+            <div className='close-icon'>
+              <CloseIcon onClick={this.handleGoBackButton}/>
+            </div>
+            </Toolbar>
+          </AppBar>
 
-          <TextField
-            id="standard-name"
-            label="Enter some text"
-            style={{width: 200, marginLeft:5}}
-            value={this.state.value}
-            onChange={this.handleChange}
-            margin="dense"
-          />
+          <div className='text-field-wrapper'>
+            <Typography color='default' className='typography1'>
+              {config.PHOTO_TITLE_FIELD.title}
+            </Typography>
+            <TextField
+              id="standard-name"
+              placeholder={config.PHOTO_TITLE_FIELD.placeholder}
+              className='text-field'
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+
+          </div>
 
           <div className='picture'>
            <img src={this.state.imgSrc} alt={""}/>
           </div>
 
           <div className='buttonwrapper'>
-            <Button variant="outlined" color="primary" onClick={this.sendFile}>
-              Send Photo
+            <Button variant="outlined" fullWidth={true} onClick={this.retakePhoto}>
+              Retake
             </Button>
           </div>
+
+          <div className='buttonwrapper'>
+            <Button variant="contained" color="secondary" fullWidth={true} onClick={this.sendFile}>
+              Upload
+            </Button>
+          </div>
+
           <Dialog
             open={this.state.open}
             onClose={this.closeDialog}
@@ -150,7 +186,7 @@ class PhotoPage extends Component {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.closeDialog} color='primary'>
+              <Button onClick={this.closeDialog} color='secondary'>
                 Ok
               </Button>
             </DialogActions>

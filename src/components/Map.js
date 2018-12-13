@@ -16,7 +16,6 @@ import Typography from '@material-ui/core/Typography';
 import './Map.scss';
 import config from "../custom/config";
 import placeholderImage from '../images/logo.svg';
-import dbFirebase from "../dbFirebase";
 
 const CENTER = [-0.07, 51.58];
 const ZOOM = 10;
@@ -42,7 +41,6 @@ class Map extends Component {
 
   async componentDidMount(){
     const location = this.props.location;
-    const photos = dbFirebase.fetchPhotos();
 
     mapboxgl.accessToken = config.MAPBOX_TOKEN;
     this.map = new mapboxgl.Map({
@@ -56,16 +54,11 @@ class Map extends Component {
     this.map.addControl(new mapboxgl.AttributionControl({
       compact: true,
       customAttribution: config.MAP_ATTRIBUTION
-    }));
+    }), "bottom-left");
 
     this.map.on('load', async () => {
-      const geojson = await photos;
+      const geojson = await this.props.photos;
       this.addFeaturesToMap(geojson);
-    });
-
-    window.gtag('event', 'page_view', {
-      'event_category': 'view',
-      'event_label': 'Map'
     });
   }
 
@@ -202,17 +195,29 @@ class Map extends Component {
     if (this.map.remove) { this.map.remove(); }
   }
 
-  render() {
+  formatField(value, fieldName) {
+    const formater = config.PHOTO_ZOOMED_FIELDS[fieldName];
+    if (value) {
+      return formater(value);
+    }
 
+    return "-";
+  }
+
+  render() {
+    const { location, welcomeShown } = this.props;
     const feature = this.state.feature;
-    const gpsOffline = !(this.props.location.online);
-    const gpsDisabled = !this.props.location.updated;
+    const gpsOffline = !location.online;
+    const gpsDisabled = !location.updated;
+
     return (
-      <div className={"geovation-map"} style={{display: this.props.visible? "block": "none"}}>
+      <div className={"geovation-map"} style={{ visibility: this.props.visible ? "visible" : "hidden" }}>
           <div id='map' className="map"></div>
-          <Fab className="location" onClick={this.flyToGpsLocation} disabled={gpsDisabled}>
-            {gpsOffline ? <GpsOff/> : <GpsFixed/>}
-          </Fab>
+          { welcomeShown &&
+            <Fab className="location" size="small" onClick={this.flyToGpsLocation} disabled={gpsDisabled}>
+              {gpsOffline ? <GpsOff/> : <GpsFixed/>}
+            </Fab>
+          }
 
           <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
             <DialogContent>
@@ -220,18 +225,13 @@ class Map extends Component {
               <Card>
                 <CardActionArea>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {feature.properties.description}
-                    </Typography>
-                    <Typography component="p">
-                      Coordinates: {feature.geometry.coordinates[0]}, {feature.geometry.coordinates[1]}
-                    </Typography>
-                    <Typography component="p">
-                      Time: {feature.properties.updated}
-                    </Typography>
-                    <Typography component="p">
-                      Description: {feature.properties.description || "-"}
-                    </Typography>
+
+                    {Object.keys(config.PHOTO_ZOOMED_FIELDS).map(fieldName => (
+                      <Typography gutterBottom key={fieldName}>
+                        {fieldName} : {this.formatField(feature.properties[fieldName], fieldName)}
+                      </Typography>
+                    ))}
+
                   </CardContent>
                 </CardActionArea>
               </Card>

@@ -4,19 +4,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import md5 from 'md5';
+import Button from '@material-ui/core/Button';
 
 import './ProfilePage.scss';
 
 class Profile extends React.Component {
+
+  handleClickButton = () => {
+    this.props.goToPage(this.props.pages.map); // go to the map
+  };
+
   render() {
     const { user } = this.props;
-    const gravatarImg = "https://www.gravatar.com/avatar/" + md5(user.email);
     return (
       <div className='geovation-profile'>
-        <Avatar alt="profile-image" src={gravatarImg} className="avatar" />
-        <Typography gutterBottom variant="h5">{user.displayName}</Typography>
-        <Typography component="p">{user.email}</Typography>
+        <div className='profile-info'>
+          <Avatar alt='profile-image' src={user.photoURL} className='avatar' />
+          <Typography gutterBottom variant='h5'>{user.displayName}</Typography>
+          <Typography component='p'>{user.email}</Typography>
+        </div>
+        <div className='button'>
+          <Button color='secondary' variant="contained" fullWidth={true} onClick={this.handleClickButton}>
+            Get Collecting
+          </Button>
+        </div>
       </div>
     );
   }

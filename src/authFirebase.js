@@ -1,7 +1,9 @@
 import firebase from "firebase/app";
+import ReactGA from 'react-ga';
 
 import User from "./types/User";
 import dbFirebase from "./dbFirebase";
+import md5 from 'md5';
 
 let currentUser;
 
@@ -13,9 +15,16 @@ const onAuthStateChanged = (fn) => {
   const firebaseStatusChange = async (user) => {
     currentUser = user;
     if (currentUser) {
+
+      ReactGA.event({
+        category: 'User',
+        action: 'Logged in',
+        value: user.uid
+      });
+
       const fbUser = await dbFirebase.getUser(user.uid);
       const isModerator = fbUser ? fbUser.isModerator : false;
-      currentUser = new User(currentUser.uid, currentUser.displayName, isModerator, currentUser.email, currentUser.emailVerified, currentUser.isAnonymous, currentUser.phoneNumber, currentUser.photoURL);
+      currentUser = new User(currentUser.uid, currentUser.displayName, isModerator, currentUser.email, currentUser.emailVerified, currentUser.isAnonymous, currentUser.phoneNumber, currentUser.photoURL || "https://www.gravatar.com/avatar/" + md5(user.email));
     }
     fn(currentUser);
   };
@@ -27,8 +36,4 @@ const signOut = () => {
   firebase.auth().signOut();
 };
 
-const getCurrentUser = () => currentUser;
-
-const isModerator = () => currentUser && currentUser.isModerator;
-
-export default { onAuthStateChanged, signOut, getCurrentUser, isModerator }
+export default { onAuthStateChanged, signOut }
