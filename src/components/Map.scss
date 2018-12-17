@@ -1,3 +1,5 @@
+@import "../custom/config";
+
 .geovation-map {
   display: flex;
   flex-direction: column;
@@ -15,7 +17,7 @@
   }
 
   .marker:hover {
-  	box-shadow: inset 0 0 0 3px rgb(250, 167, 40);
+  	box-shadow: inset 0 0 0 3px $secondary;
     z-index: 10;
     width: 50px !important;
     height: 50px !important;
