@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
+import { withStyles } from '@material-ui/core/styles';
 
 import config from '../custom/config';
 import './PhotoPage.scss';
@@ -26,6 +27,14 @@ const emptyState = {
   value: '',
   sending: false,
 };
+
+const styles = theme => ({
+  cssUnderline: {
+    '&:after': {
+      borderBottomColor: theme.palette.secondary.main,
+    },
+  },
+});
 
 class PhotoPage extends Component {
   constructor(props) {
@@ -59,8 +68,10 @@ class PhotoPage extends Component {
   sendFile = async () => {
     if (!this.props.location.online) {
       this.openDialog("Could not get the location yet. You won't be able to upload an image.");
-    } else if(!this.props.online){
+    } else if (!this.props.online) {
       this.openDialog("Can't Connect to our servers. You won't be able to upload an image.");
+    } else if (!this.state.imgSrc) {
+      this.openDialog("No picture is selected. Please choose a picture.");
     } else {
 
       let data = {};
@@ -115,7 +126,7 @@ class PhotoPage extends Component {
 
   handleGoBackButton = () => {
     this.resetState();
-    this.props.goToPage(this.props.pages.map); // go to the map
+    this.props.goToPage(config.PAGES.map); // go to the map
   };
 
 
@@ -131,9 +142,11 @@ class PhotoPage extends Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
        <div className='geovation-photos'>
-         <AppBar position="static" color="default">
+         <AppBar position="static">
           <Toolbar>
             <Typography className='headline-title'>
               Photo Submission
@@ -145,7 +158,7 @@ class PhotoPage extends Component {
           </AppBar>
 
           <div className='text-field-wrapper'>
-            <Typography color='default' className='typography1'>
+            <Typography className='typography1'>
               {config.PHOTO_TITLE_FIELD.title}
             </Typography>
             <TextField
@@ -154,6 +167,9 @@ class PhotoPage extends Component {
               className='text-field'
               value={this.state.value}
               onChange={this.handleChange}
+              InputProps={{
+                className: classes.cssUnderline
+              }}
             />
 
           </div>
@@ -197,7 +213,7 @@ class PhotoPage extends Component {
               <DialogContentText id="loading-dialog-text">
                 Be patient ;)
               </DialogContentText>
-              <CircularProgress className="progress" size={50} thickness={6}/>
+              <CircularProgress color='secondary' size={50} thickness={6}/>
             </DialogContent>
           </Dialog>
 
@@ -206,4 +222,4 @@ class PhotoPage extends Component {
   }
 }
 
-export default PhotoPage;
+export default withStyles(styles)(PhotoPage);
