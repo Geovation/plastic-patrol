@@ -23,13 +23,13 @@
     "react-ga": "^2.5.6"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "REACT_APP_DESCRIPTION=$npm_package_description HTTPS=true react-scripts start",
     "build": "npm run build:react && npm run build:pwa #&& #[ \"$BUILD_CORDOVA\" ] && npm run build:cordova",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "serve-prod": "npm run build && http-server build",
     "build:cordova": "cp .gitignore gitignore && mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova platform rm android && cordova platform add android && cordova build && cd ..",
-    "build:react": "react-scripts build",
+    "build:react": "REACT_APP_DESCRIPTION=$npm_package_description react-scripts build",
     "coverage": "react-scripts test --env=jsdom --coverage",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "geovation-photos-update": "geovation-photos-update",
@@ -45,7 +45,9 @@
     "jimp": "^0.6.0",
     "ncp": "^2.0.0",
     "node-sass": "^4.11.0",
-    "workbox-cli": "^3.6.3"
+    "workbox-cli": "^3.6.3",
+    "random-location": "^1.0.12",
+    "rimraf": "^2.6.2"
   },
   "browserslist": [
     ">0.2%",
