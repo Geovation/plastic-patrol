@@ -5,9 +5,9 @@ const secondaryColor = styles.secondary;
 
 const CUSTOM_STRING = {
   tutorial: {
-    "Walk around the city and take photos": "Walk around the city and take photos",
-    "Write info about the photos and upload it to the cloud": "Write info about the photos and upload it to the cloud",
-    "View your images in our interactive map": "View your images in our interactive map"
+    "Walk around the city and take photos": "Get on the water and photograph your #plasticpatrol haul",
+    "Write info about the photos and upload it to the cloud": "Count how many pieces you collected and upload your photo",
+    "View your images in our interactive map": "View images in our interactive map and see how you have helped fight the plastic problem"
   },
   about: {
     "We are Geovation and we Geovate": "#PlasticPatrol is about engaging people with the issue of plastic pollution through adventure and nature, helping to safeguard our seas for the future.\n\n" +
