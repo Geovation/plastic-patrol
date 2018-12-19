@@ -1,6 +1,6 @@
 {
   "name": "plastic-patrol",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "public": true,
   "homepage": "./",
   "dependencies": {
@@ -40,14 +40,14 @@
     "cordova": "^8.1.2",
     "coveralls": "^3.0.2",
     "firebase-admin": "^6.3.0",
-    "geovation-photos": "^0.3.3",
+    "geovation-photos": "^0.3.4",
     "http-server": "^0.11.1",
     "jimp": "^0.6.0",
     "ncp": "^2.0.0",
     "node-sass": "^4.11.0",
-    "workbox-cli": "^3.6.3",
     "random-location": "^1.0.12",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "workbox-cli": "^3.6.3"
   },
   "browserslist": [
     ">0.2%",
