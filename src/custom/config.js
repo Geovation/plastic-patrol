@@ -10,9 +10,9 @@ const CUSTOM_STRING = {
     "View your images in our interactive map": "View your images in our interactive map"
   },
   about: {
-    "We are Geovation and we Geovate": "#PlasticPatrol is about engaging people with the issue of plastic pollution through adventure and nature, helping to safeguard our seas for the future.\n" +
-    "Our mission is to combat the global plastic crisis by stopping the problem at its source – in our waterways.\n" +
-    "Every single piece of plastic collected and shared on social media as part of the #PlasticPatrol movement is captured in our interactive map, creating a picture of the problem on a global scale for the very first time.\n" +
+    "We are Geovation and we Geovate": "#PlasticPatrol is about engaging people with the issue of plastic pollution through adventure and nature, helping to safeguard our seas for the future.\n\n" +
+    "Our mission is to combat the global plastic crisis by stopping the problem at its source – in our waterways.\n\n" +
+    "Every single piece of plastic collected and shared on social media as part of the #PlasticPatrol movement is captured in our interactive map, creating a picture of the problem on a global scale for the very first time.\n\n" +
     "Using this app you can get involved. Simply take a photo of what you find by pressing the camera button and upload it directly to the map. After it has been approved you will be able to view the images by pressing the globe button."
   }
 };
