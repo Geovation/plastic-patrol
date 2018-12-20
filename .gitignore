@@ -72,3 +72,7 @@ scripts/plasticpatrol
 scripts/config.json
 *.cache
 **/serviceAccountKey*
+
+**/build.json
+**/*.keystore
+**/secrets.tar

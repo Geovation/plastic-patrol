@@ -1,23 +1,75 @@
-language: node_js
-sudo: false
-node_js:
-- '8'
-cache:
-  directories:
-  - node_modules/
-
-script:
-  - npm test -- --coverage # Include coverage when running tests
-  - npm run build
-
-after_script: # Upload coverage reports
-  - npm run coveralls # remember to st COVERALLS_REPO_TOKEN
-
-before_deploy:
-  - pushd functions && npm install && popd
-  - npm run build
-
-deploy:
-  - provider: firebase
-    skip_cleanup: true
-    token: "$FIREBASE_TOKEN"
+matrix:
+  include:
+  - os: linux
+    if: tag IS blank
+    language: android
+    sudo: false
+    node_js:
+    - '8'
+    android:
+      components:
+      - tools
+      - platform-tools
+      - tools
+      - build-tools-28.0.3
+      - android-27
+      - extra-google-google_play_services
+      - extra-google-m2repository
+      - extra-android-m2repository
+    licenses:
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
+    cache:
+      directories:
+      - node_modules/
+    before_install:
+    - nvm install 8
+    - yes | sdkmanager "platforms;android-27"
+    - echo {} > cordova-app/build.json
+    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then openssl aes-256-cbc -K $encrypted_38869813af8b_key -iv $encrypted_38869813af8b_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
+    install:
+    - npm install
+    script:
+    - npm test -- --coverage
+    - npm run build
+    - npm run build:android
+    after_script:
+    - npm run coveralls
+    before_deploy:
+    - pushd functions && npm install && popd
+    - npm run build
+    - git config --local user.name "sebastian.ovide"
+    - git config --local user.email "sebastian.ovide@gmail.com"
+    - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+    - git tag $TRAVIS_TAG
+    deploy:
+    - provider: firebase
+      skip_cleanup: true
+      token:
+        secure: B4kTpVinIjqF/QSzpsgL9XgKu3o0ZfCbGQvVLj48HLzlYjN3u4Wq2IRdeoLlo/ais8dx4pNhmAo8GWCrbnQvv8DfJ4RzKReHI6giXndPGvpl5IjDFnQyewMBT4eJhj4HkNWt6erWU+joyYVAJ8Mot2FIhKKD52JXuahQAvRvLZO9sL3kIxblsZC8LvdzNqIvKv27m4SZd+D4ZA8RI9T7lMjAl8k4SSzB+pGcs/rhcPm8lxlCU2C5Owu4rsoM0nTzX2RKbVykCM/tpUxXSZAO0DC1vIt7OhQYqv/Z690Db7+1jbmaIs4+O3SSWxDA6I2TJWg5+qgYmrABUA06G+nCK8RicRr1+91RdOXKpi6XXS+nSY9f8UfeeCXabfj+2lcHU6LlEK2qwNwVpiw6ahOAikWo27RGM0ZSj2j4k5kE/vlnV8wQ8gW+X2zTDVPnyGi/NXvGiAJvELrN+C5v/orIruoVvdetACgXtIjIxlyOYlxVEMFXnyl6phZvi1WS+9oFgJeXyj/zxtmTCQFvM1wJ+VqEjnwyy5bCisZwkdyhej2aXvaYXjRmG3SPX1DqwsnLOob4lngFp0KCw1f4BgpycqsPnVcw8PK/sGJ+Gj8ehBkmS9FuOgi9vHSIJxdTVcOExLaYu2VjhRx1C+MLsK9O14Iq60YL59tXLK9WHOEmeis=
+    - provider: releases
+      api_key:
+        secure: sPLt2Nt1t47OER1FCM42v8COPVJUbFR1GKxXt/DZAMr+xl7XEvgblMRc+rRKUP+6MkHC7NTpeKHLNjoxWG42HPGOLHqwTF7jzJdsqK+ikyOXmmQbzjC6UbwjO7NJET4hYhq6GAsCH1agtV37YYTsnrM6bJuw+z1saAJrbuKr1EO7nbFMwXlvhxEIPGQppv+j9QZ1IHK2K7wEiQORX5+nsb29pjLFaFChJH10oVA0bjeU506PaKKwpPVqQiEq3hmX7cHThdGcr6pbUXTW8F7uRkEQQqwk1as+jUW5bH+gIrLzVJuNd3/hdoLNCM3pmzn2vn3L1EL0W4UH2583M1LXE49j0na4DZS7OjYvEaKSDNvsA6HUbnwTRc/LGRuXQDt1FsUo6MvmvkakqXomczPcvmCbtp1Ec9ue8aGtBYChuYoRyLXg+qP+ZSr71eWtw5oF1A7iont73dRHi/Fs19ka1TBsd7E+JFjqvBtgUhHupX8uQoXkiDY0kDfNhRQlBXj8URjvdv6MUDPUJZISBQeKvsUphUapav14PhT6zPryZMjee7QVvy0Ch8SC4OztlY4MaYEJyzuX/1cub6KND4k8H+74CPwHsN24FVWLy4E/lBcCzq7mpMWAKOUzmdt/uYL+grWbnBOfg1dcDSZ2OnVe+RnArmLX36w9etS2+ghqetc=
+      file:
+      - cordova-app/platforms/android/app/build/outputs/apk/release/app-release.apk
+      - cordova-app/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+      skip_cleanup: true
+  - os: osx
+    if: tag IS blank
+    language: objective-c
+    osx_image: xcode10.1
+    node_js:
+    - '8'
+    cache:
+      directories:
+      - node_modules/
+    before_install:
+    - nvm use 8
+    - echo {} > cordova-app/build.json
+    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then openssl aes-256-cbc -K $encrypted_38869813af8b_key -iv $encrypted_38869813af8b_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
+    script:
+    - npm run build
+    - npm run build:ios
+    install:
+    - npm install
