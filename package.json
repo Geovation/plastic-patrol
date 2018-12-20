@@ -1,5 +1,6 @@
 {
   "name": "plastic-patrol",
+  "titile": "Plastic Patrol",
   "version": "0.2.2",
   "public": true,
   "homepage": "./",
@@ -23,14 +24,14 @@
     "react-ga": "^2.5.6"
   },
   "scripts": {
-    "start": "REACT_APP_DESCRIPTION=$npm_package_description HTTPS=true react-scripts start",
+    "start": "REACT_APP_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER REACT_APP_VERSION=$npm_package_version REACT_APP_TITLE=$npm_package_title HTTPS=true react-scripts start",
     "build": "npm run build:react && npm run build:pwa",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "serve-prod": "npm run build:react && http-server build",
     "build:ios": "mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova platform rm android && cordova platform rm ios && cordova platform add ios && cordova build --prod --release --buildConfig build.json && cd ..",
     "build:android": "mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova platform rm android && cordova platform rm ios && cordova platform add android && cordova build --prod --release --buildConfig build.json && cd ..",
-    "build:react": "REACT_APP_DESCRIPTION=$npm_package_description react-scripts build",
+    "build:react": "REACT_APP_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER REACT_APP_VERSION=$npm_package_version REACT_APP_TITLE=$npm_package_title react-scripts build",
     "coverage": "react-scripts test --env=jsdom --coverage",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "geovation-photos-update": "geovation-photos-update",
