@@ -39,8 +39,8 @@ matrix:
     before_deploy:
     - pushd functions && npm install && popd
     - npm run build
-    - git config --local user.name "sebastian.ovide"
-    - git config --local user.email "sebastian.ovide@gmail.com"
+    - git config --local user.name "Geovation from Travis"
+    - git config --local user.email "info@geovation.uk"
     - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
     - git tag $TRAVIS_TAG
     deploy:
@@ -50,10 +50,8 @@ matrix:
         secure: B4kTpVinIjqF/QSzpsgL9XgKu3o0ZfCbGQvVLj48HLzlYjN3u4Wq2IRdeoLlo/ais8dx4pNhmAo8GWCrbnQvv8DfJ4RzKReHI6giXndPGvpl5IjDFnQyewMBT4eJhj4HkNWt6erWU+joyYVAJ8Mot2FIhKKD52JXuahQAvRvLZO9sL3kIxblsZC8LvdzNqIvKv27m4SZd+D4ZA8RI9T7lMjAl8k4SSzB+pGcs/rhcPm8lxlCU2C5Owu4rsoM0nTzX2RKbVykCM/tpUxXSZAO0DC1vIt7OhQYqv/Z690Db7+1jbmaIs4+O3SSWxDA6I2TJWg5+qgYmrABUA06G+nCK8RicRr1+91RdOXKpi6XXS+nSY9f8UfeeCXabfj+2lcHU6LlEK2qwNwVpiw6ahOAikWo27RGM0ZSj2j4k5kE/vlnV8wQ8gW+X2zTDVPnyGi/NXvGiAJvELrN+C5v/orIruoVvdetACgXtIjIxlyOYlxVEMFXnyl6phZvi1WS+9oFgJeXyj/zxtmTCQFvM1wJ+VqEjnwyy5bCisZwkdyhej2aXvaYXjRmG3SPX1DqwsnLOob4lngFp0KCw1f4BgpycqsPnVcw8PK/sGJ+Gj8ehBkmS9FuOgi9vHSIJxdTVcOExLaYu2VjhRx1C+MLsK9O14Iq60YL59tXLK9WHOEmeis=
     - provider: releases
       api_key:
-        secure: sPLt2Nt1t47OER1FCM42v8COPVJUbFR1GKxXt/DZAMr+xl7XEvgblMRc+rRKUP+6MkHC7NTpeKHLNjoxWG42HPGOLHqwTF7jzJdsqK+ikyOXmmQbzjC6UbwjO7NJET4hYhq6GAsCH1agtV37YYTsnrM6bJuw+z1saAJrbuKr1EO7nbFMwXlvhxEIPGQppv+j9QZ1IHK2K7wEiQORX5+nsb29pjLFaFChJH10oVA0bjeU506PaKKwpPVqQiEq3hmX7cHThdGcr6pbUXTW8F7uRkEQQqwk1as+jUW5bH+gIrLzVJuNd3/hdoLNCM3pmzn2vn3L1EL0W4UH2583M1LXE49j0na4DZS7OjYvEaKSDNvsA6HUbnwTRc/LGRuXQDt1FsUo6MvmvkakqXomczPcvmCbtp1Ec9ue8aGtBYChuYoRyLXg+qP+ZSr71eWtw5oF1A7iont73dRHi/Fs19ka1TBsd7E+JFjqvBtgUhHupX8uQoXkiDY0kDfNhRQlBXj8URjvdv6MUDPUJZISBQeKvsUphUapav14PhT6zPryZMjee7QVvy0Ch8SC4OztlY4MaYEJyzuX/1cub6KND4k8H+74CPwHsN24FVWLy4E/lBcCzq7mpMWAKOUzmdt/uYL+grWbnBOfg1dcDSZ2OnVe+RnArmLX36w9etS2+ghqetc=
-      file:
-      - cordova-app/platforms/android/app/build/outputs/apk/release/app-release.apk
-      - cordova-app/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+        secure: JY52ofhlABrIJBAEvqXH+HMD6/kIU5/LyZ22OccI9rPI8uLh5pAGW8197vVn9QKrldlF6aFGFhOLDb4mGVDF/glCp3dzIEaBO70a0ZWI5jf91818H074kyzrBuvY/FmP7PFG9L0mfLI4dAputgyKUFbSlBoiPOBStQcQ8FYqdPg1l0C8bG7TDGF1eFR/w3psIfFXtPthLVCNEHyIAcTJklujJ6j/ouxUtaYAtIRCkp3H46Y6h9sATtzuDKiv8/61LCR7KUODMAv+FPXqu5p/fpV5LKMYsryiiDWrbmv8ERXNe20o5y0P0GHfalxIa/20cPCBKVxt6PJ3tQMi5AUV2uDGPObZNLMLsHJyLc69zPEjClU4zUhr2Jb/oRFUB6A2Zs7v1G5eci7h9OMDjuX2p254CO8Ety6NSlGF2mUtjYfME6iwttRvtYFzZ4486u/g715D043CjMdhZIXdm7/5/A8N3w7R2HBx8cfr61316a0EzNY6ryOPjxy0bs3XKzGmc76KdMZ5bgMKyYxw5mgftkS20WNjfGQ9mrkqK468KBSckzHdx5mgZ/hZ+n6GfgFVRHqc0lvSzmMtLJa/zIWejrFX5gj8uzN3O7Tz5PMqYNrOlsAnkvig5hl7MuUsDaXvLt/ltqoSCD6m8nC/WoRmvBUJqu6nI1bVx/YjR9bEWxg=
+      file: cordova-app/platforms/android/app/build/outputs/apk/release/app-release.apk
       skip_cleanup: true
   - os: osx
     if: tag IS blank
