@@ -76,3 +76,4 @@ scripts/config.json
 **/build.json
 **/*.keystore
 **/secrets.tar
+**/*.cer
