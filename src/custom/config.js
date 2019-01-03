@@ -1,4 +1,5 @@
 import styles from './config.scss';
+import enums from '../types/enums';
 
 const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
@@ -81,9 +82,13 @@ export default {
     "updated": s => new Date(s).toDateString(),
     "pieces": s => s
   },
-  PHOTO_TITLE_FIELD:{
-    title: 'Number of collected plastic pieces',
-    placeholder: 'eg. 123'
+  PHOTO_FIELD: {
+    name: 'pieces',
+    title: 'Number of pieces collected',
+    type: enums.TYPES.number,
+    placeholder: 'eg. 123',
+    inputProps: { min: 0, step: 1},
+    regexValidation: '^[0-9]+'
   },
   PAGES,
   customiseString
