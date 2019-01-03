@@ -78,7 +78,7 @@ async function getPhotosFromMap() {
 
           let pieces = line.match("___(\\d+)_\\d+x\\d+.png")
           if (pieces) {
-            photo.pieces = pieces[1];
+            photo.pieces = Number(pieces[1]);
           }
 
           // date
@@ -195,32 +195,42 @@ function findNewPhotos(legacyPhotos, currentPhotos) {
   }, {} );
 }
 
-async function uploadIntoCurrentDB(newPhotos) {
+async function uploadIntoCurrentDB(legacyPhotos, currentPhotos) {
   let ct = 0;
-  const keysNewPhotos = _.keys(newPhotos);
-  const size = keysNewPhotos.length;
+  const size = _.keys(legacyPhotos).length;
   const startedAt = Date.now();
 
-  for (let keyId in keysNewPhotos) {
-    const id = keysNewPhotos[keyId];
-    const newPhoto = newPhotos[id];
+  for (let legacyPhotoUrl in legacyPhotos) {
+    const id = md5(legacyPhotoUrl);
+    const currentPhoto = currentPhotos[id] || {};
+    const isNewPhoto = !currentPhotos[id];
+    const newPhoto = legacyPhotos[legacyPhotoUrl];
+    newPhoto.originalUrl = legacyPhotoUrl;
     console.log(`${id} ==> ${++ct}/${size}`);
 
     try {
-      // download photo
-      console.log(`downloading ${newPhoto.url}`);
-      const filePath = id + ".jpg";
-      await download(newPhoto.url, filePath);
+      if (isNewPhoto) {
+        // download photo
+        console.log(`downloading ${newPhoto.url}`);
+        const filePath = id + ".jpg";
+        await download(newPhoto.url, filePath);
 
-      // upload photo
-      const destPath = `photos/${id}/original.jpg`;
-      console.log(`uploading ${destPath}`);
-      await bucket.upload(filePath, { destination: destPath });
-      fs.unlinkSync(filePath);
-
+        // upload photo
+        const destPath = `photos/${id}/original.jpg`;
+        console.log(`uploading ${destPath}`);
+        await bucket.upload(filePath, {destination: destPath});
+        fs.unlinkSync(filePath);
+      }
       // upload metadata
       console.log(`uploading ${id}`);
-      await db.collection('photos').doc(id).set(_.pick(newPhoto, ['location', 'moderated', 'published', 'updated']));
+
+      const fields = ['location', 'pieces', 'originalUrl'];
+      const newData = _.pick(newPhoto, fields);
+      const oldData = _.pick(currentPhoto, fields);
+
+      if (!_.isEqual(newData, oldData)) {
+        await db.collection('photos').doc(id).set(_.pick(newPhoto, ['location', 'moderated', 'published', 'updated', 'pieces', 'originalUrl']), {merge: true});
+      }
 
       const elapsedTimeInMinutes = (Date.now() - startedAt)/1000/60;
       const perMinute = ct / elapsedTimeInMinutes;
@@ -244,7 +254,8 @@ async function main() {
   const newPhotos = findNewPhotos(legacyPhotos, currentPhotos);
 
   console.log(`found ${_.keys(newPhotos).length}`);
-  await uploadIntoCurrentDB(newPhotos);
+  // await uploadIntoCurrentDB(newPhotos);
+  await uploadIntoCurrentDB(legacyPhotos, currentPhotos, newPhotos);
 }
 
 
