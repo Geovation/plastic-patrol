@@ -27,7 +27,9 @@ matrix:
     - nvm install 8
     - yes | sdkmanager "platforms;android-27"
     - echo {} > cordova-app/build.json
-    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then openssl aes-256-cbc -K $encrypted_38869813af8b_key -iv $encrypted_38869813af8b_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
+    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then openssl aes-256-cbc -K $encrypted_24a643539195_key
+      -iv $encrypted_24a643539195_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar
+      -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
     install:
     - npm install
     script:
@@ -59,13 +61,18 @@ matrix:
     osx_image: xcode10.1
     node_js:
     - '8'
+    env:
+    - secure: jfdXsl7ajV/xQNW47p1yyEKDkMfxMRqOQE6U/vmGTKA78SLwvCYYjQUksXh8Tupoiz71mDF5qzUL7Y1tuKONlFeMOh4Qmkcyom33+lzPUeiF3lQpPocLNMP2Y77HnuKQiPb9dpdPAzpAHoVrETTSW+XX03qzb2okojx80t2QDUlhieZ6qVTWWtpaRG3P+nv8Ms/cBMBRlOJ+dLLMa6o1rOOlYJnr2ARwJfvezY0S/OvDx+lX4C4MnRp3emCLK+2tzAPrZ3kNn/9jYmgdIybDSqMpCiPfSF3vrOfOakpefVINLbafI1qJMTbnL1ANwFK/MjgMLyR0HRnrvVCLv9rIk8oie/Vr+OPxssAzqmdOcey4hVCNd15mxf1/ZtbnXQpmt4GF02NggrGtVSd9vIqws+EhKl+X55NFnM/BjnagUFjKWl4Kl2yunYwFkywbARbQe6RNzi7mOzwizoduLxPboGcOPoREjrCxAaefsXtlxJZVyuYW+9ylIMDsrr/1xD1nPof8Wv+HqIgDWdBkK1FWiyJvYBBEyQY5gdm9fRPhorO45BZ0fAMnC8JhsnajPFnmuRR88VQHLNW/XDPgTM+FADNMZcFMj+Z1hu2V0eDXebFILthvRU5Q82MLMHUPEhYc/h82wy2+SWD3m5nDmja/W52lWNO+C8jp0O7Zt177V08=
     cache:
       directories:
       - node_modules/
     before_install:
     - nvm use 8
     - echo {} > cordova-app/build.json
-    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then openssl aes-256-cbc -K $encrypted_38869813af8b_key -iv $encrypted_38869813af8b_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
+    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then openssl aes-256-cbc -K $encrypted_24a643539195_key
+      -iv $encrypted_24a643539195_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar
+      -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
+    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then ./scripts/add-key.sh; fi
     script:
     - npm run build
     - npm run build:ios
