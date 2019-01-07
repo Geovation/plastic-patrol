@@ -79,3 +79,4 @@ scripts/config.json
 **/*.cer
 **/*.p12
 **/*.mobileprovision
+**/report.xml

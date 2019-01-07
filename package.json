@@ -1,7 +1,7 @@
 {
   "name": "plastic-patrol",
   "titile": "Plastic Patrol",
-  "version": "0.2.4",
+  "version": "2.0.1",
   "public": true,
   "homepage": "./",
   "dependencies": {
@@ -31,6 +31,8 @@
     "build:ios": "mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova platform rm android && cordova platform rm ios && cordova platform add ios && cordova build --prod --release --device --buildConfig build.json && cd ..",
     "build:android": "mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova platform rm android && cordova platform rm ios && cordova platform add android && cordova build --prod --release --buildConfig build.json && cd ..",
     "build:react": "./scripts/runWithVars.sh 'react-scripts build'",
+    "beta:android": "cd cordova-app; bundler exec fastlane android beta",
+    "beta:ios": "cd cordova-app; bundler exec fastlane ios beta",
     "coverage": "react-scripts test --env=jsdom --coverage",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "geovation-photos-update": "geovation-photos-update",

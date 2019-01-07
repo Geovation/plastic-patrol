@@ -45,6 +45,11 @@ matrix:
     - git config --local user.email "info@geovation.uk"
     - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
     - git tag $TRAVIS_TAG
+#    - gem install fastlane -NV
+
+    env:
+    - secure: "CLic/Dhru12PIvTZrBKQIV7YXiiH216Nd0ku0t89sZ+QHVeuuyJZaYPEdP/eFtl9aoN8CEazIkFOgjYjJqhkN6ilYPp3IaQ2s8lbu+gzCi3jcBDGCxwxUGipFiCSZWYHx4xwVg4SPi9mmJYjsHMSsh65meLtJE6hQ5TBcFbCyjt/b5Be2Y3n3w5fZvrBl94hrVxjI1rv3R2a1/PACIfuArvFtEO2FQl+3mq565qyNVAuY2282PocDMY7qp896HUGefBjByoPb21oOQhbnStLBga1nmNjPqYGZG6KIkmTz52yjLRSwXCPwrKHWDlzarGoIGF0EpHF7FvvZnVN8SA0hx4hTaD43ewsNhORg08dGBvFDCWgsQn7XOgheJT6KXHx8kBjWGLEDBssQTh79siGQe0IGJgUixTht1c+OqXOWhHRoD+Cyz1Wnwc0APOS39vT+Nz3oPS1L7UbrcWq8Stk/A/ZDfpxCz55UJ07KbXzyy/U6/0XupMUG/k5hY8HSET9GhLxsVpeMysrIAszOa0ffJDfr+52VvnWWVlCu/DYvbmk3aOF1g/Ke+Ar0p/ZTFgFx5pobaAkcBGkXwRke5HJEFM1bmMvxUILJp3NANeqsZDJHLY57T/2PM1S0dj+PdaFj3iQ7y/7YjS3s+c0YmEZFpx3zOHZDh1X5sjMTenr8Bw="
+
     deploy:
     - provider: firebase
       skip_cleanup: true
@@ -55,6 +60,10 @@ matrix:
         secure: X29iYfl6eW1lGrzk2B8VlZsYi0iCeLE18ZCp23LUPuLqGWEVne/SQf/wwf0EmMoBRBG4X+cs/xFzraA4wdpMXmwJjJo+XvH9SFIw2jfVKwHHwpWnLGcq/9mK14p4tUB5TxhCboH67UqmZqqV2MJ9cuJeEQSxaY0Dh1pOxJruftpXp+mKjoLB2hEhY82Yu+NA0k0JwSdCfb0opPIXelqNmrjgwuLpQgnvKjMK9Mu9meGFwdOYa8dq3oMetLknTcro6IX2DMuxCYR7qUq1BcnA+1vnu/UsvZyRy/25I890WK3B0uVs6NiIwmNNrctxViOmBCo6wInLxqfTKBgHB2DAHJavlQZMMaj/7o81+YF4Egpi7t9XE7BR1DPWxMsDxTHHWIcgWsr25Yk7aFAH+3yEDexqxSscYQvMM5ISsX8ofvFCLRYwyAAjWib04d1SoEKTfrua9pL/TRx0J1Y7lJ21wnj4kbzmstuCvDLxt9QzEY9WXC/AQnkYz1CpuR7QIGZKxyYU/7aZbLjQfAaQp0GnAHxiwwAS9ofIovEh18Q2r1BGIpCnI4Zosfq/5eTY9dz+JCpKvOr52HqT+up7OiPbfIbtmXYS38Go/MMOLlMnRN6bvbQQHc2Al8S0c29WZtpOfkRcqbpx+fcZ80UexEouCKkmrIROXEWruZDMTBMcD2k=
       file: cordova-app/platforms/android/app/build/outputs/apk/release/app-release.apk
       skip_cleanup: true
+#    - provider: script
+#      skip_cleanup: true
+#      script: npm run beta:android
+
   - os: osx
     if: tag IS blank
     language: objective-c
@@ -63,6 +72,8 @@ matrix:
     - '8'
     env:
     - secure: jfdXsl7ajV/xQNW47p1yyEKDkMfxMRqOQE6U/vmGTKA78SLwvCYYjQUksXh8Tupoiz71mDF5qzUL7Y1tuKONlFeMOh4Qmkcyom33+lzPUeiF3lQpPocLNMP2Y77HnuKQiPb9dpdPAzpAHoVrETTSW+XX03qzb2okojx80t2QDUlhieZ6qVTWWtpaRG3P+nv8Ms/cBMBRlOJ+dLLMa6o1rOOlYJnr2ARwJfvezY0S/OvDx+lX4C4MnRp3emCLK+2tzAPrZ3kNn/9jYmgdIybDSqMpCiPfSF3vrOfOakpefVINLbafI1qJMTbnL1ANwFK/MjgMLyR0HRnrvVCLv9rIk8oie/Vr+OPxssAzqmdOcey4hVCNd15mxf1/ZtbnXQpmt4GF02NggrGtVSd9vIqws+EhKl+X55NFnM/BjnagUFjKWl4Kl2yunYwFkywbARbQe6RNzi7mOzwizoduLxPboGcOPoREjrCxAaefsXtlxJZVyuYW+9ylIMDsrr/1xD1nPof8Wv+HqIgDWdBkK1FWiyJvYBBEyQY5gdm9fRPhorO45BZ0fAMnC8JhsnajPFnmuRR88VQHLNW/XDPgTM+FADNMZcFMj+Z1hu2V0eDXebFILthvRU5Q82MLMHUPEhYc/h82wy2+SWD3m5nDmja/W52lWNO+C8jp0O7Zt177V08=
+    - secure: "CLic/Dhru12PIvTZrBKQIV7YXiiH216Nd0ku0t89sZ+QHVeuuyJZaYPEdP/eFtl9aoN8CEazIkFOgjYjJqhkN6ilYPp3IaQ2s8lbu+gzCi3jcBDGCxwxUGipFiCSZWYHx4xwVg4SPi9mmJYjsHMSsh65meLtJE6hQ5TBcFbCyjt/b5Be2Y3n3w5fZvrBl94hrVxjI1rv3R2a1/PACIfuArvFtEO2FQl+3mq565qyNVAuY2282PocDMY7qp896HUGefBjByoPb21oOQhbnStLBga1nmNjPqYGZG6KIkmTz52yjLRSwXCPwrKHWDlzarGoIGF0EpHF7FvvZnVN8SA0hx4hTaD43ewsNhORg08dGBvFDCWgsQn7XOgheJT6KXHx8kBjWGLEDBssQTh79siGQe0IGJgUixTht1c+OqXOWhHRoD+Cyz1Wnwc0APOS39vT+Nz3oPS1L7UbrcWq8Stk/A/ZDfpxCz55UJ07KbXzyy/U6/0XupMUG/k5hY8HSET9GhLxsVpeMysrIAszOa0ffJDfr+52VvnWWVlCu/DYvbmk3aOF1g/Ke+Ar0p/ZTFgFx5pobaAkcBGkXwRke5HJEFM1bmMvxUILJp3NANeqsZDJHLY57T/2PM1S0dj+PdaFj3iQ7y/7YjS3s+c0YmEZFpx3zOHZDh1X5sjMTenr8Bw="
+    - secure: "L6I3Gp97PYCYJmlJYBqLSq+nXtpsixNLc69Njk7f+LhI0qH2QjZsgZHyFGlo5UL7X52Qy6VwvXZuVSUYpJYD/nzMLtWelVMXIF5vz9P2aOiFTTdbd3tnF2xYP/9qsI9h6rFED7zAYe1Wogdz0UdmLjXQUCnPr5M3wEuf7SyuUMSI9p7N+T2bGqefqfKdCHuRQgwTjIO3G2oPpqkj6q5k26ckt8LOaz5M3S9xLAxjE33VbCAO9wvTTnF/cgmC2K63rkUogsK7//IM1BG9p4IVUqXSCYYpbgA+/Hk/U9plIZgDFk8cHW7pMhIjP+NgQ/o1RBFwOztHYhdimc4pBSqidH+xyCDuD31iR6Ej1bD94sAmvOWFj2MBSf3NYpzl2R5qrN6h7Py7ZHQTUtWLLSFmB/t3qx3bgLECca2saSS6EyJmatPdBJQW6kw0aJdYrBgJOqUQk4v6YJ6+wVEhwKnqN6tn7Bsux0Y2sWLANwXXYi2BZly0X2MYPqvNb1VSVqzVIhd3qtyfsT+PMh34/1+XANS7FyJ/Os5taLTKZL1YfSGWyalNETFYLIbJIuBkcHfvjxlGF/RdcF3W8xy1wVTNkGLkDJPuNt6T3Pqj9NZCkyxvBQm9Pepe4T7ktcIF8N0sBL/K2eo581VfyF50yaTQoMd6Axx7nK4ma7tdSVq2njs="
     cache:
       directories:
       - node_modules/
@@ -78,3 +89,20 @@ matrix:
     - npm run build:ios
     install:
     - npm install
+    before_deploy:
+    - npm run build
+    - git config --local user.name "Geovation from Travis"
+    - git config --local user.email "info@geovation.uk"
+    - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+    - git tag $TRAVIS_TAG
+#    - gem install fastlane -NV
+    deploy:
+      - provider: releases
+        api_key:
+          secure: X29iYfl6eW1lGrzk2B8VlZsYi0iCeLE18ZCp23LUPuLqGWEVne/SQf/wwf0EmMoBRBG4X+cs/xFzraA4wdpMXmwJjJo+XvH9SFIw2jfVKwHHwpWnLGcq/9mK14p4tUB5TxhCboH67UqmZqqV2MJ9cuJeEQSxaY0Dh1pOxJruftpXp+mKjoLB2hEhY82Yu+NA0k0JwSdCfb0opPIXelqNmrjgwuLpQgnvKjMK9Mu9meGFwdOYa8dq3oMetLknTcro6IX2DMuxCYR7qUq1BcnA+1vnu/UsvZyRy/25I890WK3B0uVs6NiIwmNNrctxViOmBCo6wInLxqfTKBgHB2DAHJavlQZMMaj/7o81+YF4Egpi7t9XE7BR1DPWxMsDxTHHWIcgWsr25Yk7aFAH+3yEDexqxSscYQvMM5ISsX8ofvFCLRYwyAAjWib04d1SoEKTfrua9pL/TRx0J1Y7lJ21wnj4kbzmstuCvDLxt9QzEY9WXC/AQnkYz1CpuR7QIGZKxyYU/7aZbLjQfAaQp0GnAHxiwwAS9ofIovEh18Q2r1BGIpCnI4Zosfq/5eTY9dz+JCpKvOr52HqT+up7OiPbfIbtmXYS38Go/MMOLlMnRN6bvbQQHc2Al8S0c29WZtpOfkRcqbpx+fcZ80UexEouCKkmrIROXEWruZDMTBMcD2k=
+        file: cordova-app/platforms/ios/build/device/Plastic\ Patrol.ipa
+        skip_cleanup: true
+
+#      - provider: script
+#        skip_cleanup: true
+#        script: npm run beta:ios
