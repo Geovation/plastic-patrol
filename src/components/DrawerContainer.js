@@ -11,6 +11,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
@@ -36,8 +37,7 @@ class DrawerContainer extends Component {
 
   render() {
     const { classes, user, online, leftDrawerOpen } = this.props;
-
-    const ListItems = [
+    const ListItemsTop = [
       {
         visible: user,
         path: PAGES.account.path,
@@ -56,11 +56,20 @@ class DrawerContainer extends Component {
         icon: <SchoolIcon/>,
         label: PAGES.tutorial.label
       },
+    ];
+    const ListItemsConfigurable = config.CUSTOM_PAGES;
+    const ListItemsBottom = [
       {
         visible: true,
         path: PAGES.about.path,
         icon: <HelpIcon/>,
-        label: PAGES.about.label,
+        label: PAGES.about.label
+      },
+      {
+         visible: true,
+         path: PAGES.writeFeedback.path,
+         icon: <FeedbackIcon/>,
+         label: PAGES.writeFeedback.label
       },
       {
         visible: online,
@@ -69,7 +78,7 @@ class DrawerContainer extends Component {
         click: this.props.handleClickLoginLogout
       }
     ];
-
+    const ListItems = ListItemsTop.concat(ListItemsConfigurable,ListItemsBottom)
     return (
       <Drawer className='geovation-drawercontainer' open={leftDrawerOpen} onClose={this.props.toggleLeftDrawer(false)}
         classes={{ paper: classes.drawerPaper }}>

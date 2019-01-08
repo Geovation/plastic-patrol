@@ -133,6 +133,21 @@ function onConnectionStateChanged(fn){
   return async () => conRef.off('value', connectedCallBack);
 }
 
+async function writeFeedback(data) {
+  if (firebase.auth().currentUser) {
+    data.owner_id = firebase.auth().currentUser.uid;
+  }
+  data.updated = firebase.firestore.FieldValue.serverTimestamp();
+  if (data.latitude && data.longitude) {
+    data.location = new firebase.firestore.GeoPoint(data.latitude, data.longitude);
+  }
+
+  delete data.latitude;
+  delete data.longitude;
+
+  return await firestore.collection('feedbacks').add(data);
+}
+
 export default {
   onConnectionStateChanged,
   fetchPhotos,
@@ -141,5 +156,6 @@ export default {
   onPhotosToModerate,
   rejectPhoto,
   approvePhoto,
-  disconnect
+  disconnect,
+  writeFeedback,
 };

@@ -18,6 +18,7 @@ import dbFirebase from './dbFirebase';
 import Login from './components/Login';
 import AboutPage from './components/AboutPage';
 import TutorialPage from './components/TutorialPage';
+import WriteFeedbackPage from './components/WriteFeedbackPage';
 import DrawerContainer from './components/DrawerContainer';
 
 import config from './custom/config';
@@ -206,6 +207,12 @@ class App extends Component {
         <main className='content'>
           { this.state.welcomeShown &&
             <Switch>
+              {config.CUSTOM_PAGES.map( (CustomPage,index) => (
+                !!CustomPage.page &&
+                  <Route key={index} path={CustomPage.path}
+                    render={(props) => <CustomPage.page {...props} handleClose={this.goToMap}/>}
+                  />
+              ))}
               <Route path={PAGES.about.path} render={(props) =>
                 <AboutPage {...props} handleClose={this.goToMap} />}
               />
@@ -237,6 +244,16 @@ class App extends Component {
                   />}
                 />
               }
+
+              <Route path={PAGES.writeFeedback.path} render={(props) =>
+                 <WriteFeedbackPage {...props}
+                                    user={this.state.user}
+                                    location={this.state.location}
+                                    online={this.state.online}
+                                    handleClose={this.goToMap}
+                 />}
+               />
+
             </Switch>
           }
 

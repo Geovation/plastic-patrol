@@ -15,6 +15,9 @@ const CUSTOM_STRING = {
     "Our mission is to combat the global plastic crisis by stopping the problem at its source – in our waterways.\n\n" +
     "Every single piece of plastic collected and shared on social media as part of the #PlasticPatrol movement is captured in our interactive map, creating a picture of the problem on a global scale for the very first time.\n\n" +
     "Using this app you can get involved. Simply take a photo of what you find by pressing the camera button and upload it directly to the map. After it has been approved you will be able to view the images by pressing the globe button."
+  },
+  writeFeedback: {
+    "admin@geovation.uk": "lizzieoutside@icloud.com"
   }
 };
 
@@ -47,6 +50,10 @@ const PAGES = {
     path: "/tutorial",
     label: "Tutorial"
   },
+  writeFeedback: {
+    path: "/write-feedback",
+    label: "Feedback"
+  }
 };
 
 const customiseString = (page, key) => (CUSTOM_STRING[page][key] || key);
@@ -91,5 +98,6 @@ export default {
     regexValidation: '^[0-9]+'
   },
   PAGES,
+  CUSTOM_PAGES:[],
   customiseString
 }
