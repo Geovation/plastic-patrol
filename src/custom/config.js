@@ -1,5 +1,7 @@
 import styles from './config.scss';
 import enums from '../types/enums';
+import React from 'react';
+import EventIcon from '@material-ui/icons/Event';
 
 const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
@@ -53,7 +55,11 @@ const PAGES = {
   writeFeedback: {
     path: "/write-feedback",
     label: "Feedback"
-  }
+  },
+  events: {
+    path: "/events",
+    label: "Events"
+  },
 };
 
 const customiseString = (page, key) => (CUSTOM_STRING[page][key] || key);
@@ -98,6 +104,13 @@ export default {
     regexValidation: '^[0-9]+'
   },
   PAGES,
-  CUSTOM_PAGES:[],
+  CUSTOM_PAGES:[
+    {
+      visible: true,
+      icon: <EventIcon/>,
+      label: PAGES.events.label,
+      click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
+    },
+  ],
   customiseString
 }
