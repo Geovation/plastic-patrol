@@ -58,5 +58,6 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <engine name="browser" spec="^5.0.4" />
+    <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
 </widget>
