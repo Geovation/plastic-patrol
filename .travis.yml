@@ -93,7 +93,11 @@ matrix:
 #    - npm run build
     - ls -la
     - ls -la cordova-app
+    - ls -la cordova-app/platforms
+    - ls -la cordova-app/platforms/ios
+    - ls -la cordova-app/platforms/ios/build
     - ls -la cordova-app/platforms/ios/build/device/
+
     - git config --local user.name "Geovation from Travis"
     - git config --local user.email "info@geovation.uk"
     - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
