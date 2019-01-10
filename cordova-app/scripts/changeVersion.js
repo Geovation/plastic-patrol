@@ -4,7 +4,7 @@ module.exports = function(ctx) {
   var configXml = configXmlHelper.readConfigXML();
   var widget = configXml.getElementsByTagName("widget")[0];
 
-  var version = require("../../package.json").version;
+  var version = process.env.REACT_APP_VERSION || "0";
 
   var androidVersionCode = widget.getAttribute("android-versionCode");
   var iosCFBundleVersion = widget.getAttribute("ios-CFBundleVersion");
