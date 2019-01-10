@@ -80,3 +80,4 @@ scripts/config.json
 **/*.p12
 **/*.mobileprovision
 **/report.xml
+/cordova-app/GooglePlayAndroidDeveloper.json

@@ -20,7 +20,16 @@ or alternatively using `brew cask install fastlane`
 ```
 fastlane ios beta
 ```
-Description of what the lane does
+deploy ios to test flight
+
+----
+
+## Android
+### android beta
+```
+fastlane android beta
+```
+deploy android to beta
 
 ----
 
