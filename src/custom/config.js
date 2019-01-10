@@ -2,15 +2,13 @@ import styles from './config.scss';
 import enums from '../types/enums';
 import React from 'react';
 import EventIcon from '@material-ui/icons/Event';
-import PeopleIcon from '@material-ui/icons/People';
-import PartnersPage from './components/PartnersPage';
 
 const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
 
 const CUSTOM_STRING = {
   tutorial: {
-    "Walk around the city and take photos": "Get on the water and photograph your #plasticpatrol haul",
+    "Walk around the city and take photos": "Get outside and photograph your #plasticpatrol haul",
     "Write info about the photos and upload it to the cloud": "Count how many pieces you collected and upload your photo",
     "View your images in our interactive map": "View images in our interactive map and see how you have helped fight the plastic problem"
   },
@@ -117,13 +115,6 @@ export default {
       label: PAGES.events.label,
       click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
     },
-    {
-      visible: true,
-      icon: <PeopleIcon/>,
-      label: PAGES.partners.label,
-      path: PAGES.partners.path,
-      page: PartnersPage
-     },
   ],
   customiseString
 }
