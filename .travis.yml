@@ -45,7 +45,7 @@ matrix:
     - git config --local user.email "info@geovation.uk"
     - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
     - git tag $TRAVIS_TAG
-#    - gem install fastlane -NV
+    - gem install fastlane -NV
 
     env:
     - secure: "CLic/Dhru12PIvTZrBKQIV7YXiiH216Nd0ku0t89sZ+QHVeuuyJZaYPEdP/eFtl9aoN8CEazIkFOgjYjJqhkN6ilYPp3IaQ2s8lbu+gzCi3jcBDGCxwxUGipFiCSZWYHx4xwVg4SPi9mmJYjsHMSsh65meLtJE6hQ5TBcFbCyjt/b5Be2Y3n3w5fZvrBl94hrVxjI1rv3R2a1/PACIfuArvFtEO2FQl+3mq565qyNVAuY2282PocDMY7qp896HUGefBjByoPb21oOQhbnStLBga1nmNjPqYGZG6KIkmTz52yjLRSwXCPwrKHWDlzarGoIGF0EpHF7FvvZnVN8SA0hx4hTaD43ewsNhORg08dGBvFDCWgsQn7XOgheJT6KXHx8kBjWGLEDBssQTh79siGQe0IGJgUixTht1c+OqXOWhHRoD+Cyz1Wnwc0APOS39vT+Nz3oPS1L7UbrcWq8Stk/A/ZDfpxCz55UJ07KbXzyy/U6/0XupMUG/k5hY8HSET9GhLxsVpeMysrIAszOa0ffJDfr+52VvnWWVlCu/DYvbmk3aOF1g/Ke+Ar0p/ZTFgFx5pobaAkcBGkXwRke5HJEFM1bmMvxUILJp3NANeqsZDJHLY57T/2PM1S0dj+PdaFj3iQ7y/7YjS3s+c0YmEZFpx3zOHZDh1X5sjMTenr8Bw="
