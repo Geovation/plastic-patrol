@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20000000" id="uk.co.plasticpatrol" ios-CFBundleIdentifier="com.lewismakesapps.Plastic-Patrol" ios-CFBundleVersion="2.0.0" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="20000094" id="uk.co.plasticpatrol" ios-CFBundleIdentifier="com.lewismakesapps.Plastic-Patrol" ios-CFBundleVersion="2.0.94" version="2.0.94" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Plastic Patrol</name>
     <description>
         Fighting Plastic Pollution in the UK Waterways.
@@ -54,9 +54,23 @@
     </platform>
     <hook src="scripts/changeVersion.js" type="before_prepare" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Plastic Patrol needs to know where you are so it can place the photo of the plastic that you collect in the map" />
+    </plugin>
+    <plugin name="cordova-plugin-camera" spec="^4.0.3">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Plastic Patrol needs camera access to take pictures of the plastic that you collect." />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Plastic Patrol needs photo library access to get the picture of the plastic that you collect." />
+    </plugin>
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+        <string>Plastic Patrol needs photo library access to get the picture of the plastic that you collect.</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>Plastic Patrol needs to know where you are so it can place the photo of the plastic that you collect in the map</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+        <string>Plastic Patrol needs camera access to take pictures of the plastic that you collect.</string>
+    </edit-config>
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
