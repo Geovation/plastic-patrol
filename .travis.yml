@@ -96,7 +96,7 @@ matrix:
     - git config --local user.email "info@geovation.uk"
     - export TRAVIS_TAG=${binary:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
     - git tag $TRAVIS_TAG
-#    - gem install fastlane -NV
+    - gem install fastlane -NV
     deploy:
       - provider: releases
         api_key:
@@ -104,6 +104,6 @@ matrix:
         file: "cordova-app/platforms/ios/build/device/Plastic\ Patrol.ipa"
         skip_cleanup: true
 
-#      - provider: script
-#        skip_cleanup: true
-#        script: npm run beta:ios
+      - provider: script
+        skip_cleanup: true
+        script: npm run beta:ios
