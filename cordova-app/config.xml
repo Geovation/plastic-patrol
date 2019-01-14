@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20000096" id="uk.co.plasticpatrol" ios-CFBundleIdentifier="com.lewismakesapps.Plastic-Patrol" ios-CFBundleVersion="2.0.96" version="2.0.96" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="20000102" id="uk.co.plasticpatrol" ios-CFBundleIdentifier="com.lewismakesapps.Plastic-Patrol" ios-CFBundleVersion="2.0.102" version="2.0.102" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Plastic Patrol</name>
     <description>
         Fighting Plastic Pollution in the UK Waterways.
@@ -52,6 +52,7 @@
         <icon src="res/icon/ios/icon-small.png" width="29" />
         <icon src="res/icon/ios/icon-small@2x.png" width="58" />
         <icon src="res/icon/ios/icon-small@3x.png" width="87" />
+        <icon src="res/icon/ios/icon-1024.png" width="1024" />
         <splash src="res/screen/ios/Default@2x~universal~anyany.png" />
     </platform>
     <hook src="scripts/changeVersion.js" type="before_prepare" />
