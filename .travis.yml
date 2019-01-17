@@ -59,7 +59,10 @@ matrix:
     - provider: releases
       api_key:
         secure: X29iYfl6eW1lGrzk2B8VlZsYi0iCeLE18ZCp23LUPuLqGWEVne/SQf/wwf0EmMoBRBG4X+cs/xFzraA4wdpMXmwJjJo+XvH9SFIw2jfVKwHHwpWnLGcq/9mK14p4tUB5TxhCboH67UqmZqqV2MJ9cuJeEQSxaY0Dh1pOxJruftpXp+mKjoLB2hEhY82Yu+NA0k0JwSdCfb0opPIXelqNmrjgwuLpQgnvKjMK9Mu9meGFwdOYa8dq3oMetLknTcro6IX2DMuxCYR7qUq1BcnA+1vnu/UsvZyRy/25I890WK3B0uVs6NiIwmNNrctxViOmBCo6wInLxqfTKBgHB2DAHJavlQZMMaj/7o81+YF4Egpi7t9XE7BR1DPWxMsDxTHHWIcgWsr25Yk7aFAH+3yEDexqxSscYQvMM5ISsX8ofvFCLRYwyAAjWib04d1SoEKTfrua9pL/TRx0J1Y7lJ21wnj4kbzmstuCvDLxt9QzEY9WXC/AQnkYz1CpuR7QIGZKxyYU/7aZbLjQfAaQp0GnAHxiwwAS9ofIovEh18Q2r1BGIpCnI4Zosfq/5eTY9dz+JCpKvOr52HqT+up7OiPbfIbtmXYS38Go/MMOLlMnRN6bvbQQHc2Al8S0c29WZtpOfkRcqbpx+fcZ80UexEouCKkmrIROXEWruZDMTBMcD2k=
-      file: cordova-app/platforms/android/app/build/outputs/apk/release/app-release.apk
+      file:
+        - cordova-app/platforms/android/app/build/outputs/apk/release/app-release.apk
+        - build
+
       skip_cleanup: true
     - provider: script
       skip_cleanup: true
