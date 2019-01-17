@@ -12,6 +12,11 @@ const styles = theme => ({
     flexDirection:'column',
     flex: 1,
     height:'100%',
+    position:'fixed',
+    right:0,
+    left:0,
+    bottom:0,
+    zIndex: 3
   },
   main:{
     marginBottom: theme.spacing.unit,
@@ -19,6 +24,7 @@ const styles = theme => ({
     flexDirection:'column',
     flex: 1,
     overflowY: 'auto',
+    '-webkit-overflow-scrolling': 'touch'
   },
   logo: {
     height: '80px',
