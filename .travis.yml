@@ -42,7 +42,7 @@ matrix:
     - pushd functions && npm install && popd
     - git config --local user.name "Geovation from Travis"
     - git config --local user.email "info@geovation.uk"
-    - export TRAVIS_TAG=${TRAVIS_TAG:-$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)}
+    - export TRAVIS_TAG=${Android-$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)}
     - git tag $TRAVIS_TAG
     - gem install fastlane -NV
 
@@ -53,7 +53,7 @@ matrix:
     - provider: firebase
       skip_cleanup: true
       on:
-        tags: true
+        branch: release
       token:
         secure: B4kTpVinIjqF/QSzpsgL9XgKu3o0ZfCbGQvVLj48HLzlYjN3u4Wq2IRdeoLlo/ais8dx4pNhmAo8GWCrbnQvv8DfJ4RzKReHI6giXndPGvpl5IjDFnQyewMBT4eJhj4HkNWt6erWU+joyYVAJ8Mot2FIhKKD52JXuahQAvRvLZO9sL3kIxblsZC8LvdzNqIvKv27m4SZd+D4ZA8RI9T7lMjAl8k4SSzB+pGcs/rhcPm8lxlCU2C5Owu4rsoM0nTzX2RKbVykCM/tpUxXSZAO0DC1vIt7OhQYqv/Z690Db7+1jbmaIs4+O3SSWxDA6I2TJWg5+qgYmrABUA06G+nCK8RicRr1+91RdOXKpi6XXS+nSY9f8UfeeCXabfj+2lcHU6LlEK2qwNwVpiw6ahOAikWo27RGM0ZSj2j4k5kE/vlnV8wQ8gW+X2zTDVPnyGi/NXvGiAJvELrN+C5v/orIruoVvdetACgXtIjIxlyOYlxVEMFXnyl6phZvi1WS+9oFgJeXyj/zxtmTCQFvM1wJ+VqEjnwyy5bCisZwkdyhej2aXvaYXjRmG3SPX1DqwsnLOob4lngFp0KCw1f4BgpycqsPnVcw8PK/sGJ+Gj8ehBkmS9FuOgi9vHSIJxdTVcOExLaYu2VjhRx1C+MLsK9O14Iq60YL59tXLK9WHOEmeis=
     - provider: releases
