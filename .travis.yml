@@ -91,7 +91,7 @@ matrix:
     - npm run build:ios
     install:
     - npm install
-    - npm install ios-deploy
+    # - npm install ios-deploy
     before_deploy:
     - git config --local user.name "Geovation from Travis"
     - git config --local user.email "info@geovation.uk"
