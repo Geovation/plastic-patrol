@@ -79,4 +79,5 @@
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
+    <plugin name="cordova-ios-plugin-no-export-compliance" spec="0.0.5" />
 </widget>
