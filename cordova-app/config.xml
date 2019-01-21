@@ -76,6 +76,7 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
         <string>Plastic Patrol needs camera access to take pictures of the plastic that you collect.</string>
     </edit-config>
+    <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />

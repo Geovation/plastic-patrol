@@ -19,7 +19,8 @@
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "Plastic Patrol needs photo library access to get the picture of the plastic that you collect."
       },
       "cordova-plugin-splashscreen": {},
-      "cordova-ios-plugin-no-export-compliance": {}
+      "cordova-ios-plugin-no-export-compliance": {},
+      "cordova-plugin-statusbar": {}
     }
   },
   "dependencies": {
