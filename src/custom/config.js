@@ -76,9 +76,8 @@ const getStats = async (photos) => {
   const photoObj = await photos;
   Object.keys(photoObj.features).forEach(key => {
     const properties = photoObj.features[key].properties;
-    if (properties.pieces) {
-      totalPieces += properties.pieces;
-    }
+    const pieces = Number(properties.pieces);
+    if (!isNaN(pieces) && pieces > 0 ) totalPieces += pieces;
   });
   return totalPieces;
 }
