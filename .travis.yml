@@ -55,6 +55,7 @@ matrix:
     - provider: firebase
       skip_cleanup: true
       on:
+        tags: true
         all_branches: true
         condition: "$ORIGINAL_TAG =~ /^release-[0-9]+.[0-9]+.[0-9]+$/"
       token:
