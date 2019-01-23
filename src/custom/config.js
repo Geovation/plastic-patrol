@@ -7,6 +7,9 @@ const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
 
 const CUSTOM_STRING = {
+  drawer: {
+    "photos published so far!": "pieces found so far!"
+  },
   tutorial: {
     "Walk around the city and take photos": "Get outside and photograph your #plasticpatrol haul",
     "Write info about the photos and upload it to the cloud": "Count how many pieces you collected and upload your photo",
@@ -68,6 +71,18 @@ const PAGES = {
 
 const customiseString = (page, key) => (CUSTOM_STRING[page][key] || key);
 
+const getStats = async (photos) => {
+  let totalPieces = 0;
+  const photoObj = await photos;
+  Object.keys(photoObj.features).forEach(key => {
+    const properties = photoObj.features[key].properties;
+    if (properties.pieces) {
+      totalPieces += properties.pieces;
+    }
+  });
+  return totalPieces;
+}
+
 export default {
   MAX_IMAGE_SIZE: 2048,
   THEME: {
@@ -116,5 +131,6 @@ export default {
       click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
     },
   ],
-  customiseString
+  customiseString,
+  getStats
 }
