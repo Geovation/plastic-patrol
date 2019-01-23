@@ -42,9 +42,11 @@ matrix:
     - pushd functions && npm install && popd
     - git config --local user.name "Geovation from Travis"
     - git config --local user.email "info@geovation.uk"
+    - export ORIGINAL_TAG=$TRAVIS_TAG
     - export TRAVIS_TAG=$(date +'%Y%m%d%H%M%S')-Android-$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)
     - git tag $TRAVIS_TAG
     - gem install fastlane -NV
+    - echo $ORIGINAL_TAG
 
     env:
     - secure: "CLic/Dhru12PIvTZrBKQIV7YXiiH216Nd0ku0t89sZ+QHVeuuyJZaYPEdP/eFtl9aoN8CEazIkFOgjYjJqhkN6ilYPp3IaQ2s8lbu+gzCi3jcBDGCxwxUGipFiCSZWYHx4xwVg4SPi9mmJYjsHMSsh65meLtJE6hQ5TBcFbCyjt/b5Be2Y3n3w5fZvrBl94hrVxjI1rv3R2a1/PACIfuArvFtEO2FQl+3mq565qyNVAuY2282PocDMY7qp896HUGefBjByoPb21oOQhbnStLBga1nmNjPqYGZG6KIkmTz52yjLRSwXCPwrKHWDlzarGoIGF0EpHF7FvvZnVN8SA0hx4hTaD43ewsNhORg08dGBvFDCWgsQn7XOgheJT6KXHx8kBjWGLEDBssQTh79siGQe0IGJgUixTht1c+OqXOWhHRoD+Cyz1Wnwc0APOS39vT+Nz3oPS1L7UbrcWq8Stk/A/ZDfpxCz55UJ07KbXzyy/U6/0XupMUG/k5hY8HSET9GhLxsVpeMysrIAszOa0ffJDfr+52VvnWWVlCu/DYvbmk3aOF1g/Ke+Ar0p/ZTFgFx5pobaAkcBGkXwRke5HJEFM1bmMvxUILJp3NANeqsZDJHLY57T/2PM1S0dj+PdaFj3iQ7y/7YjS3s+c0YmEZFpx3zOHZDh1X5sjMTenr8Bw="
@@ -53,7 +55,8 @@ matrix:
     - provider: firebase
       skip_cleanup: true
       on:
-        condition: tag =~ /^release-[0-9]+.[0-9]+.[0-9]+$/
+        all_branches: true
+        condition: "$ORIGINAL_TAG =~ /^release-[0-9]+.[0-9]+.[0-9]+$/"
       token:
         secure: B4kTpVinIjqF/QSzpsgL9XgKu3o0ZfCbGQvVLj48HLzlYjN3u4Wq2IRdeoLlo/ais8dx4pNhmAo8GWCrbnQvv8DfJ4RzKReHI6giXndPGvpl5IjDFnQyewMBT4eJhj4HkNWt6erWU+joyYVAJ8Mot2FIhKKD52JXuahQAvRvLZO9sL3kIxblsZC8LvdzNqIvKv27m4SZd+D4ZA8RI9T7lMjAl8k4SSzB+pGcs/rhcPm8lxlCU2C5Owu4rsoM0nTzX2RKbVykCM/tpUxXSZAO0DC1vIt7OhQYqv/Z690Db7+1jbmaIs4+O3SSWxDA6I2TJWg5+qgYmrABUA06G+nCK8RicRr1+91RdOXKpi6XXS+nSY9f8UfeeCXabfj+2lcHU6LlEK2qwNwVpiw6ahOAikWo27RGM0ZSj2j4k5kE/vlnV8wQ8gW+X2zTDVPnyGi/NXvGiAJvELrN+C5v/orIruoVvdetACgXtIjIxlyOYlxVEMFXnyl6phZvi1WS+9oFgJeXyj/zxtmTCQFvM1wJ+VqEjnwyy5bCisZwkdyhej2aXvaYXjRmG3SPX1DqwsnLOob4lngFp0KCw1f4BgpycqsPnVcw8PK/sGJ+Gj8ehBkmS9FuOgi9vHSIJxdTVcOExLaYu2VjhRx1C+MLsK9O14Iq60YL59tXLK9WHOEmeis=
     - provider: releases
