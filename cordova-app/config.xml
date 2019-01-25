@@ -78,8 +78,9 @@
         <string>Plastic Patrol needs camera access to take pictures of the plastic that you collect.</string>
     </edit-config>
     <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
+    <plugin name="cordova-ios-plugin-no-export-compliance" spec="0.0.5" />
+    <plugin name="cordova-plugin-google-analytics" spec="~1.8.6" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
-    <plugin name="cordova-ios-plugin-no-export-compliance" spec="0.0.5" />
 </widget>

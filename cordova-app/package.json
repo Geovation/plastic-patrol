@@ -20,7 +20,8 @@
       },
       "cordova-plugin-splashscreen": {},
       "cordova-ios-plugin-no-export-compliance": {},
-      "cordova-plugin-statusbar": {}
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-google-analytics": {}
     }
   },
   "dependencies": {
