@@ -61,7 +61,7 @@ const PAGES = {
   },
   events: {
     path: "/events",
-    label: "Events"
+    label: "Clean-ups"
   },
   partners: {
     path: "/partners",
