@@ -4,7 +4,7 @@ import EventIcon from '@material-ui/icons/Event';
 import styles from './config.scss';
 import enums from '../types/enums';
 import TitleTextField from '../components/PhotoPage/TitleTextField';
-import MultipleSelectControlNumbered from '../components/PhotoPage/MultipleSelectControlNumbered';
+import MultipleSelectControlTextFields from '../components/PhotoPage/MultipleSelectControlTextFields';
 import { data } from './categories';
 
 const primaryColor = styles.primary;
@@ -137,7 +137,7 @@ export default {
       component: TitleTextField
     },
     categories: {
-      component: MultipleSelectControlNumbered,
+      component: MultipleSelectControlTextFields,
       name: 'categories',
 
       inputProps: { min: 0, step: 1},
