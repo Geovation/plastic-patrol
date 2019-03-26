@@ -58,7 +58,6 @@ class MultipleSelectControlNumbered extends React.Component {
   }
 
   render() {
-    const { field, classes } = this.props;
     const props = {...this.props};
     return (
       <div>
