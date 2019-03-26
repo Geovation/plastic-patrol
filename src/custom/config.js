@@ -1,7 +1,11 @@
-import styles from './config.scss';
-import enums from '../types/enums';
 import React from 'react';
 import EventIcon from '@material-ui/icons/Event';
+
+import styles from './config.scss';
+import enums from '../types/enums';
+import TitleTextField from '../components/PhotoPage/TitleTextField';
+import MultipleSelectControlNumbered from '../components/PhotoPage/MultipleSelectControlNumbered';
+import { data } from './categories';
 
 const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
@@ -113,13 +117,27 @@ export default {
     "updated": s => new Date(s).toDateString(),
     "pieces": s => s
   },
-  PHOTO_FIELD: {
-    name: 'pieces',
-    title: 'Number of pieces collected',
-    type: enums.TYPES.number,
-    placeholder: 'eg. 123',
-    inputProps: { min: 0, step: 1},
-    regexValidation: '^[0-9]+'
+  PHOTO_FIELDS: {
+    pieces: {
+      name: 'pieces',
+      title: 'Number of pieces collected',
+      type: enums.TYPES.number,
+      placeholder: 'eg. 123',
+      inputProps: {min: 0, step: 1},
+      regexValidation: '^[0-9]+',
+      component: TitleTextField
+    },
+    categories: {
+      component: MultipleSelectControlNumbered,
+      name: 'categories',
+
+      inputProps: { min: 0, step: 1},
+      type: enums.TYPES.number,
+
+      placeholder: 'Search litter category',
+      data: data,
+      noOptionsMessage: 'No more categories',
+    },
   },
   PAGES,
   CUSTOM_PAGES:[

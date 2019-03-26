@@ -9,19 +9,19 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-import config from '../custom/config';
-import { gtagEvent } from '../gtag.js';
-import './PhotoPage.scss';
-import dbFirebase from '../dbFirebase';
-import { isIphoneWithNotchAndCordova, device } from '../utils';
+import config from '../../custom/config';
+import { gtagEvent } from '../../gtag.js';
+import './style.scss';
+import dbFirebase from '../../dbFirebase';
+import { isIphoneWithNotchAndCordova, device } from '../../utils';
 
-import PageWrapper from './PageWrapper';
+import PageWrapper from '../PageWrapper';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Fields from './Fields';
 import Link from '@material-ui/core/Link';
+import _ from 'lodash';
 
 const emptyState = {
   imgSrc: null,
@@ -30,11 +30,12 @@ const emptyState = {
   imgFromCamera: null,
   open: false,
   message: '',
-  field: '',
   sending: false,
   sendingProgress: 0,
-  error: !''.match(config.PHOTO_FIELD.regexValidation),
-  enabledUploadButton :true
+  anyError: true,
+  enabledUploadButton :true,
+  next: false,
+  fieldsValues: {}
 };
 
 const styles = theme => ({
@@ -84,12 +85,7 @@ class PhotoPage extends Component {
     this.setState(emptyState);
   }
 
-  handleChange = (event) => {
-    this.setState({
-      error: !event.target.value.match(config.PHOTO_FIELD.regexValidation),
-      field: event.target.value
-    });
-  }
+
 
   openDialog = (message, fn) => {
     this.setState({
@@ -163,11 +159,6 @@ class PhotoPage extends Component {
       return;
     }
 
-    if (this.state.field === '') {
-      this.openDialog("Please enter some text");
-      return;
-    }
-
     if (!this.props.online) {
       this.openDialog("Can't Connect to our servers. You won't be able to upload an image.");
       return;
@@ -197,21 +188,31 @@ class PhotoPage extends Component {
       }
     }
 
-    const data = {
-      ...location,
-      base64: this.state.imgSrc.split(",")[1]
-    };
+    const fieldsJustValues = _.reduce(this.state.fieldsValues, (a, v, k) => {
+      a[k] = v.value;
+      return a;
+    }, {});
 
-    data.field = this.state.field;
+    const data = { ...location, ...fieldsJustValues};
+
     this.setState({ sending: true, sendingProgress: 0, enabledUploadButton :false });
     this.uploadTask = null;
     this.cancelClickUpload = false;
-    const photoRef = await dbFirebase.saveMetadata(data);
+
+    let photoRef;
+    try{
+      photoRef = await dbFirebase.saveMetadata(data);
+    }
+    catch(error){
+      console.log(error);
+    }
+
     this.setState({ sendingProgress : 1 ,enabledUploadButton: true});
 
     if(!this.cancelClickUpload){
 
-      this.uploadTask = dbFirebase.savePhoto(photoRef.id, data.base64);
+      const base64 = this.state.imgSrc.split(",")[1];
+      this.uploadTask = dbFirebase.savePhoto(photoRef.id, base64);
 
       this.uploadTask.on('state_changed', snapshot => {
         const sendingProgress = Math.ceil((snapshot.bytesTransferred / snapshot.totalBytes) * 98 + 1);
@@ -291,11 +292,6 @@ class PhotoPage extends Component {
     this.props.handleClose(); // go to the map
   };
 
-  handleCloseButton = () => {
-    gtagEvent('Postpone upload', 'Photo');
-    this.handleClosePhotoPage();
-  };
-
   handleCancel = () => {
     this.setState({ sending:false });
 
@@ -308,6 +304,14 @@ class PhotoPage extends Component {
     }
   }
 
+  handleNext = () => {
+    this.setState({ next:true });
+  }
+
+  handlePrev = () => {
+    this.setState({ next:false });
+  }
+
   componentDidMount() {
     this.loadImage();
   }
@@ -318,49 +322,47 @@ class PhotoPage extends Component {
     }
   }
 
+  handleChangeFields = (anyError, fieldsValues) => {
+    this.setState({anyError, fieldsValues});
+  }
+
   render() {
-    const { classes, label } = this.props;
+    const { classes, label, fields } = this.props;
     return (
       <div className='geovation-photos'>
-        <PageWrapper label={label} handleClose={this.props.handleClose}>
-          <div className='text-field-wrapper'>
-            <Typography className='typography1'>
-              {config.PHOTO_FIELD.title}
-            </Typography>
+        <PageWrapper
+          handlePrev={this.handlePrev}
+          handleNext={this.handleNext}
+          nextClicked={this.state.next}
+          error={this.state.anyError || !this.state.enabledUploadButton}
+          sendFile={this.sendFile}
+          photoPage={true}
+          label={label}
+          imgSrc={this.state.imgSrc}
+          handleClose={this.props.handleClose}>
 
-            <TextField
-              id="standard-name"
-              type={config.PHOTO_FIELD.type}
-              required={true}
-              placeholder={config.PHOTO_FIELD.placeholder}
-              className='text-field'
-              value={this.state.field}
-              onChange={this.handleChange}
-              error= {this.state.error}
-              InputProps={Object.assign({
-                className: classes.cssUnderline
-              }, config.PHOTO_FIELD.inputProps)}
-            />
+          {this.state.next
+            ?
+            <Fields
+              handleChange={this.handleChangeFields}
+              sendFile={this.sendFile}
+              enabledUploadButton={this.state.enabledUploadButton}
+              imgSrc={this.state.imgSrc}
+              fields={fields}
+              />
+            :
+            <div style={{display:'flex',flexDirection:'column',flex:1}}>
+              <div className='picture'>
+               <img src={this.state.imgSrc} alt={""}/>
+              </div>
 
-          </div>
-
-          <div className='picture'>
-           <img src={this.state.imgSrc} alt={""}/>
-          </div>
-
-          <div className={classes.button}>
-            <Button variant="outlined" fullWidth={true} onClick={this.retakePhoto}>
-              Retake
-            </Button>
-          </div>
-
-          <div className={classes.button}>
-            <Button disabled={this.state.error || !this.state.enabledUploadButton}
-              variant="contained" color="secondary" fullWidth={true} onClick={this.sendFile}>
-              Upload
-            </Button>
-          </div>
-
+              <div className={classes.button}>
+                <Button variant="outlined" fullWidth={true} onClick={this.retakePhoto}>
+                  Retake
+                </Button>
+              </div>
+            </div>
+          }
           <Dialog
             open={this.state.open}
             onClose={this.closeDialog}
