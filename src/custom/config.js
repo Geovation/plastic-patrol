@@ -127,15 +127,6 @@ export default {
       regexValidation: '^[0-9]+',
       component: TitleTextField
     },
-    brands: {
-      name: 'brands',
-      title: 'Brands in the picture',
-      type: enums.TYPES.string,
-      placeholder: 'eg. acme, corca corla, prepsi',
-      inputProps: {min: 0, step: 1},
-      regexValidation: '.*',
-      component: TitleTextField
-    },
     categories: {
       component: MultipleSelectControlTextFields,
       name: 'categories',
