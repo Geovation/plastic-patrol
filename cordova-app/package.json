@@ -6,8 +6,8 @@
   "cordova": {
     "platforms": [
       "browser",
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
@@ -28,9 +28,9 @@
     }
   },
   "dependencies": {
-    "cordova-android": "^7.1.4",
+    "cordova-android": "^8.0.0",
     "cordova-browser": "^5.0.4",
-    "cordova-ios": "^4.5.5",
+    "cordova-ios": "^5.0.0",
     "cordova-ios-plugin-no-export-compliance": "0.0.5",
     "cordova-plugin-camera-with-exif": "^1.2.5",
     "cordova-plugin-geolocation": "^4.0.1",

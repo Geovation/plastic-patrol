@@ -117,6 +117,8 @@ export default {
     "updated": s => new Date(s).toDateString(),
     "pieces": s => s
   },
+  ZOOM: 5,
+  CENTER: [-2, 55],
   PHOTO_FIELDS: {
     pieces: {
       name: 'pieces',
