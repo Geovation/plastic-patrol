@@ -6,14 +6,10 @@
   "cordova": {
     "platforms": [
       "browser",
-      "ios",
-      "android"
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": "Plastic Patrol needs to know where you are so it can place the photo of the plastic that you collect in the map"
-      },
       "cordova-plugin-splashscreen": {},
       "cordova-ios-plugin-no-export-compliance": {},
       "cordova-plugin-statusbar": {},
@@ -24,11 +20,11 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "CAMERA_USAGE_DESCRIPTION": "Plastic Patrol needs camera access to take pictures of the plastic that you collect.",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "Plastic Patrol needs photo library access to get the picture of the plastic that you collect."
-      }
+      },
+      "cordova-plugin-geolocation": {}
     }
   },
   "dependencies": {
-    "cordova-android": "^8.0.0",
     "cordova-browser": "^5.0.4",
     "cordova-ios": "^5.0.0",
     "cordova-ios-plugin-no-export-compliance": "0.0.5",
