@@ -77,12 +77,10 @@
     <plugin name="cordova-plugin-google-analytics" spec="^1.8.6"/>
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2"/>
     <engine name="browser" spec="^5.0.4"/>
-    <engine name="ios" spec="^4.5.5" />
-    <engine name="android" spec="^7.1.4" />
-
+    <engine name="ios" spec="^4.5.5"/>
     <plugin name="cordova-plugin-camera-with-exif" spec="^1.2.5">
-        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="Plastic Patrol needs camera access to take pictures of the plastic that you collect." />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Plastic Patrol needs photo library access to get the picture of the plastic that you collect." />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+"/>
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Plastic Patrol needs camera access to take pictures of the plastic that you collect."/>
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Plastic Patrol needs photo library access to get the picture of the plastic that you collect."/>
     </plugin>
 </widget>
