@@ -4,7 +4,7 @@ import EventIcon from '@material-ui/icons/Event';
 import styles from './config.scss';
 import enums from '../types/enums';
 import TitleTextField from '../components/PhotoPage/TitleTextField';
-import MultipleSelectControlTextFields from '../components/PhotoPage/MultipleSelectControlTextFields';
+import MultiFields from '../components/PhotoPage/MultiFields';
 import { data } from './categories';
 
 const primaryColor = styles.primary;
@@ -130,16 +130,36 @@ export default {
       component: TitleTextField
     },
     categories: {
-      component: MultipleSelectControlTextFields,
+      component: MultiFields,
       name: 'categories',
-
       inputProps: { min: 0, step: 1},
       type: enums.TYPES.number,
 
       placeholder: 'Search litter category',
       data: data,
       noOptionsMessage: 'No more categories',
-    },
+      leafKey: 'leafKey',
+
+      subfields: {
+        number: {
+          component : TitleTextField,
+          inputProps: { min: 0, step: 1},
+          name: 'number',
+          title: 'Number',
+          type: enums.TYPES.number,
+          placeholder: 'eg. 123',
+          regexValidation: '^[0-9]+'
+        },
+        brand: {
+          component : TitleTextField,
+          name: 'brand',
+          title: 'Brand',
+          type: enums.TYPES.string,
+          placeholder: 'eg. whatever',
+          regexValidation: '^\\w+( \\w+)*$'
+        },
+      }
+    }
   },
   PAGES,
   CUSTOM_PAGES:[
