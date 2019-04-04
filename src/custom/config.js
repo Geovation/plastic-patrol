@@ -132,13 +132,10 @@ export default {
     categories: {
       component: MultiFields,
       name: 'categories',
-      inputProps: { min: 0, step: 1},
-      type: enums.TYPES.number,
 
-      placeholder: 'Search litter category',
+      placeholder: 'Add litter category',
       data: data,
       noOptionsMessage: 'No more categories',
-      leafKey: 'leafKey',
 
       subfields: {
         number: {

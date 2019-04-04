@@ -1,124 +1,89 @@
 import React from 'react';
 import SelectControlSingleValue from './SelectControlSingleValue';
-import RemoveIcon from '@material-ui/icons/Remove';
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+
+});
 
 class MultiFields extends React.Component {
 
   state = {
-    components: [],
-    selectValues: [],
-    textFieldsValues:[]
+    fieldValues: [],
   }
 
-  index = 0;
-  combinedValue = {};
-  valueError = this.props.field.subfields ? Object.values(this.props.field.subfields).reduce((a, v) => { a[v.name] = { value: '',  error: !''.match(v.regexValidation)}; return a; },{}): false
-  selectFieldName = this.props.field.leafKey;
+  textFieldValueError = this.props.field.subfields ? Object.values(this.props.field.subfields).reduce((a, v) => { a[v.name] = { value: '',  error: !''.match(v.regexValidation)}; return a; },{}): false
+
+  selectValue = {
+    leafkey : {
+      value : ''
+    }
+  }
 
   handleClickAdd = (e) => {
-    const components = [...this.state.components];
-    components.push(this.index);
 
-    const selectValues = [...this.state.selectValues];
-    selectValues.push({});
-
-    const textFieldsValues = [...this.state.textFieldsValues];
-    textFieldsValues.push(JSON.parse(JSON.stringify(this.valueError)));
+    const fieldValues = [...this.state.fieldValues];
+    fieldValues.push({...JSON.parse(JSON.stringify(this.textFieldValueError)),...JSON.parse(JSON.stringify(this.selectValue))});
 
     this.setState({
-      components,
-      selectValues,
-      textFieldsValues
+      fieldValues
     });
-
-    this.index = this.index + 1;
   }
 
   handleClickRemove = index => (e) => {
-    this.index = this.index > 0 ? this.index - 1 : 0;
-
-    let components = [...this.state.components];
-    components.splice(index, 1)
-
-    for (let i=0 ; i< components.length ; i++) {
-      components[i] = i;
+    const length = this.state.fieldValues.length;
+    if(index === 0 && length === 1){
+      this.setState({
+        fieldValues : [{...JSON.parse(JSON.stringify(this.textFieldValueError)),...JSON.parse(JSON.stringify(this.selectValue))}]
+      });
+      this.props.handleChange(null,false);
     }
-
-    const selectValues = [...this.state.selectValues];
-    selectValues.splice(index, 1)
-
-    const textFieldsValues = [...this.state.textFieldsValues];
-    textFieldsValues.splice(index, 1)
-
-    this.setState({
-      components,
-      selectValues,
-      textFieldsValues
-    });
+    else{
+      const fieldValues = this.state.fieldValues.filter((fieldValue,loop_index) => loop_index!== index);
+      this.setState({
+        fieldValues
+      });
+      this.checkErrorAndPropagateResToParent(fieldValues)
+    }
   }
 
-  handleChangeSelect = index => (value,error) => {
-    const selectValues = [...this.state.selectValues];
-    selectValues[index][this.selectFieldName] = value;
-
-     this.setState({
-      selectValues
-    });
-
-    let values=[];
+  checkErrorAndPropagateResToParent = (values) => {
+    let res=[];
     let textFieldErrors=false;
-    Object.values(this.state.textFieldsValues).forEach((obj,index) => {
-      values.push({});
+    Object.values(values).forEach((obj,index) => {
+      res.push({});
       Object.entries(obj).forEach(([key,value])=> {
-        values[index][key] = value.value;
-        if(value.error && selectValues[index][this.selectFieldName]){
+        res[index][key] = value.value;
+        if(value.error && values[index].leafkey.value){
           textFieldErrors=true;
         }
       });
     });
-
-    const res = [];
-    for (let i=0; i < selectValues.length; i++){
-      if (selectValues[i][this.selectFieldName]) {
-        res.push({...values[i],...selectValues[i]});
-      }
-    }
-
     this.props.handleChange(res,textFieldErrors);
+  }
 
+  handleChangeSelect = index => (value,error) => {
+    const fieldValues = [...this.state.fieldValues];
+    fieldValues[index].leafkey.value = value;
+
+    this.setState({
+       fieldValues
+    });
+    this.checkErrorAndPropagateResToParent(fieldValues)
   }
 
   handleChangeTitleTextField = (index,field) => (value,error) => {
-    const textFieldsValues = [...this.state.textFieldsValues];
-
-    textFieldsValues[index][field.name].error = error;
-    textFieldsValues[index][field.name].value = value;
+    const fieldValues = [...this.state.fieldValues];
+    fieldValues[index][field.name].error = error;
+    fieldValues[index][field.name].value = value;
 
     this.setState({
-     textFieldsValues
-   });
+      fieldValues
+    });
 
-   let values=[];
-   let textFieldErrors=false;
-   Object.values(textFieldsValues).forEach((obj,index) => {
-     values.push({});
-     Object.entries(obj).forEach(([key,value])=> {
-       values[index][key] = value.value;
-       if(value.error && this.state.selectValues[index][this.selectFieldName]){
-         textFieldErrors=true;
-       }
-     });
-   });
-
-   const res = [];
-   for (let i=0; i < textFieldsValues.length; i++) {
-     if (this.state.selectValues[i][this.selectFieldName]) {
-      res.push({...values[i], ...this.state.selectValues[i]});
-     }
-   }
-
-   this.props.handleChange(res,textFieldErrors);
+    this.checkErrorAndPropagateResToParent(fieldValues)
 
   }
 
@@ -127,39 +92,36 @@ class MultiFields extends React.Component {
   }
 
   render() {
-    const props = {...this.props};
     return (
       <div>
-        {this.state.components.map(index =>{
-          props.handleChangeSelect = this.handleChangeSelect(index);
+        {this.state.fieldValues.map((fieldValue, index) => {
           return(
-            <div key={index} style={{display:'flex',flexDirection:'column',margin:15,width:'calc(100% - 30px)'}}>
+            <div key={index}>
+              <br/>
+              <br/>
               <div style={{display:'flex'}}>
-                <SelectControlSingleValue {...props}/>
-                <div style={{margin:5,marginBottom:0,visibility:index !== 0 ? 'visible' :'hidden'}}>
-                  <Button size={'small'} variant="outlined" onClick={this.handleClickRemove(index)}>
-                    <RemoveIcon/>
-                  </Button>
+                <SelectControlSingleValue single={fieldValue.leafkey.value} handleChangeSelect={this.handleChangeSelect(index)} {...this.props}/>
+                <div style={{marginBottom: this.props.theme.spacing.unit * 0.5, display:'flex', alignItems: 'flex-end'}}>
+                    <RemoveIcon onClick={this.handleClickRemove(index)} />
                 </div>
               </div>
-              {props.field.subfields &&
+              {this.props.field.subfields && fieldValue && fieldValue.leafkey.value &&
                 <div>
-                  {Object.values(props.field.subfields).map((subfield,index_subfield) =>{
+                  {Object.values(this.props.field.subfields).map((subfield,index_subfield) =>{
                     return(
-                      this.state.selectValues[index] && this.state.selectValues[index][this.selectFieldName]
-                      ? <subfield.component
-                          key={'subcomponent_'+index_subfield}
-                          field={subfield}
-                          handleChange={this.handleChangeTitleTextField(index,subfield)}
-                          fieldValue={this.state.textFieldsValues[index][subfield.name]}
-                        />
-                      :null
+                       <div  key={'subcomponent_'+index_subfield}
+                          style={{ marginTop: this.props.theme.spacing.unit * 1}}>
+                          <subfield.component
+                            field={subfield}
+                            handleChange={this.handleChangeTitleTextField(index,subfield)}
+                            fieldValue={fieldValue[subfield.name]}
+                          />
+                      </div>
                     )
                   })}
-                  {this.state.selectValues[index] && this.state.selectValues[index][this.selectFieldName] &&
-                    index === this.index - 1 &&
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',margin:15}}>
-                      <Button size={'small'} variant="outlined" onClick={this.handleClickAdd}>
+                  {index === this.state.fieldValues.length - 1 &&
+                    <div style={{marginTop: this.props.theme.spacing.unit * 1.5}}>
+                      <Button disabled={this.props.error} fullWidth variant="outlined" onClick={this.handleClickAdd}>
                         add another category
                       </Button>
                     </div>
@@ -173,4 +135,4 @@ class MultiFields extends React.Component {
   }
 }
 
-export default MultiFields;
+export default withStyles(styles, { withTheme: true })(MultiFields);
