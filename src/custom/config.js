@@ -130,7 +130,8 @@ export default {
       component: TitleTextField
     },
     categories: {
-      component: MultiFields,
+      component: MultiFields.MultiFieldsWithStyles,
+      nakedComponent: MultiFields.MultiFieldsOriginal,
       name: 'categories',
 
       placeholder: 'Add litter category',
