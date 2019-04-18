@@ -27,6 +27,15 @@ const CUSTOM_STRING = {
   },
   writeFeedback: {
     "admin@geovation.uk": "lizzieoutside@icloud.com"
+  },
+  termsAndConditions: {
+    "Welcome to App": "Welcome to Plastic Patrol",
+    "Please read our ": "Please read our ",
+    "Terms and Conditions": "Terms and Conditions ",
+    " and ": " and ",
+    "Privacy Policy": "Privacy Policy ",
+    "T&C link": "https://plasticpatrol.co.uk/terms-and-conditions/",
+    "Privacy Policy Link": "https://plasticpatrol.co.uk/privacy-policy/"
   }
 };
 
