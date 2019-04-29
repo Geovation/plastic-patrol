@@ -178,5 +178,6 @@ export default {
     },
   ],
   customiseString,
-  getStats
+  getStats,
+  ENABLE_GRAVATAR_PROFILES: true  //To updtae user-profile from Gravata, value: ture or false.
 }
