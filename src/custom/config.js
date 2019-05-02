@@ -1,8 +1,10 @@
+import React from 'react';
+import EventIcon from '@material-ui/icons/Event';
+
 import styles from './config.scss';
 import enums from '../types/enums';
 import TitleTextField from '../components/PhotoPage/TitleTextField';
 import MultiFields from '../components/PhotoPage/MultiFields';
-
 import { data } from './categories';
 
 const primaryColor = styles.primary;
@@ -10,31 +12,30 @@ const secondaryColor = styles.secondary;
 
 const CUSTOM_STRING = {
   drawer: {
-    "photos published so far!": "photos published so far!"
+    "photos published so far!": "pieces found so far!"
   },
   tutorial: {
-    "Walk around the city and take photos": "Walk around the city and take photos",
-    "Write info about the photos and upload it to the cloud": "Write info about the photos and upload it to the cloud",
-    "View your images in our interactive map": "View your images in our interactive map"
+    "Walk around the city and take photos": "Get outside and photograph your #plasticpatrol haul",
+    "Write info about the photos and upload it to the cloud": "Count how many pieces you collected and upload your photo",
+    "View your images in our interactive map": "View images in our interactive map and see how you have helped fight the plastic problem"
   },
   about: {
-    "We are Geovation and we Geovate": "Backed by years of industry experience and a network that reaches far and wide, we are a community of location-data and proptech collaborators looking to make positive change happen.\n" +
-    "\n" +
-    "Since its inception in 2009 Geovation has become a leading proponent of the value of open innovation in the public sector. After opening its first space in summer 2015, Geovation has grown to support a community of more than 1,200 entrepreneurs, investors, developers, academics, students and corporate innovators.\n" +
-    "\n" +
-    "Our accelerators provide startups up to £20,000 in grant funding, access to data, experienced product development capabilities, geospatial expertise from Ordnance Survey and land and property insight from HM Land Registry, as well as business mentorship and coaching to help prepare for presenting to investors from the wider team and our partners. To date, our accelerator has supported 79 technology start-ups, and we’ve seen nearly £20M raised in investment funding."
+    "We are Geovation and we Geovate": "#PlasticPatrol is about engaging people with the issue of plastic pollution through adventure and nature, helping to safeguard our seas for the future.\n\n" +
+    "Our mission is to combat the global plastic crisis by stopping the problem at its source – in our waterways.\n\n" +
+    "Every single piece of plastic collected and shared on social media as part of the #PlasticPatrol movement is captured in our interactive map, creating a picture of the problem on a global scale for the very first time.\n\n" +
+    "Using this app you can get involved. Simply take a photo of what you find by pressing the camera button and upload it directly to the map. After it has been approved you will be able to view the images by pressing the globe button."
   },
   writeFeedback: {
-    "admin@geovation.uk": "it@geovation.uk"
+    "admin@geovation.uk": "lizzieoutside@icloud.com"
   },
   termsAndConditions: {
-    "Welcome to App": "Welcome to PHOTOS",
+    "Welcome to App": "Welcome to Plastic Patrol",
     "Please read our ": "Please read our ",
     "Terms and Conditions": "Terms and Conditions ",
     " and ": " and ",
     "Privacy Policy": "Privacy Policy ",
-    "T&C link": " https://geovation.uk/terms-conditions/",
-    "Privacy Policy Link": "https://geovation.uk/privacy-policy/"
+    "T&C link": "https://plasticpatrol.co.uk/terms-and-conditions/",
+    "Privacy Policy Link": "https://plasticpatrol.co.uk/privacy-policy/"
   }
 };
 
@@ -70,14 +71,28 @@ const PAGES = {
   writeFeedback: {
     path: "/write-feedback",
     label: "Feedback"
-  }
+  },
+  events: {
+    path: "/events",
+    label: "Clean-ups"
+  },
+  partners: {
+    path: "/partners",
+    label: "Partners"
+  },
 };
 
 const customiseString = (page, key) => (CUSTOM_STRING[page][key] || key);
 
 const getStats = async (photos) => {
+  let totalPieces = 0;
   const photoObj = await photos;
-  return Object.keys(photoObj.features).length;
+  Object.keys(photoObj.features).forEach(key => {
+    const properties = photoObj.features[key].properties;
+    const pieces = Number(properties.pieces);
+    if (!isNaN(pieces) && pieces > 0 ) totalPieces += pieces;
+  });
+  return totalPieces;
 }
 
 export default {
@@ -94,60 +109,52 @@ export default {
       unit: 10
     }
   },
-  // MAP_SOURCE: "mapbox://styles/mapbox/streets-v10",
-  MAP_SOURCE: "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-outdoor/style.json",
-  MAP_ATTRIBUTION: "Contains OS data &copy; Crown copyright and database rights 2018",
-  MAPBOX_TOKEN: "pk.eyJ1Ijoic2ViYXN0aWFub3ZpZGVnZW92YXRpb251ayIsImEiOiJjanA4ZWwwbTkxdDNxM2twZTgyMGdqOXB5In0.MrWFt3rABCo7n7MBbVRaNw",
+  MAP_SOURCE: "mapbox://styles/mapbox/streets-v10",
+  // MAP_SOURCE: "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-outdoor/style.json",
+  // MAP_ATTRIBUTION: "Contains OS data &copy; Crown copyright and database rights 2018",
+  MAPBOX_TOKEN: "pk.eyJ1Ijoic2ViYXN0aWFub3ZpZGVnZW92YXRpb251ayIsImEiOiJjanBqZzRmNHgwNXljM2tydHlkM29id3FwIn0.-1V8Ue9P6eQr8FGghaTYiw",
   FIREBASE: {
-    apiKey: "AIzaSyBkuZPVStg_zRfUaxLJ-mP4xxdFv8GzdZw",
-    authDomain: "photos-demo-d4b14.firebaseapp.com",
-    databaseURL: "https://photos-demo-d4b14.firebaseio.com",
-    projectId: "photos-demo-d4b14",
-    storageBucket: "photos-demo-d4b14.appspot.com",
-    messagingSenderId: "639308065605"
+    apiKey: "AIzaSyBbN8z-zSqChaQkTyOtIZZ3apq0qg59FzI",
+    authDomain: "plastic-patrol-fd3b3.firebaseapp.com",
+    databaseURL: "https://plastic-patrol-fd3b3.firebaseio.com",
+    projectId: "plastic-patrol-fd3b3",
+    storageBucket: "plastic-patrol-fd3b3.appspot.com",
+    messagingSenderId: "845679623528"
   },
-  GA_TRACKING_ID: "UA-128504979-1",
+  GA_TRACKING_ID: "UA-126516084-1",
   PHOTO_ZOOMED_FIELDS: {
     "updated": s => new Date(s).toDateString(),
-    "description": s => s,
-    "notes": s => s
+    "pieces": s => s
   },
   ZOOM: 5,
   CENTER: [-2, 55],
-  PHOTO_FIELDS : {
-    description: {
-      component : TitleTextField,
-      name: 'description',
-      title: 'Description',
-      type: enums.TYPES.string,
-      placeholder: 'eg. whatever',
-      regexValidation: '^\\w+( \\w+)*$'
-    },
-    notes: {
-      component : TitleTextField,
-      inputProps: { min: 0, step: 1},
-      name: 'notes',
-      title: 'Notes',
+  PHOTO_FIELDS: {
+    pieces: {
+      name: 'pieces',
+      title: 'Number of pieces collected',
       type: enums.TYPES.number,
-      placeholder: 'eg. 1',
-      regexValidation: '^[0-9]+'
+      placeholder: 'eg. 123',
+      inputProps: {min: 0, step: 1},
+      regexValidation: '^[0-9]+',
+      component: TitleTextField
     },
-    multicategories: {
+    categories: {
       component: MultiFields.MultiFieldsWithStyles,
       nakedComponent: MultiFields.MultiFieldsOriginal,
-      name: 'multicategories',
-      placeholder: 'Add photo categories',
+      name: 'categories',
+
+      placeholder: 'Add litter category',
       data: data,
       noOptionsMessage: 'No more categories',
 
       subfields: {
-        pieces: {
+        number: {
           component : TitleTextField,
           inputProps: { min: 0, step: 1},
           name: 'number',
           title: 'Number',
           type: enums.TYPES.number,
-          placeholder: 'eg. 1',
+          placeholder: 'eg. 123',
           regexValidation: '^[0-9]+'
         },
         brand: {
@@ -159,10 +166,17 @@ export default {
           regexValidation: '^\\w+( \\w+)*$'
         },
       }
-    },
+    }
   },
   PAGES,
-  CUSTOM_PAGES:[],
+  CUSTOM_PAGES:[
+    {
+      visible: true,
+      icon: <EventIcon/>,
+      label: PAGES.events.label,
+      click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
+    },
+  ],
   customiseString,
   getStats,
   ENABLE_GRAVATAR_PROFILES: true,  //To update user-profile from Gravatar, value: ture or false.
