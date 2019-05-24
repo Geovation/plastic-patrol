@@ -38,8 +38,8 @@ matrix:
     - npm test -- --coverage
     - npm run build
     - npm run build:android
-    after_script:
-    - npm run coveralls
+#    after_script:
+#    - npm run coveralls
     before_deploy:
     - pushd functions && npm install && popd
     - git config --local user.name "Geovation from Travis"
