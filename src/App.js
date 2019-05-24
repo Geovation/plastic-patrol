@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter} from 'react-router-dom';
-import { gtagPageView, gtagEvent } from './gtag.js';
 
 import RootRef from '@material-ui/core/RootRef';
 import Fab from '@material-ui/core/Fab';
@@ -13,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { withStyles } from '@material-ui/core/styles';
 
 import PhotoPage from './components/PhotoPage';
 import ProfilePage from './components/ProfilePage';
@@ -20,19 +20,21 @@ import Map from './components/Map';
 import CustomPhotoDialog from './components/CustomPhotoDialog';
 import ModeratorPage from './components/ModeratorPage';
 import LoginFirebase from './components/LoginFirebase';
-import authFirebase from './authFirebase';
-import dbFirebase from './dbFirebase';
 import Login from './components/Login';
 import AboutPage from './components/AboutPage';
 import TutorialPage from './components/TutorialPage';
+import LeaderboardPage from './components/Leaderboard';
 import WelcomePage from './components/WelcomePage';
 import WriteFeedbackPage from './components/WriteFeedbackPage';
 import DrawerContainer from './components/DrawerContainer';
 import TermsDialog from './components/TermsDialog';
-
-import './App.scss';
-import { withStyles } from '@material-ui/core/styles';
+import EmailVerifiedDialog from './components/EmailVerifiedDialog';
+import FeedbackReportsPage from './components/FeedbackReportsPage';
+import authFirebase from './authFirebase';
+import dbFirebase from './dbFirebase';
+import { gtagPageView, gtagEvent } from './gtag.js';
 import { isIphoneWithNotchAndCordova } from './utils';
+import './App.scss';
 
 const styles = theme => ({
   burger: {
@@ -56,17 +58,18 @@ class App extends Component {
       file: null,
       location: {},
       user: null,
-      photosToModerate: [],
       online: false,
       loginLogoutDialogOpen: false,
       openPhotoDialog: false,
       leftDrawerOpen: false,
       welcomeShown: !!localStorage.getItem("welcomeShown"),
       termsAccepted: !!localStorage.getItem("termsAccepted"),
-      geojson: {},
+      geojson: null,
+      stats: null,
       srcType: null,
       cordovaMetadata : {},
-      dialogOpen: false
+      dialogOpen: false,
+      usersLeaderboard: []
     };
 
     this.geoid = null;
@@ -117,14 +120,26 @@ class App extends Component {
   }
 
   async componentDidMount(){
+    dbFirebase.fetchStats()
+      .then(stats => {
+        console.log(stats);
+        this.setState({ usersLeaderboard: stats.users})
+      });
+
     gtagPageView(this.props.location.pathname);
 
-    const geojson = await dbFirebase.fetchPhotos();
-    this.props.config.getStats(geojson).then(stats => {
-      this.setState({ geojson, stats });
-    }).catch(err => {
-      console.error('Get Stats: ', err.message);
-      this.setState({ geojson, stats: 0 });
+    await Promise.all([dbFirebase.fetchStats(),dbFirebase.fetchPhotos()]).then(values => {
+      const dbStats = values[0] || {};
+      const geojson = values[1] || {};
+      let stats = 0;
+
+      try {
+        stats = this.props.config.getStats(geojson, dbStats);
+      } catch (err) {
+        console.error('Get Stats: ', err.message);
+      }
+
+      this.setState({ dbStats, stats, geojson });
     });
 
     this.unregisterConnectionObserver = dbFirebase.onConnectionStateChanged(online => {
@@ -189,7 +204,7 @@ class App extends Component {
           // TODO: show popup with message saying that the user needs an account for this feature
           // alert("Please log in")
 
-          this.setState({ 
+          this.setState({
             dialogOpen: true,
             dialogTitle: "attention",
             dialogContentText: "Before adding photos, you must be logged into your account."
@@ -253,7 +268,7 @@ class App extends Component {
 
   handleLoginPhotoAdd = (e) => {
     this.setState({
-      loginLogoutDialogOpen: true, 
+      loginLogoutDialogOpen: true,
       dialogOpen: false
     })
   };
@@ -262,13 +277,25 @@ class App extends Component {
     this.setState({ dialogOpen: false });
   }
 
+  handleNextClick = async () => {
+    const user = await authFirebase.reloadUser();
+    this.setState({user: {...this.state.user, emailVerified: user.emailVerified}});
+  }
+
   render() {
     const { classes, fields } = this.props;
+
     return (
       <div className='geovation-app'>
         { !this.state.termsAccepted && this.props.history.location.pathname !== this.props.config.PAGES.embeddable.path &&
           <TermsDialog handleClose={this.handleTermsPageClose}/>
         }
+
+        <EmailVerifiedDialog
+          user={this.state.user}
+          open={!!(this.state.user && !this.state.user.emailVerified)}
+          handleNextClick={this.handleNextClick}
+        />
 
           <main className='content'>
             { this.state.welcomeShown &&
@@ -280,51 +307,79 @@ class App extends Component {
                     />
                 ))}
                 <Route path={this.props.config.PAGES.about.path} render={(props) =>
-                  <AboutPage label={this.props.config.PAGES.about.label} {...props} handleClose={this.goToMap} />}
+                  <AboutPage {...props}
+                    label={this.props.config.PAGES.about.label}
+                    handleClose={this.goToMap}
+                  />}
                 />
                 <Route path={this.props.config.PAGES.tutorial.path} render={(props) =>
-                  <TutorialPage label={this.props.config.PAGES.tutorial.label} {...props} handleClose={this.goToMap} />}
+                  <TutorialPage {...props}
+                    label={this.props.config.PAGES.tutorial.label}
+                    handleClose={this.goToMap}
+                  />}
+                />
+
+                <Route path={this.props.config.PAGES.leaderboard.path} render={(props) =>
+                  <LeaderboardPage {...props}
+                    label={this.props.config.PAGES.leaderboard.label}
+                    usersLeaderboard={this.state.usersLeaderboard}
+                    handleClose={this.goToMap}
+                  />}
                 />
 
                 { this.state.user && this.state.user.isModerator &&
                   <Route path={this.props.config.PAGES.moderator.path} render={(props) =>
-                    <ModeratorPage label={this.props.config.PAGES.moderator.label} {...props} handleClose={this.goToMap} user={this.state.user} />}
+                    <ModeratorPage  {...props}
+                      label={this.props.config.PAGES.moderator.label}
+                      user={this.state.user}
+                      handleClose={this.goToMap}
+                    />}
+                  />
+                }
+
+                { this.state.user && this.state.user.isModerator &&
+                  <Route path={this.props.config.PAGES.feedbackReports.path} render={(props) =>
+                    <FeedbackReportsPage {...props}
+                      label={this.props.config.PAGES.feedbackReports.label}
+                      user={this.state.user}
+                      handleClose={this.goToMap}
+                    />}
                   />
                 }
 
                 <Route path={this.props.config.PAGES.photos.path} render={(props) =>
                   <PhotoPage {...props}
-                             file={this.state.file}
-                             gpsLocation={this.state.location}
-                             online={this.state.online}
-                             handlePhotoClick={this.handlePhotoClick}
-                             handleClose={this.goToMap}
-                             label={this.props.config.PAGES.photos.label}
-                             srcType={this.state.srcType}
-                             cordovaMetadata={this.state.cordovaMetadata}
-                             fields={fields}
+                    label={this.props.config.PAGES.photos.label}
+                    file={this.state.file}
+                    gpsLocation={this.state.location}
+                    online={this.state.online}
+                    srcType={this.state.srcType}
+                    cordovaMetadata={this.state.cordovaMetadata}
+                    fields={fields}
+                    handleClose={this.goToMap}
+                    handlePhotoClick={this.handlePhotoClick}
                   />}
                 />
 
                 { this.state.user &&
                   <Route path={this.props.config.PAGES.account.path} render={(props) =>
                     <ProfilePage {...props}
-                                 user={this.state.user}
-                                 handleClose={this.goToMap}
-                                 label={this.props.config.PAGES.account.label}
+                      label={this.props.config.PAGES.account.label}
+                      user={this.state.user}
+                      handleClose={this.goToMap}
                     />}
                   />
                 }
 
                 <Route path={this.props.config.PAGES.writeFeedback.path} render={(props) =>
-                   <WriteFeedbackPage {...props}
-                                      user={this.state.user}
-                                      location={this.state.location}
-                                      online={this.state.online}
-                                      handleClose={this.goToMap}
-                                      label={this.props.config.PAGES.writeFeedback.label}
-                   />}
-                 />
+                  <WriteFeedbackPage {...props}
+                    label={this.props.config.PAGES.writeFeedback.label}
+                    user={this.state.user}
+                    location={this.state.location}
+                    online={this.state.online}
+                    handleClose={this.goToMap}
+                  />}
+                />
 
               </Switch>
             }
@@ -393,7 +448,7 @@ class App extends Component {
               {this.state.dialogContentText}
             </DialogContentText>
           </DialogContent>
-          
+
           <DialogActions>
             <Button onClick={this.handleRejectLoginPhotoAdd} color='secondary'>
               No thanks!
@@ -405,7 +460,7 @@ class App extends Component {
             </Button>
 
 
-          </DialogActions> 
+          </DialogActions>
 
         </Dialog>
 

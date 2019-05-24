@@ -1,6 +1,8 @@
 // let the user write a feedback.
 
 import React from 'react';
+import firebase from 'firebase/app';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,10 +12,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
-import config from '../custom/config';
 import dbFirebase from '../dbFirebase';
-import { device } from '../utils';
-
+import utils, { device } from '../utils';
 import PageWrapper from './PageWrapper';
 
 const styles = theme => ({
@@ -93,11 +93,14 @@ class WriteFeedbackPage extends React.Component {
 
     let data = {};
     data.feedback = this.state.feedback;
+    data.resolved = false;
     data.appVersion = process.env.REACT_APP_VERSION;
     data.buildNumber = process.env.REACT_APP_BUILD_NUMBER;
     data.email = this.state.email ? this.state.email : 'anonymous';
     data.device = device();
     data.userAgent = navigator.userAgent;
+    data.created = firebase.firestore.FieldValue.serverTimestamp();
+    data.updated = data.created;
     if (location) {
       data.latitude = location.latitude;
       data.longitude = location.longitude;
@@ -108,7 +111,7 @@ class WriteFeedbackPage extends React.Component {
       this.openDialog('Feedback sent, our team will reply as soon as possible!');
     }).catch(err => {
       console.log(err.toString());
-      this.openDialog('Something went wrong. Try again later or please email us to ' + config.customiseString('writeFeedback', 'admin@geovation.uk'), true);
+      this.openDialog('Something went wrong. Try again later or please email us to ' + utils.customiseString('writeFeedback', 'admin@geovation.uk'), true);
     });
   }
 

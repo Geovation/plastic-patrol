@@ -6,18 +6,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import HelpIcon from '@material-ui/icons/Help';
-import SchoolIcon from '@material-ui/icons/School';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import FeedbackIcon from '@material-ui/icons/Feedback';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import config from '../custom/config';
+import utils from '../utils';
 import './DrawerContainer.scss';
 import { isIphoneWithNotchAndCordova, isIphoneAndCordova } from '../utils';
 
@@ -46,8 +42,8 @@ const styles = theme => ({
 
 const PAGES = config.PAGES;
 const links = {
-  terms: config.customiseString('termsAndConditions', 'T&C link'),
-  privacy: config.customiseString('termsAndConditions', 'Privacy Policy Link')
+  terms: utils.customiseString('termsAndConditions', 'T&C link'),
+  privacy: utils.customiseString('termsAndConditions', 'Privacy Policy Link')
 }
 
 
@@ -56,41 +52,18 @@ class DrawerContainer extends Component {
   render() {
     const { classes, user, online, leftDrawerOpen, stats } = this.props;
     const ListItemsTop = [
-      {
-        visible: user,
-        path: PAGES.account.path,
-        icon: <AccountCircleIcon/>,
-        label: PAGES.account.label
-      },
-      {
-        visible: user && user.isModerator,
-        path: PAGES.moderator.path,
-        icon: <CheckCircleIcon/>,
-        label: PAGES.moderator.label
-      },
-      {
-        visible: true,
-        path: PAGES.tutorial.path,
-        icon: <SchoolIcon/>,
-        label: PAGES.tutorial.label
-      },
+      PAGES.account,
+      PAGES.moderator,
+      PAGES.feedbackReports,
+      PAGES.tutorial,
+      PAGES.leaderboard,
     ];
     const ListItemsConfigurable = config.CUSTOM_PAGES;
     const ListItemsBottom = [
+      PAGES.about,
+      PAGES.writeFeedback,
       {
-        visible: true,
-        path: PAGES.about.path,
-        icon: <HelpIcon/>,
-        label: PAGES.about.label
-      },
-      {
-         visible: true,
-         path: PAGES.writeFeedback.path,
-         icon: <FeedbackIcon/>,
-         label: PAGES.writeFeedback.label
-      },
-      {
-        visible: online,
+        visible: (user, online) => online,
         icon: <ExitToAppIcon/>,
         label: user ? 'Logout' : 'Login',
         click: this.props.handleClickLoginLogout
@@ -120,7 +93,7 @@ class DrawerContainer extends Component {
             </div>
           }
           <List>
-            {ListItems.map( (item,index) => item.visible &&
+            {ListItems.map( (item,index) => item.visible(user, online) &&
               <ListItem key={index} button component={item.path && Link} to={item.path} onClick={item.click}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
@@ -129,7 +102,7 @@ class DrawerContainer extends Component {
           </List>
         </div>
         <Typography className={classes.stats} color={'secondary'}>
-          {`${stats | 0} ${config.customiseString('drawer', 'photos published so far!')}`}
+          {`${stats | 0} ${utils.customiseString('drawer', 'photos published so far!')}`}
         </Typography>
         <div className='built-by-geovation'>
           <Typography className='built-by-text'>

@@ -4,20 +4,21 @@ export const data = {
     children: {
       100: {
         label:'4 / 6 pack rings',
+
       },
       101: {
         label:'Bags',
         children: {
           1000: {
-            label:'Plastic Bag Carrier',
+            label:'Carrier',
 
           },
           1001: {
-            label:'Plastic Packaging',
+            label:'Packaging',
 
           },
           1002: {
-            label:'Other (Plastic Bags)',
+            label:'Other (Bags)',
 
           },
         }
@@ -26,30 +27,33 @@ export const data = {
         label:'Bottles and containers',
         children: {
           1003: {
-            label:'Plastic Drinks Bottles',
+            label:'Drinks',
+
           },
           1004: {
-            label:'Plastic Cleaning products Bottles',
+            label:'Cleaning products',
 
           },
           1005: {
-            label:'Plastic Food containers (e.g. pots, tubs, sachets)',
+            label:'Food (e.g. pots, tubs, sachets)',
 
           },
           1006: {
-            label:'Plastic Toiletries Bottles',
+            label:'Toiletries',
 
           },
         }
       },
       103: {
-        label:'Plastic Caps / lids',
+        label:'Caps / lids',
+
       },
       104: {
         label:'Cigarette lighters',
+
       },
       105: {
-        label:'Plastic Tobacco pouches',
+        label:'Tobacco pouches',
 
       },
       106: {
@@ -61,7 +65,7 @@ export const data = {
 
       },
       108: {
-        label:'Plastic Sunglasses',
+        label:'Sunglasses',
 
       },
       109: {
@@ -69,11 +73,11 @@ export const data = {
 
       },
       110: {
-        label:'Plastic Sandwich packaging',
+        label:'Sandwich packaging',
 
       },
       111: {
-        label:'Plastic Pasta pots',
+        label:'Pasta pots',
 
       },
       112: {
@@ -85,19 +89,19 @@ export const data = {
 
       },
       114: {
-        label:'Plastic Cutlery',
+        label:'Cutlery',
 
       },
       115: {
-        label:'Plastic Trays (e.g. meat trays)',
+        label:'Trays (e.g. meat trays)',
 
       },
       116: {
-        label:'Plastic Straws',
+        label:'Straws',
 
       },
       117: {
-        label:'Disposable Plastic cups (not paper)',
+        label:'Disposable cups (not paper)',
 
       },
       118: {
@@ -126,7 +130,7 @@ export const data = {
         }
       },
       120: {
-        label:'Industrial Plastic packaging / crates / sheeting',
+        label:'Industrial packaging / crates / sheeting',
 
       },
       121: {
@@ -134,43 +138,43 @@ export const data = {
 
       },
       122: {
-        label:'Plastic Pallets / crates',
+        label:'Pallets / crates',
 
       },
       123: {
-        label:'Plastic Stationary',
+        label:'Rope (diameter > 1cm)',
 
       },
       124: {
-        label:'Plastic Rope (diameter > 1cm)',
+        label:'String / cord (diameter < 1cm)',
 
       },
       125: {
-        label:'Plastic String / cord (diameter < 1cm)',
+        label:'Toys',
 
       },
       126: {
-        label:'Plastic Toys',
+        label:'Balloon string',
 
       },
       127: {
-        label:'Plastic Balloon string',
-
-      },
-      128: {
         label:'Traffic cones',
 
       },
+      128: {
+        label:'Plastic pieces (<2.5 cm)',
+
+      },
       129: {
-        label:'Plastic pieces (< 2.5 cm)',
+        label:'Plastic pieces (>2.5 cm)',
 
       },
       130: {
-        label:'Plastic pieces (> 2.5 cm)',
+        label:'Other (Non-specific plastic)',
 
       },
       131: {
-        label:'Other (Non-specific plastic)',
+        label:'Balloon string',
 
       },
     }
@@ -182,35 +186,39 @@ export const data = {
         label:'Polystyrene',
         children: {
           1011: {
-            label:'Fast food Polystyrene containers',
+            label:'Fast food containers',
 
           },
           1012: {
-            label:'Polystyrene Foam / sponge insulation',
+            label:'Foam / sponge insulation',
 
           },
           1013: {
-            label:'Polystyrene Packaging',
+            label:'Packaging',
 
           },
           1014: {
-            label:'Polystyrene pieces (< 5 cm)',
+            label:'Fishing net and net pieces (< 50cm)',
 
           },
           1015: {
-            label:'Polystyrene pieces (5-50 cm)',
+            label:'Fishing net and net pieces (> 50cm)',
 
           },
           1016: {
-            label:'Polystyrene pieces (> 50 cm)',
+            label:'Polystyrene pieces (5-50 cm)',
 
           },
           1017: {
-            label:'Individual polystyrene beads',
+            label:'Polystyrene pieces (5 cm)',
 
           },
           1018: {
-            label:'Other (Polystyrene)',
+            label:'Individual polystyrene beads',
+
+          },
+          1019: {
+            label:'Other (Specific plastic)',
 
           },
         }
@@ -223,11 +231,11 @@ export const data = {
 
           },
           1021: {
-            label:'Rubber Gloves (heavy duty)',
+            label:'Gloves (heavy duty)',
 
           },
           1022: {
-            label:'Rubber Gloves (light weight)',
+            label:'Gloves (light weight)',
 
           },
           1023: {
@@ -238,15 +246,15 @@ export const data = {
             label:'Tyres (no wheel)',
             children: {
               10000: {
-                label:'Bike Tyres (no wheel)',
+                label:'Bike',
 
               },
               10001: {
-                label:'Car Tyres (no wheel)',
+                label:'Car',
 
               },
               10002: {
-                label:'Other Tyres (no wheel)',
+                label:'Other (Tyres (no wheel))',
 
               },
             }
@@ -255,11 +263,11 @@ export const data = {
             label:'Tyres (with wheel)',
             children: {
               10003: {
-                label:'Bike Tyres (with wheel)',
+                label:'Bike',
 
               },
               10004: {
-                label:'Car Tyres (with wheel)',
+                label:'Car',
 
               },
               10005: {
@@ -336,11 +344,11 @@ export const data = {
         label:'Animal faeces (Do not touch!)',
         children: {
           1039: {
-            label:'Animal faeces In bags',
+            label:'In bags',
 
           },
           1040: {
-            label:'Animal faeces Not in bags',
+            label:'Not in bags',
 
           },
         }
@@ -387,11 +395,11 @@ export const data = {
 
           },
           1048: {
-            label:'Metal Bottle caps',
+            label:'Bottle caps',
 
           },
           1049: {
-            label:'Metal Car parts / car batteries',
+            label:'Car parts / car batteries',
 
           },
           1050: {
@@ -440,15 +448,15 @@ export const data = {
 
           },
           1060: {
-            label:'Wooden Pallets / crates',
+            label:'Pallets / crates',
 
           },
           1061: {
-            label:'Wooden Ice lolly sticks / chip forks',
+            label:'Ice lolly sticks / chip forks',
 
           },
           1062: {
-            label:'Wooden Paint brushes',
+            label:'Paint brushes',
 
           },
           1063: {
@@ -465,7 +473,7 @@ export const data = {
         label:'Glass',
         children: {
           1065: {
-            label:'Glass Bottles',
+            label:'Bottles',
 
           },
           1066: {
