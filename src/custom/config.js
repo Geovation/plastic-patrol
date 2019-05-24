@@ -214,5 +214,9 @@ export default {
   API: {
     URL: "https://app.plasticpatrol.co.uk/api",
     // URL: "http://localhost:5000/plastic-patrol-fd3b3/us-central1/api"
+  },
+  LEADERBOARD_FIELD: {
+      label: "Pieces",
+      field: "pieces"
   }
 }
