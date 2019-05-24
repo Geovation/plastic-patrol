@@ -35,7 +35,7 @@ matrix:
     install:
     - npm install
     script:
-    - npm test -- --coverage
+#    - npm test -- --coverage
     - npm run build
     - npm run build:android
 #    after_script:
