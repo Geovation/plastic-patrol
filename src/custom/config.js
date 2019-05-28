@@ -112,17 +112,6 @@ const PAGES = {
   }
 };
 
-const getStats = async (photos) => {
-  let totalPieces = 0;
-  const photoObj = await photos;
-  Object.keys(photoObj.features).forEach(key => {
-    const properties = photoObj.features[key].properties;
-    const pieces = Number(properties.pieces);
-    if (!isNaN(pieces) && pieces > 0 ) totalPieces += pieces;
-  });
-  return totalPieces;
-}
-
 export default {
   CUSTOM_STRING,
   MAX_IMAGE_SIZE: 2048,
@@ -206,7 +195,7 @@ export default {
       click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
     },
   ],
-  getStats,
+  getStats: (photos, dbStats) => dbStats.pieces,
   ENABLE_GRAVATAR_PROFILES: true,  //To update user-profile from Gravatar, value: ture or false.
   SECURITY: {
     UPLOAD_REQUIRES_LOGIN: true
