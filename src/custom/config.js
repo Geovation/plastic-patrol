@@ -212,7 +212,8 @@ export default {
     UPLOAD_REQUIRES_LOGIN: true
   },
   API: {
-    URL: "https://app.plasticpatrol.co.uk/api",
+    // URL: "https://api.plasticpatrol.co.uk",
+    URL: "https://us-central1-plastic-patrol-fd3b3.cloudfunctions.net/api",
     // URL: "http://localhost:5000/plastic-patrol-fd3b3/us-central1/api"
   },
   LEADERBOARD_FIELD: {
