@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "plastic-patrol-fd3b3"
+  },
+  "targets": {
+    "plastic-patrol-fd3b3": {
+      "hosting": {
+        "api": [
+          "plastic-patrol-fd3b3-api"
+        ],
+        "app": [
+          "plastic-patrol-fd3b3"
+        ]
+      }
+    }
   }
 }

@@ -12,7 +12,6 @@ import Divider from '@material-ui/core/Divider';
 import './TutorialPage.scss';
 import { withStyles } from '@material-ui/core/styles';
 import utils, { isIphoneWithNotchAndCordova } from '../utils';
-import config from '../custom/config';
 const placeholderImage = process.env.PUBLIC_URL + "/custom/images/banner.svg";
 
 const styles = theme => ({
@@ -71,7 +70,7 @@ class WelcomePage extends React.Component {
     return (
       <Paper className={classes.root}>
         <div className={classes.notchTop}/>
-        <img className={classes.logo} src={placeholderImage} alt={config.customiseString('about', 'Geovation')}/>
+        <img className={classes.logo} src={placeholderImage} alt={utils.customiseString('about', 'Geovation')}/>
         <div className={classes.main}>
           <List dense className={'list'}>
             { Object.values(tutorialSteps).map((value, index) => (
