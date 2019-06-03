@@ -89,16 +89,18 @@ async function fetchStats() {
 async function fetchUsers() {
   return fetch(config.API.URL + "/stats", {mode: "cors"})
     .then(response => response.json())
-    // .then(userstats => console.log('users from Firebase:', userstats.users));
+  // .then(userstats => console.log('users from Firebase:', userstats.users));
 }
 
 function fetchFeedbacks(isShowAll) {
-  let query = firestore.collection('feedbacks');
-  query = !isShowAll ? query.where('resolved', '==', false) : query;
+  let query = firestore.collection('feedbacks')
+    .orderBy("updated",  "desc")
+    .limit( (config.FEEDBACKS && config.FEEDBACKS.MAX) || 50);
   return query.get()
     .then(sn => sn.docs.map(doc => {
       return ({...doc.data(), id: doc.id});
-    }));
+    }))
+    .then( feedbacks => feedbacks.filter(feedback => !feedback.resolved || isShowAll));
 }
 
 function saveMetadata(data) {
@@ -136,7 +138,7 @@ async function getUser(id) {
 
 function photosToModerate() {
   return firestore.collection('photos').where('moderated', "==", null).get()
-  .then(sn => sn.docs.map(extractPhoto));
+    .then(sn => sn.docs.map(extractPhoto));
 }
 
 
