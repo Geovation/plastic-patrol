@@ -41,6 +41,8 @@ const styles = theme => ({
     position: 'absolute',
     top: isIphoneWithNotchAndCordova() ? `calc(env(safe-area-inset-top) + ${theme.spacing.unit}px)` : theme.spacing.unit * 3,
     left: theme.spacing.unit * 2,
+    margin: -theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2,
     zIndex: theme.zIndex.appBar, //app bar material-ui value
   },
   camera: {
@@ -279,7 +281,20 @@ class App extends Component {
 
   handleNextClick = async () => {
     const user = await authFirebase.reloadUser();
-    this.setState({user: {...this.state.user, emailVerified: user.emailVerified}});
+    if (user.emailVerified) {
+      this.setState({user: {...this.state.user, emailVerified: user.emailVerified}});
+      let message = {
+        title: 'Confirmation',
+        body: 'Thank you for verifying your email.'
+      };
+      return message;
+    } else {
+      let message = {
+        title: 'Warning',
+        body: 'Email not verified yet. Please click the link in the email we sent you.'
+      };
+      return message;
+    }
   }
 
   render() {

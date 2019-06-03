@@ -1,6 +1,6 @@
 export const data = {
   1: {
-    label: 'Non-specific plastic',
+    label: 'Non-specific Plastic',
     children: {
       100: {
         label:'4 / 6 pack rings',
@@ -10,7 +10,7 @@ export const data = {
         label:'Bags',
         children: {
           1000: {
-            label:'Carrier',
+            label:'Plastic Carrier Bag',
 
           },
           1001: {
@@ -24,44 +24,44 @@ export const data = {
         }
       },
       102: {
-        label:'Bottles and containers',
+        label:'Bottles and Containers',
         children: {
           1003: {
             label:'Drinks',
 
           },
           1004: {
-            label:'Cleaning products',
+
+            label:'Plastic Cleaning Product Bottles',
 
           },
           1005: {
-            label:'Food (e.g. pots, tubs, sachets)',
+            label:'Plastic Food Containers (e.g. Pots, Tubs, Sachets)',
 
           },
           1006: {
-            label:'Toiletries',
+            label:'Plastic Toiletry Bottles',
 
           },
         }
       },
       103: {
-        label:'Caps / lids',
 
+        label:'Plastic Caps / Lids',
       },
       104: {
-        label:'Cigarette lighters',
-
+        label:'Cigarette Lighters',
       },
       105: {
-        label:'Tobacco pouches',
+        label:'Plastic Tobacco Pouches',
 
       },
       106: {
-        label:'Cigarette buts',
+        label:'Cigarette Butts',
 
       },
       107: {
-        label:'Combs / hair brushes',
+        label:'Combs / Hair Brushes',
 
       },
       108: {
@@ -69,23 +69,24 @@ export const data = {
 
       },
       109: {
-        label:'Crisp wrappers',
+        label:'Crisp Wrappers',
 
       },
       110: {
-        label:'Sandwich packaging',
+
+        label:'Plastic Sandwich Packaging',
 
       },
       111: {
-        label:'Pasta pots',
+        label:'Plastic Pasta Pots',
 
       },
       112: {
-        label:'Chocolate wrappers',
+        label:'Chocolate Wrappers',
 
       },
       113: {
-        label:'Sweet wrappers',
+        label:'Sweet Wrappers',
 
       },
       114: {
@@ -93,7 +94,8 @@ export const data = {
 
       },
       115: {
-        label:'Trays (e.g. meat trays)',
+
+        label:'Plastic Trays (e.g. Meat Trays)',
 
       },
       116: {
@@ -101,44 +103,44 @@ export const data = {
 
       },
       117: {
-        label:'Disposable cups (not paper)',
+        label:'Disposable Plastic Cups (not paper)',
 
       },
       118: {
-        label:'Disposable cup lids',
+        label:'Disposable Cup Lids',
 
       },
       119: {
         label:'Fishing',
         children: {
           1007: {
-            label:'Fishing line',
+            label:'Fishing Line',
 
           },
           1008: {
-            label:'Fishing net and net pieces (< 50cm)',
+            label:'Fishing Net and Net Pieces (< 50cm)',
 
           },
           1009: {
-            label:'Fishing net and net pieces (> 50cm)',
+            label:'Fishing Net and Net Pieces (> 50cm)',
 
           },
           1010: {
-            label:'Fishing floats and reels',
+            label:'Fishing Floats and Reels',
 
           },
         }
       },
       120: {
-        label:'Industrial packaging / crates / sheeting',
+        label:'Industrial Plastic Packaging / Crates / Sheeting',
 
       },
       121: {
-        label:'Mesh bags (e.g. fruit / vegetable)',
+        label:'Mesh Bags (e.g. Fruit / Vegetable)',
 
       },
       122: {
-        label:'Pallets / crates',
+        label:'Plastic Pallets / Crates',
 
       },
       123: {
@@ -150,7 +152,7 @@ export const data = {
 
       },
       125: {
-        label:'Toys',
+        label:'Plastic String / Cord (diameter < 1cm)',
 
       },
       126: {
@@ -158,39 +160,39 @@ export const data = {
 
       },
       127: {
-        label:'Traffic cones',
+        label:'Plastic Balloon String',
 
       },
       128: {
-        label:'Plastic pieces (<2.5 cm)',
+        label:'Traffic Cones',
 
       },
       129: {
-        label:'Plastic pieces (>2.5 cm)',
+        label:'Plastic Pieces (< 2.5 cm)',
 
       },
       130: {
-        label:'Other (Non-specific plastic)',
+        label:'Plastic Pieces (> 2.5 cm)',
 
       },
       131: {
-        label:'Balloon string',
+        label:'Other (Non-specific Plastic)',
 
       },
     }
   },
   2: {
-    label: 'Specific plastic',
+    label: 'Specific Plastic',
     children: {
       132: {
         label:'Polystyrene',
         children: {
           1011: {
-            label:'Fast food containers',
+            label:'Fast-food Polystyrene Containers',
 
           },
           1012: {
-            label:'Foam / sponge insulation',
+            label:'Polystyrene Foam / Sponge Insulation',
 
           },
           1013: {
@@ -198,19 +200,19 @@ export const data = {
 
           },
           1014: {
-            label:'Fishing net and net pieces (< 50cm)',
+            label:'Polystyrene Pieces (< 5 cm)',
 
           },
           1015: {
-            label:'Fishing net and net pieces (> 50cm)',
+            label:'Polystyrene Pieces (5-50 cm)',
 
           },
           1016: {
-            label:'Polystyrene pieces (5-50 cm)',
+            label:'Polystyrene Pieces (> 50 cm)',
 
           },
           1017: {
-            label:'Polystyrene pieces (5 cm)',
+            label:'Individual Polystyrene Beads',
 
           },
           1018: {
@@ -231,43 +233,43 @@ export const data = {
 
           },
           1021: {
-            label:'Gloves (heavy duty)',
+            label:'Rubber Gloves (heavy-duty)',
 
           },
           1022: {
-            label:'Gloves (light weight)',
+            label:'Rubber Gloves (light-weight)',
 
           },
           1023: {
-            label:'Rubber pieces (< 50 cm)',
+            label:'Rubber Pieces (< 50 cm)',
 
           },
           1024: {
-            label:'Tyres (no wheel)',
+            label:'Tyres (without Rims)',
             children: {
               10000: {
-                label:'Bike',
+                label:'Bike Tyres (without Rims)',
 
               },
               10001: {
-                label:'Car',
+                label:'Car Tyres (without Rims)',
 
               },
               10002: {
-                label:'Other (Tyres (no wheel))',
+                label:'Other Tyres (without Rims)',
 
               },
             }
           },
           1025: {
-            label:'Tyres (with wheel)',
+            label:'Tyres (with Rims)',
             children: {
               10003: {
-                label:'Bike',
+                label:'Bike Tyres (with Rims)',
 
               },
               10004: {
-                label:'Car',
+                label:'Car Tyres (with Rims)',
 
               },
               10005: {
@@ -311,7 +313,7 @@ export const data = {
 
           },
           1032: {
-            label:'Cotton bud sticks',
+            label:'Cotton Buds',
 
           },
           1033: {
@@ -319,11 +321,11 @@ export const data = {
 
           },
           1034: {
-            label:'Tampon applicators / tampons',
+            label:'Tampon Applicators / Tampons',
 
           },
           1035: {
-            label:'Toilet fresheners',
+            label:'Toilet Fresheners',
 
           },
           1036: {
@@ -331,7 +333,7 @@ export const data = {
 
           },
           1037: {
-            label:'Wet wipes',
+            label:'Wet Wipes',
 
           },
           1038: {
@@ -344,11 +346,11 @@ export const data = {
         label:'Animal faeces (Do not touch!)',
         children: {
           1039: {
-            label:'In bags',
+            label:'Animal Faeces (in bags)',
 
           },
           1040: {
-            label:'Not in bags',
+            label:'Animal Faeces (not in bags)',
 
           },
         }
@@ -359,10 +361,10 @@ export const data = {
     label: 'Other',
     children: {
       137: {
-        label:'Cloth / clothing',
+        label:'Fabric / Clothing',
         children: {
           1041: {
-            label:'Cloth pieces',
+            label:'Pieces of Fabric',
 
           },
           1042: {
@@ -378,7 +380,7 @@ export const data = {
 
           },
           1045: {
-            label:'Other (Cloth / clothing)',
+            label:'Other (Fabric / Clothing)',
 
           },
         }
@@ -387,7 +389,7 @@ export const data = {
         label:'Metal',
         children: {
           1046: {
-            label:'Aerosol cans',
+            label:'Aerosol Cans',
 
           },
           1047: {
@@ -395,43 +397,43 @@ export const data = {
 
           },
           1048: {
-            label:'Bottle caps',
+            label:'Metal Bottle Caps',
 
           },
           1049: {
-            label:'Car parts / car batteries',
+            label:'Metal Car Parts / Car Batteries',
 
           },
           1050: {
-            label:'Drinks cans',
+            label:'Drinks Cans',
 
           },
           1051: {
-            label:'Fishing weights / hooks / lures',
+            label:'Fishing Weights / Hooks / Bait',
 
           },
           1052: {
-            label:'Foil wrappers',
+            label:'Foil Wrappers',
 
           },
           1053: {
-            label:'Food cans',
+            label:'Food Cans',
 
           },
           1054: {
-            label:'Scrap / Metal appliances / paint tins',
+            label:'Scrap / Metal Appliances / Paint Tins',
 
           },
           1055: {
-            label:'Household batteries',
+            label:'Household Batteries',
 
           },
           1056: {
-            label:'Wire / wire mesh',
+            label:'Wire / Wire Mesh',
 
           },
           1057: {
-            label:'Metal pieces',
+            label:'Metal Pieces',
 
           },
           1058: {
@@ -448,19 +450,19 @@ export const data = {
 
           },
           1060: {
-            label:'Pallets / crates',
+            label:'Wooden Pallets / Crates',
 
           },
           1061: {
-            label:'Ice lolly sticks / chip forks',
+            label:'Wooden Ice Lolly Sticks / Chip Forks',
 
           },
           1062: {
-            label:'Paint brushes',
+            label:'Wooden Paint Brushes',
 
           },
           1063: {
-            label:'Wood pieces (not twigs etc.)',
+            label:'Wooden Pieces (not twigs etc.)',
 
           },
           1064: {
@@ -477,20 +479,20 @@ export const data = {
 
           },
           1066: {
-            label:'Light bulbs / tubes',
+            label:'Light Bulbs / Neon Tubes',
 
           },
           1067: {
-            label:'Glass pieces',
+            label:'Glass Pieces',
 
           },
         }
       },
       141: {
-        label:'Pottery / ceramic',
+        label:'Pottery / Ceramics',
         children: {
           1068: {
-            label:'Any pottery / ceramic',
+            label:'Any pottery / Ceramics',
 
           },
         }

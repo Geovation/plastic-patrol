@@ -207,6 +207,8 @@ export default {
   },
   LEADERBOARD_FIELD: {
       label: "Pieces",
-      field: "pieces"
+      field: "pieces",
+      displayedUsers: 20,
   }
 }
+
