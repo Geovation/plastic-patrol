@@ -5,30 +5,43 @@
   "homepage": "./",
   "cordova": {
     "platforms": [
-      "browser",
+      "android",
       "ios"
     ],
     "plugins": {
-      "cordova-plugin-whitelist": {},
-      "cordova-plugin-splashscreen": {},
-      "cordova-ios-plugin-no-export-compliance": {},
-      "cordova-plugin-statusbar": {},
+      "cordova-plugin-camera-with-exif": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-plugin-geolocation": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
       "cordova-plugin-google-analytics": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "GMS_VERSION": "11.0.1"
       },
-      "cordova-plugin-camera-with-exif": {
+      "cordova-plugin-splashscreen": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "CAMERA_USAGE_DESCRIPTION": "Plastic Patrol needs camera access to take pictures of the plastic that you collect.",
-        "PHOTOLIBRARY_USAGE_DESCRIPTION": "Plastic Patrol needs photo library access to get the picture of the plastic that you collect."
+        "GMS_VERSION": "11.0.1"
       },
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-statusbar": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+",
+        "GMS_VERSION": "11.0.1"
+      },
+      "cordova-plugin-whitelist": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+",
+        "GMS_VERSION": "11.0.1"
+      },
+      "cordova-ios-plugin-no-export-compliance": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+",
+        "GMS_VERSION": "11.0.1"
+      }
     }
   },
   "dependencies": {
-    "cordova-browser": "^5.0.4",
-    "cordova-ios": "^4.5.5",
+    "cordova-android": "^8.0.0",
+    "cordova-ios": "^5.0.1",
     "cordova-ios-plugin-no-export-compliance": "0.0.5",
-    "cordova-plugin-camera-with-exif": "^1.2.5",
+    "cordova-plugin-camera-with-exif": "^1.2.7",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-google-analytics": "^1.8.6",
     "cordova-plugin-splashscreen": "^5.0.2",
