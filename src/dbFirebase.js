@@ -89,7 +89,7 @@ async function fetchStats() {
 async function fetchUsers() {
   return fetch(config.API.URL + "/stats", {mode: "cors"})
     .then(response => response.json())
-  // .then(userstats => console.log('users from Firebase:', userstats.users));
+    // .then(userstats => console.log('users from Firebase:', userstats.users));
 }
 
 function fetchFeedbacks(isShowAll) {
@@ -138,7 +138,7 @@ async function getUser(id) {
 
 function photosToModerate() {
   return firestore.collection('photos').where('moderated', "==", null).get()
-    .then(sn => sn.docs.map(extractPhoto));
+  .then(sn => sn.docs.map(extractPhoto));
 }
 
 

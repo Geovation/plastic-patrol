@@ -28,7 +28,7 @@ import './ModeratorPage.scss';
 
 const styles = theme => ({
   checkbox: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     marginLeft: 0,
   },
   truncate: {
@@ -39,16 +39,16 @@ const styles = theme => ({
   },
   notchTop: {
     paddingTop:  isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-top)' :
-    isIphoneAndCordova ? theme.spacing.unit * 1.5 : null
+    isIphoneAndCordova ? theme.spacing(1.5) : null
   },
   iconButton: {
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
   },
   main: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   },
   button: {
-    margin: theme.spacing.unit * 1.5,
+    margin: theme.spacing(1.5),
   },
   notchBottom: {
     paddingBottom: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-bottom)' : 0
@@ -56,7 +56,6 @@ const styles = theme => ({
 });
 
 class FeedbackReportsPage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -102,44 +101,44 @@ class FeedbackReportsPage extends Component {
     const { label, handleClose, fullScreen, classes } = this.props;
 
     return (
-        <PageWrapper label={label} handleClose={handleClose}>
-          <div>
-            <FormControlLabel
-                className={classes.checkbox}
-                control={<Checkbox onChange={this.handleCheckboxChange}/>}
-                label="Show All"
-            />
+      <PageWrapper label={label} handleClose={handleClose}>
+        <div>
+          <FormControlLabel
+            className={classes.checkbox}
+            control={<Checkbox onChange={this.handleCheckboxChange}/>}
+            label="Show All"
+          />
 
-            {this.state.feedbacks &&
+          {this.state.feedbacks &&
             <List dense={false}>
               {this.state.feedbacks.filter(feedback => !feedback.resolved || this.state.isShowAll)
-                  .sort( (a,b) => b.updated.toDate()-a.updated.toDate())
-                  .map(feedback => (
-                      <div key={feedback.id}>
-                        <Divider />
-                        <ListItem key={feedback.id} button onClick={() => this.handleItemClick(feedback)}>
-                          <ListItemText disableTypography
-                                        primary={
-                                          <Typography className={classes.truncate}
-                                                      style={feedback.resolved ? {fontWeight: 'normal'} : {fontWeight: 'bold'}}
-                                          >
-                                            {feedback.feedback}
-                                          </Typography>
-                                        }
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton aria-label='Resolved' onClick={() => this.handleResolvedClick(feedback)}>
-                              {feedback.resolved ? <DoneOutlineIcon /> : <DoneIcon />}
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      </div>
-                  ))
+                .sort( (a,b) => b.updated.toDate()-a.updated.toDate())
+                .map(feedback => (
+                  <div key={feedback.id}>
+                    <Divider />
+                    <ListItem key={feedback.id} button onClick={() => this.handleItemClick(feedback)}>
+                      <ListItemText disableTypography
+                        primary={
+                          <Typography className={classes.truncate}
+                            style={feedback.resolved ? {fontWeight: 'normal'} : {fontWeight: 'bold'}}
+                          >
+                            {feedback.feedback}
+                          </Typography>
+                        }
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton aria-label='Resolved' edge={false} onClick={() => this.handleResolvedClick(feedback)}>
+                          {feedback.resolved ? <DoneOutlineIcon /> : <DoneIcon />}
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </div>
+                ))
               }
               <Divider />
             </List>
-            }
-          </div>
+          }
+        </div>
 
         {this.state.feedback &&
           <Dialog
@@ -157,7 +156,7 @@ class FeedbackReportsPage extends Component {
             <DialogContent className={classes.main}>
               {
                 Object.keys(this.state.feedback).map(key => (
-                  <div key={key} style={{padding: '5px'}}>
+                  <div key={key} style={{textAlign: 'justify', padding: '5px'}}>
                     <b>{key + ': ' }</b>
                     { "" + (this.state.feedback[key].toDate ? this.state.feedback[key].toDate() : this.state.feedback[key])}
                   </div>

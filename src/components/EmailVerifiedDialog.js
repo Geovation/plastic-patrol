@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -25,21 +25,21 @@ const styles = theme => ({
     paddingLeft: 0
   },
   body: {
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing(3)
   },
   iconButton: {
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing(2)
   },
   link: {
     cursor: 'pointer',
     color: 'blue'
   },
   button: {
-    margin: theme.spacing.unit * 1.5,
+    margin: theme.spacing(1.5),
   },
   notchTop: {
     paddingTop:  isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-top)' :
-      isIphoneAndCordova ? theme.spacing.unit * 1.5 : null,
+      isIphoneAndCordova ? theme.spacing(1.5) : null,
   },
   notchBottom: {
     paddingBottom: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-bottom)' : 0
