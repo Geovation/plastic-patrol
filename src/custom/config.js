@@ -9,10 +9,14 @@ import HelpIcon from '@material-ui/icons/Help';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
+import * as _ from 'lodash';
+
 import styles from './config.scss';
 import enums from '../types/enums';
+
 import TitleTextField from '../components/PhotoPage/TitleTextField';
 import MultiFields from '../components/PhotoPage/MultiFields';
+
 import { data } from './categories';
 
 const primaryColor = styles.primary;
@@ -109,6 +113,10 @@ const PAGES = {
     label: "Feedback Reports",
     icon: <LibraryBooksIcon/>,
     visible: (user, online) => user && user.isModerator
+  },
+  feedbackDetails: {
+    path: "/feedback-details",
+    label: "Feedback Details"
   }
 };
 
@@ -159,6 +167,12 @@ export default {
       placeholder: 'Add litter category',
       data: data,
       noOptionsMessage: 'No more categories',
+      sanitize: value => {
+        _.forEach(value, category => {
+          category.brand = category.brand.replace && category.brand.replace(/\s+/g, ' ').trim();
+        });
+        return value;
+      },
 
       subfields: {
         number: {
@@ -176,7 +190,7 @@ export default {
           title: 'Brand',
           type: enums.TYPES.string,
           placeholder: 'eg. whatever',
-          regexValidation: '^\\w+( \\w+)*$'
+          regexValidation: '^([ ]*\\w+[ ]*)+$'
         },
       }
     }
@@ -191,7 +205,7 @@ export default {
     },
   ],
   getStats: (photos, dbStats) => dbStats.pieces,
-  ENABLE_GRAVATAR_PROFILES: true,  //To update user-profile from Gravatar, value: ture or false.
+  ENABLE_GRAVATAR_PROFILES: true,  //To update user-profile from Gravatar, value: true or false.
   SECURITY: {
     UPLOAD_REQUIRES_LOGIN: true
   },
