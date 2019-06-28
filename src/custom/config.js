@@ -1,5 +1,4 @@
 import React from 'react';
-import EventIcon from '@material-ui/icons/Event';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -9,7 +8,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 import styles from './config.scss';
 import enums from '../types/enums';
@@ -117,6 +116,10 @@ const PAGES = {
   feedbackDetails: {
     path: "/feedback-details",
     label: "Feedback Details"
+  },
+  displayPhoto: {
+    path: "/photos",
+    label: "photos"
   }
 };
 
