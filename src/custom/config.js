@@ -5,6 +5,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SchoolIcon from '@material-ui/icons/School';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import HelpIcon from '@material-ui/icons/Help';
+import EventIcon from '@material-ui/icons/Event';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
