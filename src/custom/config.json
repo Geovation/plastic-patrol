@@ -1,0 +1,20 @@
+{
+  "FIREBASE": {
+    "apiKey": "AIzaSyBbN8z-zSqChaQkTyOtIZZ3apq0qg59FzI",
+    "authDomain": "plastic-patrol-fd3b3.firebaseapp.com",
+    "databaseURL": "https://plastic-patrol-fd3b3.firebaseio.com",
+    "projectId": "plastic-patrol-fd3b3",
+    "storageBucket": "plastic-patrol-fd3b3.appspot.com",
+    "messagingSenderId": "845679623528"
+  },
+  "metadata": {
+    "metadataServerUrl": "https://plastic-patrol-fd3b3-md.web.app",
+    "serverUrl": "https://app.plasticpatrol.co.uk",
+    "twSite": "@PlasticPatrol",
+    "twCreator": "@PlasticPatrol",
+    "twDomain": "www.plasticpatrol.co.uk",
+    "_twDescriptionField": "pieces",
+    "twDescription": "check this out",
+    "twTitle": "More rubbish collected"
+  }
+}

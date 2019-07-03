@@ -81,3 +81,5 @@ scripts/config.json
 **/*.mobileprovision
 **/report.xml
 /cordova-app/GooglePlayAndroidDeveloper.json
+
+functions/config.json

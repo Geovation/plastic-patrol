@@ -11,6 +11,9 @@
         "app": [
           "plastic-patrol-fd3b3"
         ]
+        "md": [
+          "plastic-patrol-fd3b3-md"
+        ]
       }
     }
   }

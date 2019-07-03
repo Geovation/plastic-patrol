@@ -22,12 +22,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { isIphoneWithNotchAndCordova, isIphoneAndCordova } from '../../utils';
 import CardComponent from '../CardComponent';
-import dbFirebase from '../../dbFirebase';
+
+const tweetLogo = process.env.PUBLIC_URL + "/images/twitter.svg";
 
 const styles = theme => ({
   notchTop: {
     paddingTop:  isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-top)' :
-    isIphoneAndCordova ? theme.spacing(1.5) : null
+      isIphoneAndCordova ? theme.spacing(1.5) : null
   },
   iconButton: {
     marginRight: theme.spacing(2),
@@ -35,19 +36,15 @@ const styles = theme => ({
   main: {
     marginTop: theme.spacing(2),
   },
+  tweetLogo: {
+    padding: theme.spacing(1.6),
+  },
   notchBottom: {
     paddingBottom: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-bottom)' : 0
   },
 });
 
 class DisplayPhoto extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      feature: this.props.location.state && this.props.location.state.feature
-    }
-  }
 
   formatField(value, fieldName) {
     const formater = this.props.config.PHOTO_ZOOMED_FIELDS[fieldName];
@@ -58,40 +55,21 @@ class DisplayPhoto extends Component {
     return "-";
   }
 
-  async componentDidMount() {
-    // TODO: remove this hack. Just need to decouple Firebase from this UI component
-    if (!this.state.feature) {
-      try {
-        await dbFirebase.getPhotoByID(this.props.match.params.id).then(feature => {
-          this.setState({feature});
-        });
-      }
-      catch (e) {
-        console.log(e)
-        this.setState({feature: null});
-      }
-    }
-  }
-
   render() {
-    const { user, config, placeholderImage, handleClose, handleRejectClick, handleApproveClick, classes, fullScreen } = this.props;
+    const { user, config, placeholderImage, feature,
+      handleClose, handleRejectClick, handleApproveClick, classes, fullScreen } = this.props;
 
-    console.log(this.state.feature)
-
-    const feature = {
-      properties: {
-        main: ""
-      },
-      ...this.state.feature
-    }
+    const photoID = _.get(feature, "properties.id", "");
+    const photoUrl = `${config.metadata.metadataServerUrl}/${photoID}`
+    const photoTweetLink = `https://twitter.com/intent/tweet?text=${config.CUSTOM_STRING.tweetMessage}&url=${photoUrl}`;
 
     return(
       <div>
-        { typeof this.state.feature === 'undefined' ?
+        { typeof feature === 'undefined' ?
           <Dialog open PaperProps={{style: {backgroundColor: 'transparent', boxShadow: 'none'}}}>
             <CircularProgress color='secondary'/>
           </Dialog>
-        :
+          :
           <Dialog
             fullScreen={fullScreen}
             open
@@ -106,47 +84,52 @@ class DisplayPhoto extends Component {
 
             <DialogContent>
               <div style={{ textAlign: 'center' }}>
-                <img onError={(e) => { e.target.src=placeholderImage}} className={'main-image'} alt={''} src={feature.properties.main}/>
+                <img onError={(e) => { e.target.src=placeholderImage}} className={'main-image'} alt={''} src={(feature && feature.properties.main) || placeholderImage}/>
               </div>
-              { this.state.feature === null ?
+              { feature === null ?
                 <h3>Error!!! No item found at the given url</h3>
-              :
+                :
                 <Card>
-                  <CardActionArea>
-                    <CardContent>
-                      {Object.keys(config.PHOTO_ZOOMED_FIELDS).map(fieldName => (
-                        <Typography gutterBottom key={fieldName}>
-                          <b>{_.capitalize(fieldName)}: </b>
-                          {this.formatField(feature.properties[fieldName], fieldName)}
-                        </Typography>
-                      ))}
-                    </CardContent>
-                  </CardActionArea>
+                  <div style={{display: 'flex'}}>
+                    <CardActionArea>
+                      <CardContent>
+                        {Object.keys(config.PHOTO_ZOOMED_FIELDS).map(fieldName => (
+                          <Typography gutterBottom key={fieldName}>
+                            <b>{_.capitalize(fieldName)}: </b>
+                            {this.formatField(feature.properties[fieldName], fieldName)}
+                          </Typography>
+                        ))}
+                      </CardContent>
+                    </CardActionArea>
+                    <a className={classes.tweetLogo} href={photoTweetLink} target='blank'>
+                      <img src={tweetLogo} alt='tweet'/>
+                    </a>
+                  </div>
                   {user && user.isModerator &&
+                  <div>
+                    <Divider/>
                     <div>
-                      <Divider/>
-                      <div>
-                        <ExpansionPanel>
-                          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={classes.heading}>Moderator Details</Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails classes={{root:classes.expansionDetails}}>
-                            <CardComponent
-                              photoSelected={feature.properties}
-                              handleRejectClick={() => handleRejectClick(feature.properties.id)}
-                              handleApproveClick={() => handleApproveClick(feature.properties.id)}
-                            />
-                          </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                      </div>
+                      <ExpansionPanel>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                          <Typography className={classes.heading}>Moderator Details</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails classes={{root:classes.expansionDetails}}>
+                          <CardComponent
+                            photoSelected={feature.properties}
+                            handleRejectClick={() => handleRejectClick(feature.properties.id)}
+                            handleApproveClick={() => handleApproveClick(feature.properties.id)}
+                          />
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
                     </div>
+                  </div>
                   }
                 </Card>
               }
             </DialogContent>
           </Dialog>
         }
-    </div>
+      </div>
     );
   }
 }
