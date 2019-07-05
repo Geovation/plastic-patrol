@@ -109,7 +109,6 @@ class App extends Component {
   }
 
   async featchPhotoIfUndefined() {
-    // debugger
     const regexMatch = this.props.history.location.pathname
       .match(new RegExp(`${this.props.config.PAGES.displayPhoto.path}\\/(\\w+)$`));
 
@@ -117,8 +116,8 @@ class App extends Component {
     // it means that we landed on the app with a photoId in the url
     if (photoId && !this.state.selectedFeature ) {
       return dbFirebase.getPhotoByID(photoId)
-        .then(selectedFeature => this.setState({ selectedFeature}))
-        .catch( e => this.setState({selectedFeature: null}));
+        .then(selectedFeature => this.setState({ selectedFeature }))
+        .catch( e => this.setState({ selectedFeature: null }));
     }
   }
 
@@ -370,7 +369,7 @@ class App extends Component {
   }
 
   handlePhotoClick = (feature) => {
-    this.setState({selectedFeature: feature});
+    this.setState({ selectedFeature: feature });
 
     let pathname = `${this.props.config.PAGES.displayPhoto.path}/${feature.properties.id}`;
     const currentPath = this.props.history.location.pathname;
@@ -429,6 +428,7 @@ class App extends Component {
             { this.state.user && this.state.user.isModerator &&
             <Route path={this.props.config.PAGES.moderator.path} render={(props) =>
               <ModeratorPage  {...props}
+                              config={this.props.config}
                               label={this.props.config.PAGES.moderator.label}
                               user={this.state.user}
                               handleClose={history.goBack}

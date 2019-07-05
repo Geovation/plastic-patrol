@@ -213,10 +213,10 @@ export default { ...STATIC_CONFIG,
     // URL: "https://us-central1-plastic-patrol-fd3b3.cloudfunctions.net/api",
     // URL: "http://localhost:5000/plastic-patrol-fd3b3/us-central1/api"
   },
+  MODERATING_PHOTOS: 10,
   LEADERBOARD_FIELD: {
       label: "Pieces",
       field: "pieces",
       displayedUsers: 20,
   }
 }
-
