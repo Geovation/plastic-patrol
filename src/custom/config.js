@@ -49,7 +49,7 @@ const CUSTOM_STRING = {
     "T&C link": "https://plasticpatrol.co.uk/terms-and-conditions/",
     "Privacy Policy Link": "https://plasticpatrol.co.uk/privacy-policy/"
   },
-  tweetMessage: "Photo in the showing link will be tweeted"
+  tweetMessage: "More plastics captured by #plasticpatrol. Check it out here"
 };
 
 const PAGES = {
@@ -147,6 +147,7 @@ export default { ...STATIC_CONFIG,
     "pieces": s => s
   },
   ZOOM: 5,
+  ZOOM_FLYTO: 15,
   CENTER: [-2, 55],
   PHOTO_FIELDS: {
     pieces: {

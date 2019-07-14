@@ -34,6 +34,7 @@ import dbFirebase from './dbFirebase';
 import { gtagPageView, gtagEvent } from './gtag.js';
 import './App.scss';
 import FeedbackReportsSubrouter from "./components/FeedbackReports/FeedbackReportsSubrouter";
+import MapLocation from "./types/MapLocation";
 const placeholderImage = process.env.PUBLIC_URL + "/custom/images/logo.svg";
 
 class App extends Component {
@@ -42,7 +43,7 @@ class App extends Component {
 
     this.state = {
       file: null,
-      location: {},
+      location: new MapLocation(),
       user: null,
       online: false,
       loginLogoutDialogOpen: false,
@@ -59,13 +60,15 @@ class App extends Component {
       usersLeaderboard: [],
       confirmDialogHandleOk: null,
       selectedFeature: undefined, // undefined = not selectd, null = feature not found
-      photosToModerate: {}
+      photoAccessedByUrl: false,
+      photosToModerate: {},
+      mapLocation: undefined
     };
 
     this.geoid = null;
     this.domRefInput = {};
 
-    this.VISIBILITY_REGEX = new RegExp('(^/$|^' + this.props.config.PAGES.displayPhoto.path + '/|^' + this.props.config.PAGES.embeddable.path + ')', 'g');
+    this.VISIBILITY_REGEX = new RegExp('(^/@|^/$|^' + this.props.config.PAGES.displayPhoto.path + '/|^' + this.props.config.PAGES.embeddable.path + ')', 'g');
   }
 
   openPhotoPage = (file) => {
@@ -80,6 +83,7 @@ class App extends Component {
     if (navigator && navigator.geolocation) {
       this.geoid = navigator.geolocation.watchPosition(position => {
         const location = {
+          ...this.state.location,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
           online: true,
@@ -110,11 +114,7 @@ class App extends Component {
     this.setState({ dialogOpen : false})
   }
 
-  async featchPhotoIfUndefined() {
-    const regexMatch = this.props.history.location.pathname
-      .match(new RegExp(`${this.props.config.PAGES.displayPhoto.path}\\/(\\w+)$`));
-
-    const photoId = regexMatch && regexMatch[1];
+  async fetchPhotoIfUndefined(photoId) {
     // it means that we landed on the app with a photoId in the url
     if (photoId && !this.state.selectedFeature ) {
       return dbFirebase.getPhotoByID(photoId)
@@ -123,12 +123,39 @@ class App extends Component {
     }
   }
 
+  extractPathnameParams() {
+    // extracts photoID
+    const regexPhotoIDMatch = this.props.location.pathname
+      .match(new RegExp(`${this.props.config.PAGES.displayPhoto.path}\\/(\\w+)`));
+
+    const photoId = regexPhotoIDMatch && regexPhotoIDMatch[1];
+
+    // extracts mapLocation
+    const regexMapLocationMatch = this.props.location.pathname
+      .match(new RegExp("@(-?\\d*\\.?\\d*),(-?\\d*\\.?\\d*),(\\d*\\.?\\d*)z"));
+
+    const mapLocation = (regexMapLocationMatch &&
+      new MapLocation(regexMapLocationMatch[1], regexMapLocationMatch[2],regexMapLocationMatch[3] )) ||
+        new MapLocation();
+    if (!regexMapLocationMatch) {
+      mapLocation.zoom = this.props.config.ZOOM;
+    }
+
+    return {photoId, mapLocation};
+  }
+
   componentDidMount(){
+    let { photoId, mapLocation} = this.extractPathnameParams();
+    this.setState({ photoId, mapLocation});
 
     this.unregisterConnectionObserver = dbFirebase.onConnectionStateChanged(online => {
       this.setState({online});
     });
     this.unregisterAuthObserver = authFirebase.onAuthStateChanged(user => {
+
+      // will do this after the user has been loaded. It should speed up the users login.
+      this.someInits(photoId);
+
       // lets start fresh if the user logged out
       if (this.state.user && !user) {
         gtagEvent('Signed out','User')
@@ -140,10 +167,19 @@ class App extends Component {
     });
 
     this.unregisterLocationObserver = this.setLocationWatcher();
+  }
 
-    //delay a second to speedup the app startup
-    this.featchPhotoIfUndefined().then(() => {
-      setTimeout( async () => {
+  someInits(photoId) {
+    if (!this.initDone) {
+      this.initDone = true;
+
+      this.fetchPhotoIfUndefined(photoId)
+        .then(async () => {
+
+        // If the selectedFeature is not null, it means that we were able to retrieve a photo from the URL and so we landed
+        // into the photoId.
+        this.setState({ photoAccessedByUrl: !!this.state.selectedFeature });
+
         const statsPromise = dbFirebase.fetchStats()
           .then(stats => {
             console.log(stats);
@@ -167,9 +203,8 @@ class App extends Component {
 
           this.setState({ dbStats, stats, geojson });
         });
-      }, 2000);
-    })
-
+      })
+    }
   }
 
   async componentWillUnmount() {
@@ -186,7 +221,9 @@ class App extends Component {
     if (prevProps.location !== this.props.location) {
       gtagPageView(this.props.location.pathname);
 
-      this.featchPhotoIfUndefined();
+      // if it updates, then it is guaranteed that we didn't landed into the photo
+      this.setState({ photoAccessedByUrl: false });
+      this.fetchPhotoIfUndefined(_.get(this.state, "selectedFeature.properties.id"));
     }
 
     if (_.get(this.state.user, "isModerator") && !this.unregisterPhotosToModerate) {
@@ -392,14 +429,51 @@ class App extends Component {
 
   rejectPhoto = photo => this.approveRejectPhoto(false, photo);
 
-  handlePhotoPageClose = () => {
-    const action = this.props.history.location.state ? 'goBack' : 'replace';
+  handleMapLocationChange = (newLocation) => {
 
-    if ( this.props.history.location.pathname.startsWith(this.props.config.PAGES.embeddable.path)) {
-      this.props.history[action](this.props.config.PAGES.embeddable.path);
-    } else {
-      this.props.history[action](this.props.config.PAGES.map.path);
+    if (!this.props.history.location.pathname.match(this.VISIBILITY_REGEX)) {
+      return;
     }
+
+    const newMapLocation = new MapLocation(newLocation.latitude, newLocation.longitude, newLocation.zoom);
+    const currentMapLocation = this.extractPathnameParams().mapLocation;
+
+    // change url coords if the coords are different and if we are in the map
+
+    console.log(this.props.location.pathname.startsWith(this.props.config.PAGES.embeddable.path))
+    console.log(this.props.location.pathname.startsWith(this.props.config.PAGES.map.path))
+
+    if ( currentMapLocation == null || !currentMapLocation.isEqual(newMapLocation)) {
+      this.setCoordsInUrl(newMapLocation);
+    }
+  }
+
+  setCoordsInUrl = mapLocation => {
+    const currentUrl = this.props.history.location;
+    const prefix = currentUrl.pathname.split("@")[0];
+    const newUrl = `${prefix}@${mapLocation.urlFormated()}`;
+
+    this.props.history.replace(newUrl);
+  }
+
+  handleLocationClick = () => {
+    gtagEvent('Location FAB clicked', 'Map');
+
+    this.handleMapLocationChange(this.state.location);
+  }
+
+  handlePhotoPageClose = () => {
+    const PAGES = this.props.config.PAGES;
+    const photoPath = this.props.location.pathname;
+    const coords = photoPath.split("@")[1];
+    const mapPath = this.props.location.pathname.startsWith(PAGES.embeddable.path) ? PAGES.embeddable.path : PAGES.map.path;
+    if (this.state.photoAccessedByUrl) {
+      const mapUrl = mapPath + (coords ? `@${coords}` : '');
+      this.props.history.replace(mapUrl);
+      this.props.history.push(photoPath);
+    }
+
+    this.props.history.goBack();
   }
 
   handlePhotoClick = (feature) => {
@@ -407,13 +481,22 @@ class App extends Component {
 
     let pathname = `${this.props.config.PAGES.displayPhoto.path}/${feature.properties.id}`;
     const currentPath = this.props.history.location.pathname;
+
+    const coordsUrl = currentPath.split("@")[1] ||
+      new MapLocation(feature.geometry.coordinates[1], feature.geometry.coordinates[0], this.props.config.ZOOM_FLYTO).urlFormated();
     pathname = (currentPath === this.props.config.PAGES.embeddable.path) ? currentPath + pathname : pathname;
-    this.props.history.push(pathname);
-  }
+
+    // if it is in map, change the url
+    if (this.props.history.location.pathname.match(this.VISIBILITY_REGEX)) {
+      this.props.history.replace(`${currentPath.split("@")[0]}@${coordsUrl}`);
+    }
+
+    this.props.history.push(`${pathname}@${coordsUrl}`);
+  };
 
   render() {
     const { fields, config, history } = this.props;
-
+    const { mapLocation} = this.extractPathnameParams();
     return (
       <div className='geovation-app'>
         { !this.state.termsAccepted && !this.props.history.location.pathname.startsWith(this.props.config.PAGES.embeddable.path) &&
@@ -501,9 +584,12 @@ class App extends Component {
             { this.state.user &&
             <Route path={this.props.config.PAGES.account.path} render={(props) =>
               <ProfilePage {...props}
+                           config={this.props.config}
                            label={this.props.config.PAGES.account.label}
                            user={this.state.user}
+                           geojson={this.state.geojson}
                            handleClose={history.goBack}
+                           handlePhotoClick={this.handlePhotoClick}
               />}
             />
             }
@@ -544,7 +630,6 @@ class App extends Component {
           }
 
           <Map history={this.props.history}
-               location={this.state.location}
                visible={this.props.history.location.pathname.match(this.VISIBILITY_REGEX)}
                geojson={this.state.geojson}
                user={this.state.user}
@@ -553,6 +638,11 @@ class App extends Component {
                handleCameraClick={this.handleCameraClick}
                toggleLeftDrawer={this.toggleLeftDrawer}
                handlePhotoClick={this.handlePhotoClick}
+               mapLocation={mapLocation}
+               handleMapLocationChange={(mapLocation) => this.handleMapLocationChange(mapLocation)}
+               handleLocationClick={this.handleLocationClick}
+               gpsOffline={!this.state.location.online}
+               gpsDisabled={!this.state.location.updated}
           />
         </main>
 
