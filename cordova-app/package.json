@@ -5,36 +5,16 @@
   "homepage": "./",
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
-      "cordova-plugin-camera-with-exif": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
-      "cordova-plugin-geolocation": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
-      "cordova-plugin-google-analytics": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "GMS_VERSION": "11.0.1"
-      },
-      "cordova-plugin-splashscreen": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "GMS_VERSION": "11.0.1"
-      },
-      "cordova-plugin-statusbar": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "GMS_VERSION": "11.0.1"
-      },
-      "cordova-plugin-whitelist": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "GMS_VERSION": "11.0.1"
-      },
-      "cordova-ios-plugin-no-export-compliance": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "GMS_VERSION": "11.0.1"
-      }
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-camera-with-exif": {},
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-google-analytics": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {}
     }
   },
   "dependencies": {

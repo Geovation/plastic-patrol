@@ -63,6 +63,7 @@ class DisplayPhoto extends Component {
     const coords = location.pathname.split("@")[1];
     const photoUrl = `${config.metadata.metadataServerUrl}/${photoID}@${coords}`
     const photoTweetLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(config.CUSTOM_STRING.tweetMessage)}&url=${encodeURIComponent(photoUrl)}`;
+
     return(
       <div>
         { typeof feature === 'undefined' ?
