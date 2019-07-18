@@ -34,7 +34,7 @@
     "build:android": "./scripts/runWithVars.sh 'mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova platform rm android && cordova platform add android && cordova build android --prod --release --buildConfig build.json && cd ..'",
     "build:android:dev": "./scripts/runWithVars.sh 'mkdir -p ./cordova-app/www/ && cp -a ./build/* ./cordova-app/www/ && cd cordova-app && cordova build android && cd ..'",
     "build:react": "./scripts/runWithVars.sh 'react-scripts build'",
-    "beta:android": "cd cordova-app; fastlane android beta",
+    "beta:android": "cd cordova-app; fastlane android beta --verbose",
     "beta:ios": "cd cordova-app; fastlane ios beta",
     "coverage": "react-scripts test --env=jsdom --coverage",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
