@@ -204,7 +204,7 @@ export default { ...STATIC_CONFIG,
       click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
     },
   ],
-  getStats: (photos, dbStats) => dbStats.pieces,
+  getStats: (photos, dbStats) => (dbStats && dbStats.pieces) || 0,
   ENABLE_GRAVATAR_PROFILES: true,  //To update user-profile from Gravatar, value: true or false.
   SECURITY: {
     UPLOAD_REQUIRES_LOGIN: true
