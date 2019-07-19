@@ -186,7 +186,8 @@ class App extends Component {
 
     // save only if different
     if (!_.isEqual(this.state.geojson, geojson)) {
-      this.setState({geojson});
+      const stats = this.props.config.getStats(geojson, this.state.dbStats);
+      this.setState({geojson, stats});
 
       // after the first time, wait for a bit before updating.
       localforage.setItem("cachedGeoJson", geojson);
@@ -272,7 +273,8 @@ class App extends Component {
       .then(geojson => {
         if (geojson) {
           this.geojson = geojson;
-          this.setState({geojson, stats: this.props.config.getStats(geojson, this.state.dbStats) });
+          const stats = this.props.config.getStats(geojson, this.state.dbStats);
+          this.setState({geojson, stats });
         }
       })
       .catch(console.error);
