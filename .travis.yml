@@ -3,6 +3,7 @@ matrix:
   - os: linux
     if: tag IS blank or tag =~ /^release-[0-9]+.[0-9]+.[0-9]+$/
     language: android
+    dist: trusty
     sudo: false
     node_js:
     - '8'
