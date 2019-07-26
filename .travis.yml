@@ -6,8 +6,8 @@ matrix:
     sudo: false
     node_js:
     - '8'
-    jdk:
-      - openjdk8
+#    jdk:
+#      - openjdk8
     android:
       components:
       - tools
