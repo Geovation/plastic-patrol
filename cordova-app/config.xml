@@ -70,7 +70,9 @@
         <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
             <string>Plastic Patrol needs camera access to take pictures of the plastic that you collect.</string>
         </edit-config>
-
+        <edit-config file="*-Info.plist" mode="add" target="ITSAppUsesNonExemptEncryption">
+            <false/>
+        </edit-config>
     </platform>
     <hook src="scripts/changeVersion.js" type="before_prepare"/>
 
