@@ -49,7 +49,7 @@ const CUSTOM_STRING = {
     "T&C link": "https://plasticpatrol.co.uk/terms-and-conditions/",
     "Privacy Policy Link": "https://plasticpatrol.co.uk/privacy-policy/"
   },
-  tweetMessage: "More plastics captured by #plasticpatrol. Check it out here"
+  tweetMessage: "More plastic captured by @Plastic_Patrol (#plasticpatrol): "
 };
 
 const PAGES = {
