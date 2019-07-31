@@ -120,82 +120,82 @@ class WriteFeedbackPage extends React.Component {
 
     return (
       <PageWrapper label={label} handleClose={this.props.handleClose}>
-          <div className={classes.content}>
-            <TextField
-              fullWidth
-              id="filled-email-input"
-              label="Email"
-              placeholder='aa@bb.com'
-              error={!!this.state.emailHelperText}
-              helperText={this.state.emailHelperText}
-              type="email"
-              name="email"
-              autoComplete="email"
-              margin="normal"
-              variant="filled"
-              onChange={this.handleEmailChange}
-              value={this.state.email}
-            />
-            <TextField
-              fullWidth
-              id='feedback-textfield'
-              placeholder='eg. I like the app'
-              onChange={this.handleFeedbackChange}
-              value={this.state.feedback}
-              autoFocus
-              variant='filled'
-              type='string'
-              required
-              margin='dense'
-              rows={window.innerHeight > 667 ? 23 : window.innerHeight > 640 ? 19 : window.innerHeight > 480 ? 11 : 9}
-              rowsMax={window.innerHeight > 667 ? 24 : window.innerHeight > 640 ? 20 : window.innerHeight > 480 ? 12 : 10}
-              multiline
-            />
-          </div>
-          <div className={classes.button}>
-            <Button
-              color='secondary'
-              fullWidth
-              disabled={!!this.state.emailHelperText || !this.state.feedback || !this.props.online}
-              variant='contained'
-              onClick={this.sendFeedback}
-            >
-              Send
-            </Button>
-          </div>
-
-          <Dialog
-            open={this.state.open}
-            onClose={this.closeDialog}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
+        <div className={classes.content}>
+          <TextField
+            fullWidth
+            id="filled-email-input"
+            label="Email"
+            placeholder='aa@bb.com'
+            error={!!this.state.emailHelperText}
+            helperText={this.state.emailHelperText}
+            type="email"
+            name="email"
+            autoComplete="email"
+            margin="normal"
+            variant="filled"
+            onChange={this.handleEmailChange}
+            value={this.state.email}
+          />
+          <TextField
+            fullWidth
+            id='feedback-textfield'
+            placeholder='Type you feedback here'
+            onChange={this.handleFeedbackChange}
+            value={this.state.feedback}
+            autoFocus
+            variant='filled'
+            type='string'
+            required
+            margin='dense'
+            rows={window.innerHeight > 667 ? 23 : window.innerHeight > 640 ? 19 : window.innerHeight > 480 ? 11 : 9}
+            rowsMax={window.innerHeight > 667 ? 24 : window.innerHeight > 640 ? 20 : window.innerHeight > 480 ? 12 : 10}
+            multiline
+          />
+        </div>
+        <div className={classes.button}>
+          <Button
+            color='secondary'
+            fullWidth
+            disabled={!!this.state.emailHelperText || !this.state.feedback || !this.props.online}
+            variant='contained'
+            onClick={this.sendFeedback}
           >
-            <DialogContent>
-              <DialogContentText id='alert-dialog-description'>
-                {this.state.message}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.closeDialog} color='secondary'>
-                Ok
-              </Button>
-            </DialogActions>
-          </Dialog>
+            Send
+          </Button>
+        </div>
 
-          <Dialog open={this.state.sending}>
-            <DialogContent>
-              <DialogContentText id='loading-dialog-text'>
-                Sending ;)
-              </DialogContentText>
-              <CircularProgress
-                className={classes.progress}
-                color='secondary'
-                size={50}
-                thickness={6}
-              />
-            </DialogContent>
-          </Dialog>
-        </PageWrapper>
+        <Dialog
+          open={this.state.open}
+          onClose={this.closeDialog}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              {this.state.message}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.closeDialog} color='secondary'>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={this.state.sending}>
+          <DialogContent>
+            <DialogContentText id='loading-dialog-text'>
+              Sending ;)
+            </DialogContentText>
+            <CircularProgress
+              className={classes.progress}
+              color='secondary'
+              size={50}
+              thickness={6}
+            />
+          </DialogContent>
+        </Dialog>
+      </PageWrapper>
     );
   }
 }
