@@ -49,7 +49,7 @@ const CUSTOM_STRING = {
     "T&C link": "https://plasticpatrol.co.uk/terms-and-conditions/",
     "Privacy Policy Link": "https://plasticpatrol.co.uk/privacy-policy/"
   },
-  tweetMessage: "More plastic captured by @Plastic_Patrol (#plasticpatrol): "
+  tweetMessage: "Check out this rubbish shared on the @Plastic_Patrol app for global citizen science. Researchers analyse everything collected and use it as evidence to help tackle the problem. #PlasticPatrol"
 };
 
 const PAGES = {
