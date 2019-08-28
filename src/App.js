@@ -65,6 +65,7 @@ class App extends Component {
       photoAccessedByUrl: false,
       photosToModerate: {},
       mapLocation: new MapLocation(), // from the map
+      sponsorImage: ""
     };
 
     this.geoid = null;
@@ -147,7 +148,7 @@ class App extends Component {
     return {photoId, mapLocation};
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     let { photoId, mapLocation} = this.extractPathnameParams();
     this.setState({ photoId, mapLocation});
 
@@ -170,7 +171,8 @@ class App extends Component {
       this.setState({ user });
     });
 
-    this.unregisterLocationObserver = this.setLocationWatcher();
+    const config = await dbFirebase.fetchConfig();
+    this.setState(config);
   }
 
   saveGeojson = () => {
@@ -289,6 +291,7 @@ class App extends Component {
     await dbFirebase.disconnect();
     await this.unregisterLocationObserver();
     await this.unregisterConnectionObserver();
+    await this.unregisterConfigObserver();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -732,8 +735,10 @@ class App extends Component {
 
         <DrawerContainer user={this.state.user} online={this.state.online}
                          handleClickLoginLogout={this.handleClickLoginLogout}
-                         leftDrawerOpen={this.state.leftDrawerOpen} toggleLeftDrawer={this.toggleLeftDrawer}
+                         leftDrawerOpen={this.state.leftDrawerOpen}
+                         toggleLeftDrawer={this.toggleLeftDrawer}
                          stats={this.state.stats}
+                         sponsorImage={this.state.sponsorImage}
         />
 
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>

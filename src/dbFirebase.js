@@ -47,6 +47,16 @@ function photosRT(addedFn, modifiedFn, removedFn, errorFn) {
   }, errorFn);
 }
 
+async function fetchConfig() {
+  const doc = await firestore.collection('sys').doc('config').get();
+  let data = {};
+  if (doc.exists) {
+    data = doc.data();
+  }
+
+  return data;
+}
+
 async function fetchStats() {
   return fetch(config.API.URL + "/stats", {mode: "cors"})
     .then(response => response.json());
@@ -214,5 +224,6 @@ export default {
   approvePhoto: (photoId, userId) => writeModeration(photoId, userId, true),
   disconnect,
   writeFeedback,
-  toggleUnreadFeedback
+  toggleUnreadFeedback,
+  fetchConfig
 };

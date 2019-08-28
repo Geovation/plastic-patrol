@@ -50,7 +50,7 @@ const links = {
 class DrawerContainer extends Component {
 
   render() {
-    const { classes, user, online, leftDrawerOpen, stats } = this.props;
+    const { classes, user, online, leftDrawerOpen, stats, sponsorImage } = this.props;
     const ListItemsTop = [
       PAGES.account,
       PAGES.moderator,
@@ -71,54 +71,60 @@ class DrawerContainer extends Component {
     ];
     const ListItems = ListItemsTop.concat(ListItemsConfigurable,ListItemsBottom)
     return (
-      <Drawer className='geovation-drawercontainer' open={leftDrawerOpen} onClose={this.props.toggleLeftDrawer(false)}
-        classes={{ paper: classes.drawerPaper }}>
-        <div style={{ paddingTop: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-top)' :
-            isIphoneAndCordova ? this.props.theme.spacing(1.5) : null
+        <Drawer className='geovation-drawercontainer' open={leftDrawerOpen} onClose={this.props.toggleLeftDrawer(false)}
+                classes={{ paper: classes.drawerPaper }}>
+          <div style={{ paddingTop: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-top)' :
+                isIphoneAndCordova ? this.props.theme.spacing(1.5) : null
           }}
-        />
-        { user &&
+          />
+          { user &&
           <div>
             <div className='drawer-user'>
               <Avatar alt='profile-image' src={user.photoURL} className='avatar'
-                component={Link} to={PAGES.account.path}
-                onClick={this.props.toggleLeftDrawer(false)} />
+                      component={Link} to={PAGES.account.path}
+                      onClick={this.props.toggleLeftDrawer(false)} />
               <Typography className={'drawer-typography'}>{user.displayName}</Typography>
               {user.isModerator && <Typography>Admin</Typography>}
             </div>
             <Divider/>
           </div>
-        }
+          }
 
-        <div
-          tabIndex={0}
-          role='button'
-          onClick={this.props.toggleLeftDrawer(false)}
-        >
-          <List>
-            {ListItems.map( (item,index) => item.visible(user, online) &&
-              <ListItem key={index} button component={item.path && Link} to={item.path} onClick={item.click}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItem>
-            )}
-          </List>
-        </div>
-        <Typography className={classes.stats} color={'secondary'}>
-          {`${stats | 0} ${utils.customiseString('drawer', 'photos published so far!')}`}
-        </Typography>
-        <div className='built-by-geovation'>
-          <Typography className='built-by-text'>
-            Built by
+          <div
+              tabIndex={0}
+              role='button'
+              onClick={this.props.toggleLeftDrawer(false)}
+          >
+            <List>
+              {ListItems.map( (item,index) => item.visible(user, online) &&
+                  <ListItem key={index} button component={item.path && Link} to={item.path} onClick={item.click}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.label} />
+                  </ListItem>
+              )}
+            </List>
+          </div>
+
+                <Typography className={classes.stats} color={'secondary'}>
+                    {`${stats | 0} ${utils.customiseString('drawer', 'photos published so far!')}`}
+                    <span className='sponsored-by'>
+                        <img src={sponsorImage} className='sponsor-logo' alt={''} />
+                    </span>
+                </Typography>
+
+            <div className='built-by-geovation'>
+            <Typography className='built-by-text'>
+              Built by
+            </Typography>
+                <img src={placeholderImage} className='built-by-img' alt={''} />
+            </div>
+
+          <Typography className={classes.links}>
+            <a href={links.terms}>Terms and Conditions</a>
+            {" / "}
+            <a href={links.privacy}>Privacy Policy</a>
           </Typography>
-          <img src={placeholderImage} className='built-by-img' alt={''} />
-        </div>
-        <Typography className={classes.links}>
-          <a href={links.terms}>Terms and Conditions</a>
-          {" / "}
-          <a href={links.privacy}>Privacy Policy</a>
-        </Typography>
-      </Drawer>
+        </Drawer>
     );
   }
 }
