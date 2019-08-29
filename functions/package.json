@@ -10,7 +10,7 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "^0.30.2",
+    "@google-cloud/pubsub": "^0.31.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^8.3.0",
