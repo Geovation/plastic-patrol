@@ -171,6 +171,7 @@ class App extends Component {
       this.setState({ user });
     });
 
+    this.unregisterLocationObserver = this.setLocationWatcher();
     this.unregisterConfigObserver = dbFirebase.configObserver(config => this.setState(config), console.error);
   }
 
@@ -287,6 +288,7 @@ class App extends Component {
     this.setState = console.log;
 
     await this.unregisterAuthObserver();
+    await this.unregisterLocationObserver();
     await this.unregisterConnectionObserver();
     await this.unregisterConfigObserver();
     await dbFirebase.disconnect();
