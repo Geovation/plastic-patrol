@@ -65,7 +65,7 @@ class App extends Component {
       photoAccessedByUrl: false,
       photosToModerate: {},
       mapLocation: new MapLocation(), // from the map
-      sponsorImage: ""
+      sponsorImage: undefined
     };
 
     this.geoid = null;
@@ -171,8 +171,7 @@ class App extends Component {
       this.setState({ user });
     });
 
-    const config = await dbFirebase.fetchConfig();
-    this.setState(config);
+    this.unregisterConfigObserver = dbFirebase.configObserver(config => this.setState(config), console.error);
   }
 
   saveGeojson = () => {
@@ -288,10 +287,9 @@ class App extends Component {
     this.setState = console.log;
 
     await this.unregisterAuthObserver();
-    await dbFirebase.disconnect();
-    await this.unregisterLocationObserver();
     await this.unregisterConnectionObserver();
     await this.unregisterConfigObserver();
+    await dbFirebase.disconnect();
   }
 
   componentDidUpdate(prevProps, prevState) {

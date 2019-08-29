@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import firebaseApp from './firebaseInit.js';
 import config from "./custom/config";
+import * as localforage from "localforage";
 
 const firestore = firebase.firestore();
 const storageRef = firebase.storage().ref();
@@ -47,14 +48,15 @@ function photosRT(addedFn, modifiedFn, removedFn, errorFn) {
   }, errorFn);
 }
 
-async function fetchConfig() {
-  const doc = await firestore.collection('sys').doc('config').get();
-  let data = {};
-  if (doc.exists) {
-    data = doc.data();
-  }
+const configObserver = (onNext, onError) => {
+  localforage.getItem("config").then(onNext).catch(console.log);
 
-  return data;
+  return firestore.collection("sys").doc("config")
+    .onSnapshot( snapshot => {
+      const config = snapshot.data();
+      localforage.setItem("config", config);
+      onNext(config);
+    }, onError);
 }
 
 async function fetchStats() {
@@ -225,5 +227,5 @@ export default {
   disconnect,
   writeFeedback,
   toggleUnreadFeedback,
-  fetchConfig
+  configObserver
 };

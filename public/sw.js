@@ -14,5 +14,6 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.0.0/workbox-sw.js");
 
 
-workbox.routing.registerRoute(/.*pbf/, workbox.strategies.cacheFirst({ "cacheName":"pbf", plugins: [new workbox.expiration.Plugin({"maxAgeSeconds":15552000,"purgeOnQuotaError":false})] }), 'GET');
+workbox.routing.registerRoute(/.*firebasestorage.*/, workbox.strategies.cacheFirst({ "cacheName":"firebasestorage", plugins: [new workbox.expiration.Plugin({"maxAgeSeconds":15552000,"purgeOnQuotaError":true})] }), 'GET');
+workbox.routing.registerRoute(/.*pbf/, workbox.strategies.cacheFirst({ "cacheName":"pbf", plugins: [new workbox.expiration.Plugin({"maxAgeSeconds":15552000,"purgeOnQuotaError":true})] }), 'GET');
 workbox.routing.registerRoute(/.*/, workbox.strategies.staleWhileRevalidate({ "cacheName":"all", plugins: [] }), 'GET');
