@@ -33,12 +33,17 @@
     padding-bottom: 35px;
   }
 
-  .sponsored-by {
+  .sponsored-by-container {
     padding: 4px;
+    display: block;
   }
 
-  .sponsor-logo {
+  .sponsored-by-image {
     height: 25px;
+    display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .built-by-text {

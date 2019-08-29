@@ -108,10 +108,9 @@ class DrawerContainer extends Component {
                 <Typography className={classes.stats} color={'secondary'}>
                     {`${stats | 0} ${utils.customiseString('drawer', 'photos published so far!')}`}
                   {sponsorImage &&
-                    <span className='sponsored-by'>
-                        <img src={sponsorImage} className='sponsor-logo' alt={''}/>
-                    </span>
-                  }
+                    <span className='sponsored-by-container' >
+                      <div className='sponsored-by-image' style={{backgroundImage: 'url(' + sponsorImage + ')'}}></div>
+                    </span>}
                 </Typography>
 
             <div className='built-by-geovation'>
