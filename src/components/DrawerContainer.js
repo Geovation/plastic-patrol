@@ -109,7 +109,7 @@ class DrawerContainer extends Component {
                     {`${stats | 0} ${utils.customiseString('drawer', 'photos published so far!')}`}
                   {sponsorImage &&
                     <span className='sponsored-by-container' >
-                      <div className='sponsored-by-image' style={{backgroundImage: 'url(' + sponsorImage + ')'}}></div>
+                      <span className='sponsored-by-image' style={{backgroundImage: 'url(' + sponsorImage + ')'}}></span>
                     </span>}
                 </Typography>
 
