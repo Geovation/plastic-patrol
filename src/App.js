@@ -607,6 +607,7 @@ class App extends Component {
                                label={this.props.config.PAGES.leaderboard.label}
                                usersLeaderboard={this.state.usersLeaderboard}
                                handleClose={history.goBack}
+                               user={this.state.user}
               />}
             />
 

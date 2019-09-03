@@ -17,7 +17,7 @@ const styles = theme => ({
     color: theme.palette.common.white,
     backgroundColor: 'rgba(0, 0, 0, 0.54)',
   },
-  firstRow: {
+  highlightRow: {
     fontWeight: 'bold',
     color: config.THEME.palette.secondary.main,
   },
@@ -38,10 +38,44 @@ const styles = theme => ({
 
 
 class Leaderboard extends Component {
+  renderTableBody() {
+    const { usersLeaderboard, classes, config, user } = this.props
+    const userId = user && user.id
+    usersLeaderboard.sort((a,b) => b[config.LEADERBOARD_FIELD.field] - a[config.LEADERBOARD_FIELD.field]);
+
+
+    return < TableBody >
+      {
+        usersLeaderboard.map((user, index) => {
+          const highlightRow = index === 0 || user.uid === userId
+
+          return (
+            <TableRow key={index}>
+              <TableCell
+                className={classes.cell}
+                style={{ textAlign: "center" }}
+              >
+                {index === 0 ? <StarsIcon color="secondary" /> : <span className={`${highlightRow && classes.highlightRow}`}>{index + 1}</span>}
+              </TableCell>
+              <TableCell
+                className={`${highlightRow && classes.highlightRow} ${classes.cell}`}
+              >
+                <div className={classes.truncate}>{user.displayName}</div>
+              </TableCell>
+              <TableCell
+                className={`${highlightRow && classes.highlightRow} ${classes.cell}`}
+              >
+                {user[config.LEADERBOARD_FIELD.field]}
+              </TableCell>
+            </TableRow>
+          )
+        })
+      }
+    </TableBody >
+  }
 
   render() {
-    const { classes, label, usersLeaderboard, handleClose, config } = this.props;
-    usersLeaderboard.sort((a,b) => b[config.LEADERBOARD_FIELD.field] - a[config.LEADERBOARD_FIELD.field]);
+    const { classes, label, handleClose, config } = this.props;
 
     return (
       <PageWrapper label={label} handleClose={handleClose} hasLogo={false}>
@@ -55,20 +89,7 @@ class Leaderboard extends Component {
               </TableRow>
             </TableHead>
 
-            <TableBody>
-              { usersLeaderboard.slice(0,config.LEADERBOARD_FIELD.displayedUsers)
-                .map((user, index) => (
-                <TableRow key={index}>
-                  <TableCell className={classes.cell} style={{textAlign: 'center'}}>
-                    {index === 0 ? <StarsIcon color='secondary'/> : index + 1}
-                  </TableCell>
-                  <TableCell className={`${!index && classes.firstRow} ${classes.cell}`}>
-                    <div className={classes.truncate}>{user.displayName}</div>
-                  </TableCell>
-                  <TableCell className={`${!index && classes.firstRow} ${classes.cell}`}>{user[config.LEADERBOARD_FIELD.field]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {this.renderTableBody()}
 
           </Table>
       </PageWrapper>

@@ -218,6 +218,5 @@ export default { ...STATIC_CONFIG,
   LEADERBOARD_FIELD: {
       label: "Pieces",
       field: "pieces",
-      displayedUsers: 20,
   }
 }
