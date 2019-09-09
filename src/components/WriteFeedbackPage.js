@@ -19,7 +19,7 @@ import PageWrapper from './PageWrapper';
 const styles = theme => ({
   content: {
     height: '100%',
-    overflow:'auto',
+    overflow: 'auto',
     '-webkit-overflow-scrolling': 'touch',
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),
@@ -139,7 +139,7 @@ class WriteFeedbackPage extends React.Component {
           <TextField
             fullWidth
             id='feedback-textfield'
-            placeholder='Type you feedback here'
+            placeholder='Type your feedback here'
             onChange={this.handleFeedbackChange}
             value={this.state.feedback}
             autoFocus

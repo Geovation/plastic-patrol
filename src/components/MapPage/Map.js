@@ -31,8 +31,13 @@ const styles = theme => ({
   },
   camera: {
     position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2)
+    bottom: theme.spacing(1),
+    right: theme.spacing(1),
+    borderRadius: '10px',
+    height: '36px',
+    fontSize: '0.8rem',
+    padding: '0 12px',
+    width: 'max-content'
   },
   burger: {
     position: 'absolute',
@@ -312,6 +317,9 @@ class Map extends Component {
         {!this.props.embeddable &&
         <div>
           <Fab className={classes.camera} color="secondary" onClick={this.props.handleCameraClick}>
+            <span style={{marginRight: '3px'}}>
+              Add a photo
+            </span>
             <AddAPhotoIcon />
           </Fab>
           <Dehaze className={classes.burger} onClick={this.props.toggleLeftDrawer(true)} />

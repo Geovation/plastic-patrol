@@ -382,7 +382,7 @@ class PhotoPage extends Component {
               </div>
 
               <div className={classes.button}>
-                <Button variant="outlined" fullWidth={true} onClick={this.retakePhoto}>
+                <Button variant="outlined" fullWidth={true} onClick={this.retakePhoto} color={"secondary"}>
                   Retake
                 </Button>
               </div>
