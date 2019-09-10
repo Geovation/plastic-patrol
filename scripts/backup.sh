@@ -11,7 +11,7 @@ gcloud beta firestore export gs://plastic-patrol-bks/$FOLDER/firestore --async -
 
 # save users
 mkdir -p bks/users
-firebase auth:export bks/users/users.json --project photos-demo-d4b14
+firebase auth:export bks/users/users.json --project $PROJECT
 gsutil -m rsync -r bks/users gs://plastic-patrol-bks/$FOLDER/users
 
 # save storage
