@@ -10,7 +10,9 @@ export FOLDER=`date +%Y-%m-%d`
 gcloud beta firestore export gs://plastic-patrol-bks/$FOLDER/firestore --async --project $PROJECT
 
 # save users
-# TODO
+mkdir -p bks/users
+firebase auth:export bks/users/users.json --project photos-demo-d4b14
+gsutil -m rsync -r bks/users gs://plastic-patrol-bks/$FOLDER/users
 
 # save storage
 gsutil -m rsync -r gs://plastic-patrol-fd3b3.appspot.com gs://plastic-patrol-bks/$FOLDER/storage
