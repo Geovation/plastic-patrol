@@ -5,12 +5,12 @@
   "public": true,
   "homepage": "./",
   "dependencies": {
-    "@material-ui/core": "^4.3.3",
+    "@material-ui/core": "^4.4.2",
     "@material-ui/icons": "^4.1.0",
     "@turf/turf": "^5.1.6",
     "blueimp-load-image": "^2.24.0",
     "dms2dec": "^1.1.0",
-    "firebase": "^6.6.0",
+    "firebase": "^6.6.1",
     "localforage": "^1.7.3",
     "lodash": "^4.17.15",
     "mapbox-gl": "^1.3.1",
@@ -46,11 +46,14 @@
     "cordova": "^9.0.0",
     "coveralls": "^3.0.6",
     "firebase-admin": "^8.5.0",
-    "firebase-tools": "^7.3.1",
+    "firebase-tools": "^7.3.2",
     "http-server": "^0.11.1",
+    "husky": "^3.0.5",
     "jimp": "^0.6.8",
     "ncp": "^2.0.0",
     "node-sass": "^4.11.0",
+    "precise-commits": "^1.0.2",
+    "prettier": "^1.18.2",
     "random-location": "^1.0.12",
     "react-scripts": "^3.1.1",
     "rimraf": "^3.0.0",
@@ -61,5 +64,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "precise-commits"
+    }
+  }
 }

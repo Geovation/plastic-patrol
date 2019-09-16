@@ -55,20 +55,32 @@ class Leaderboard extends Component {
                 className={classes.cell}
                 style={{ textAlign: "center" }}
               >
-                {index === 0 ? <StarsIcon color="secondary" /> : <span className={`${highlightRow && classes.highlightRow}`}>{index + 1}</span>}
+                {index === 0 ? (
+                  <StarsIcon color="secondary" />
+                ) : (
+                  <span className={`${highlightRow && classes.highlightRow}`}>
+                    {index + 1}
+                  </span>
+                )}
               </TableCell>
               <TableCell
-                className={`${highlightRow && classes.highlightRow} ${classes.cell}`}
+                className={`${highlightRow && classes.highlightRow} ${
+                  classes.cell
+                }`}
               >
-                <div className={classes.truncate}>{user.displayName}</div>
+                <div className={classes.truncate}>
+                  {user.displayName.split("@")[0]}
+                </div>
               </TableCell>
               <TableCell
-                className={`${highlightRow && classes.highlightRow} ${classes.cell}`}
+                className={`${highlightRow && classes.highlightRow} ${
+                  classes.cell
+                }`}
               >
                 {user[config.LEADERBOARD_FIELD.field]}
               </TableCell>
             </TableRow>
-          )
+          );
         })
       }
     </TableBody >
