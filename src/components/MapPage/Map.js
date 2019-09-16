@@ -20,31 +20,35 @@ const placeholderImage = process.env.PUBLIC_URL + "/custom/images/logo.svg";
 
 const styles = theme => ({
   location: {
-    position: 'absolute',
-    top: isIphoneWithNotchAndCordova() ? `calc(env(safe-area-inset-top) + ${theme.spacing(0.1)}px)` : theme.spacing(2),
+    position: "absolute",
+    top: isIphoneWithNotchAndCordova()
+      ? `calc(env(safe-area-inset-top) + ${theme.spacing(0.1)}px)`
+      : theme.spacing(2),
     right: theme.spacing(2)
   },
   expansionDetails: {
-    padding:0,
-    'overflow-wrap': 'break-word',
-    'word-wrap': 'break-word'
+    padding: 0,
+    "overflow-wrap": "break-word",
+    "word-wrap": "break-word"
   },
   camera: {
-    position: 'absolute',
+    position: "absolute",
     bottom: theme.spacing(1),
     right: theme.spacing(1),
-    borderRadius: '10px',
-    height: '36px',
-    fontSize: '0.8rem',
-    padding: '0 12px',
-    width: 'max-content'
+    borderRadius: "10px",
+    height: "36px",
+    fontSize: "0.8rem",
+    padding: "0 12px",
+    width: "unset"
   },
   burger: {
-    position: 'absolute',
-    top: isIphoneWithNotchAndCordova() ? `calc(env(safe-area-inset-top) + ${theme.spacing(1)}px)` : theme.spacing(3),
+    position: "absolute",
+    top: isIphoneWithNotchAndCordova()
+      ? `calc(env(safe-area-inset-top) + ${theme.spacing(1)}px)`
+      : theme.spacing(3),
     left: theme.spacing(2),
     margin: -theme.spacing(2),
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   }
 });
 
