@@ -1,7 +1,7 @@
 {
   "name": "plastic-patrol",
   "title": "Plastic Patrol",
-  "version": "2.4.2",
+  "version": "2.4.4",
   "public": true,
   "homepage": "./",
   "dependencies": {
@@ -9,6 +9,7 @@
     "@material-ui/icons": "^4.1.0",
     "@turf/turf": "^5.1.6",
     "blueimp-load-image": "^2.24.0",
+    "classnames": "^2.2.6",
     "dms2dec": "^1.1.0",
     "firebase": "^6.6.1",
     "localforage": "^1.7.3",
@@ -21,7 +22,8 @@
     "react-firebaseui": "^4.0.0",
     "react-ga": "^2.5.6",
     "react-router-dom": "^5.0.1",
-    "react-select": "^3.0.3"
+    "react-select": "^3.0.3",
+    "react-swipe": "^6.0.4"
   },
   "scripts": {
     "start": "./scripts/runWithVars.sh 'HTTPS=true react-scripts start'",

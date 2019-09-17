@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import SchoolIcon from '@material-ui/icons/School';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import HelpIcon from '@material-ui/icons/Help';
-import EventIcon from '@material-ui/icons/Event';
-import FeedbackIcon from '@material-ui/icons/Feedback';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import SchoolIcon from "@material-ui/icons/School";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import HelpIcon from "@material-ui/icons/Help";
+import EventIcon from "@material-ui/icons/Event";
+import FeedbackIcon from "@material-ui/icons/Feedback";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 
-import _ from 'lodash';
+import _ from "lodash";
 
-import styles from './config.scss';
-import enums from '../types/enums';
+import styles from "./config.scss";
+import enums from "../types/enums";
 
-import TitleTextField from '../components/PhotoPage/TitleTextField';
-import MultiFields from '../components/PhotoPage/MultiFields';
+import TitleTextField from "../components/PhotoPage/TitleTextField";
+import MultiFields from "../components/PhotoPage/MultiFields";
 
-import { data } from './categories';
+import { data } from "./categories";
 
 const primaryColor = styles.primary;
 const secondaryColor = styles.secondary;
@@ -27,15 +27,19 @@ const CUSTOM_STRING = {
     "photos published so far!": "pieces found so far!"
   },
   tutorial: {
-    "Walk around the city and take photos": "Get outside and photograph your #plasticpatrol haul",
-    "Write info about the photos and upload it to the cloud": "Count how many pieces you collected and upload your photo",
-    "View your images in our interactive map": "View images in our interactive map and see how you have helped fight the plastic problem"
+    "Walk around the city and take photos":
+      "Get outside and photograph rubbish",
+    "Write info about the photos and upload it to the cloud":
+      "Categorise the rubbish by amount, type and brand",
+    "View your images in our interactive map":
+      "Upload your photograph and see how how you’ve helped fight the crisis"
   },
   about: {
-    "We are Geovation and we Geovate": "#PlasticPatrol is about engaging people with the issue of plastic pollution through adventure and nature, helping to safeguard our seas for the future.\n\n" +
-    "Our mission is to combat the global plastic crisis by stopping the problem at its source – in our waterways.\n\n" +
-    "Every single piece of plastic collected and shared on social media as part of the #PlasticPatrol movement is captured in our interactive map, creating a picture of the problem on a global scale for the very first time.\n\n" +
-    "Using this app you can get involved. Simply take a photo of what you find by pressing the camera button and upload it directly to the map. After it has been approved you will be able to view the images by pressing the globe button."
+    "We are Geovation and we Geovate":
+      "#PlasticPatrol is about engaging people with the issue of plastic pollution through adventure and nature, helping to safeguard our seas for the future.\n\n" +
+      "Our mission is to combat the global plastic crisis by stopping the problem at its source – in our waterways.\n\n" +
+      "Every single piece of plastic collected and shared on social media as part of the #PlasticPatrol movement is captured in our interactive map, creating a picture of the problem on a global scale for the very first time.\n\n" +
+      "Using this app you can get involved. Simply take a photo of what you find by pressing the camera button and upload it directly to the map. After it has been approved you will be able to view the images by pressing the globe button."
   },
   writeFeedback: {
     "admin@geovation.uk": "lizzieoutside@icloud.com"
@@ -49,7 +53,8 @@ const CUSTOM_STRING = {
     "T&C link": "https://plasticpatrol.co.uk/terms-and-conditions/",
     "Privacy Policy Link": "https://plasticpatrol.co.uk/privacy-policy/"
   },
-  tweetMessage: "Check out this rubbish shared on the @Plastic_Patrol app for global citizen science. Researchers analyse everything collected and use it as evidence to help tackle the problem. #PlasticPatrol"
+  tweetMessage:
+    "Check out this rubbish shared on the @Plastic_Patrol app for global citizen science. Researchers analyse everything collected and use it as evidence to help tackle the problem. #PlasticPatrol"
 };
 
 const PAGES = {
@@ -68,51 +73,51 @@ const PAGES = {
   moderator: {
     path: "/moderator",
     label: "Photo Approval",
-    icon: <CheckCircleIcon/>,
+    icon: <CheckCircleIcon />,
     visible: (user, online) => user && user.isModerator
   },
   account: {
     path: "/account",
     label: "Account",
-    icon: <AccountCircleIcon/>,
+    icon: <AccountCircleIcon />,
     visible: (user, online) => user
   },
   about: {
     path: "/about",
     label: "About",
     visible: (user, online) => true,
-    icon: <HelpIcon/>,
+    icon: <HelpIcon />
   },
   tutorial: {
     path: "/tutorial",
     label: "Tutorial",
     visible: (user, online) => true,
-    icon: <SchoolIcon/>,
+    icon: <SchoolIcon />
   },
   writeFeedback: {
     path: "/write-feedback",
     label: "Feedback",
     visible: (user, online) => true,
-    icon: <FeedbackIcon/>,
+    icon: <FeedbackIcon />
   },
   events: {
-      path: "/events",
-      label: "Clean-ups"
+    path: "/events",
+    label: "Clean-ups"
   },
   partners: {
-      path: "/partners",
-      label: "Partners"
+    path: "/partners",
+    label: "Partners"
   },
   leaderboard: {
     path: "/leaderboard",
     label: "Leaderboard",
     visible: (user, online) => true,
-    icon: <DashboardIcon/>,
+    icon: <DashboardIcon />
   },
   feedbackReports: {
     path: "/feedback-reports",
     label: "Feedback Reports",
-    icon: <LibraryBooksIcon/>,
+    icon: <LibraryBooksIcon />,
     visible: (user, online) => user && user.isModerator
   },
   feedbackDetails: {
@@ -127,96 +132,100 @@ const PAGES = {
 
 const STATIC_CONFIG = require("./config.json");
 
-export default { ...STATIC_CONFIG,
+export default {
+  ...STATIC_CONFIG,
   CUSTOM_STRING,
   MAX_IMAGE_SIZE: 2048,
   THEME: {
     palette: {
       primary: { main: primaryColor },
-      secondary: { main: secondaryColor },
+      secondary: { main: secondaryColor }
     },
     spacing: 10
   },
   MAP_SOURCE: "mapbox://styles/mapbox/streets-v10",
   // MAP_SOURCE: "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-outdoor/style.json",
   // MAP_ATTRIBUTION: "Contains OS data &copy; Crown copyright and database rights 2018",
-  MAPBOX_TOKEN: "pk.eyJ1Ijoic2ViYXN0aWFub3ZpZGVnZW92YXRpb251ayIsImEiOiJjanBqZzRmNHgwNXljM2tydHlkM29id3FwIn0.-1V8Ue9P6eQr8FGghaTYiw",
+  MAPBOX_TOKEN:
+    "pk.eyJ1Ijoic2ViYXN0aWFub3ZpZGVnZW92YXRpb251ayIsImEiOiJjanBqZzRmNHgwNXljM2tydHlkM29id3FwIn0.-1V8Ue9P6eQr8FGghaTYiw",
   GA_TRACKING_ID: "UA-126516084-1",
   PHOTO_ZOOMED_FIELDS: {
-    "updated": s => new Date(s).toDateString(),
-    "pieces": s => s
+    updated: s => new Date(s).toDateString(),
+    pieces: s => s
   },
   ZOOM: 5,
   ZOOM_FLYTO: 15,
   CENTER: [-2, 55],
   PHOTO_FIELDS: {
     pieces: {
-      name: 'pieces',
-      title: 'Number of pieces collected',
+      name: "pieces",
+      title: "Number of pieces collected",
       type: enums.TYPES.number,
-      placeholder: 'eg. 123',
-      inputProps: {min: 0, step: 1},
-      regexValidation: '^[0-9]+',
+      placeholder: "eg. 123",
+      inputProps: { min: 0, step: 1 },
+      regexValidation: "^[0-9]+",
       component: TitleTextField
     },
     categories: {
       component: MultiFields.MultiFieldsWithStyles,
       nakedComponent: MultiFields.MultiFieldsOriginal,
-      name: 'categories',
+      name: "categories",
 
-      placeholder: 'Add litter category',
+      placeholder: "Add litter category",
       data: data,
-      noOptionsMessage: 'No more categories',
+      noOptionsMessage: "No more categories",
       sanitize: value => {
         _.forEach(value, category => {
-          category.brand = category.brand.replace && category.brand.replace(/\s+/g, ' ').trim();
+          category.brand =
+            category.brand.replace &&
+            category.brand.replace(/\s+/g, " ").trim();
         });
         return value;
       },
 
       subfields: {
         number: {
-          component : TitleTextField,
-          inputProps: { min: 0, step: 1},
-          name: 'number',
-          title: 'Number',
+          component: TitleTextField,
+          inputProps: { min: 0, step: 1 },
+          name: "number",
+          title: "Number",
           type: enums.TYPES.number,
-          placeholder: 'eg. 123',
-          regexValidation: '^[0-9]+'
+          placeholder: "eg. 123",
+          regexValidation: "^[0-9]+"
         },
         brand: {
-          component : TitleTextField,
-          name: 'brand',
-          title: 'Brand',
+          component: TitleTextField,
+          name: "brand",
+          title: "Brand",
           type: enums.TYPES.string,
-          placeholder: 'eg. whatever',
-          regexValidation: '.+'
-        },
+          placeholder: "eg. whatever",
+          regexValidation: ".+"
+        }
       }
     }
   },
   PAGES,
-  CUSTOM_PAGES:[
+  CUSTOM_PAGES: [
     {
       visible: (user, online) => true,
-      icon: <EventIcon/>,
+      icon: <EventIcon />,
       label: PAGES.events.label,
-      click: () => window.location = 'https://plasticpatrol.co.uk/clean-ups/'
-    },
+      click: () => (window.location = "https://plasticpatrol.co.uk/clean-ups/")
+    }
   ],
   getStats: (photos, dbStats) => (dbStats && dbStats.pieces) || 0,
-  ENABLE_GRAVATAR_PROFILES: true,  //To update user-profile from Gravatar, value: true or false.
+  ENABLE_GRAVATAR_PROFILES: true, //To update user-profile from Gravatar, value: true or false.
   SECURITY: {
     UPLOAD_REQUIRES_LOGIN: true
   },
   API: {
-    URL: "https://api.plasticpatrol.co.uk",
+    URL: "https://api.plasticpatrol.co.uk"
     // URL: "https://us-central1-plastic-patrol-fd3b3.cloudfunctions.net/api",
     // URL: "http://localhost:5000/plastic-patrol-fd3b3/us-central1/api"
   },
   MODERATING_PHOTOS: 15,
   LEADERBOARD_FIELD: {
-      label: "Pieces",
-      field: "pieces",
+    label: "Pieces",
+    field: "pieces"
   }
-}
+};
