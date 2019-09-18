@@ -6,7 +6,14 @@ import classNames from "classnames";
 import "./NavDots.scss";
 
 const NavDots = props => {
-  const { numberOfDots, activeIndex, onClick, wrapperClass } = props;
+  const {
+    numberOfDots,
+    activeIndex,
+    onClick,
+    wrapperClass,
+    navDotClass,
+    navDotActiveClass
+  } = props;
 
   return (
     <div className={classNames("NavDots", wrapperClass)}>
@@ -18,25 +25,28 @@ const NavDots = props => {
             id={index}
             active={index === activeIndex}
             onClick={onClick}
+            navDotClass={navDotClass}
+            navDotActiveClass={navDotActiveClass}
           />
         ))}
     </div>
   );
 };
 
-const NavDot = ({ id, active, onClick }) => {
+const NavDot = ({ id, active, onClick, navDotActiveClass, navDotClass }) => {
   const handleClick = () => onClick && onClick(id);
 
   return (
     <div
-      className={classNames("NavDot", {
-        "NavDot--clickable": onClick
+      className={classNames("NavDot", navDotClass, {
+        "NavDot--clickable": onClick,
+        [navDotActiveClass]: active
       })}
       onClick={handleClick}
     >
       <div
         className={classNames("NavDot__inner", {
-          "NavDot__inner--active": active
+          [navDotActiveClass || "NavDot__inner--active"]: active
         })}
       />
     </div>

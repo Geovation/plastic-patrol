@@ -13,6 +13,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 
+import TutorialPage from "./components/pages/TutorialPage";
+import WelcomePage from "./components/pages/WelcomePage";
 import PhotoPage from "./components/PhotoPage";
 import ProfilePage from "./components/ProfilePage";
 import Map from "./components/MapPage/Map";
@@ -21,9 +23,7 @@ import ModeratorPage from "./components/ModeratorPage";
 import LoginFirebase from "./components/LoginFirebase";
 import Login from "./components/Login";
 import AboutPage from "./components/AboutPage";
-import TutorialPage from "./components/pages/TutorialPage";
 import LeaderboardPage from "./components/Leaderboard";
-import WelcomePage from "./components/WelcomePage";
 import WriteFeedbackPage from "./components/WriteFeedbackPage";
 import DrawerContainer from "./components/DrawerContainer";
 import TermsDialog from "./components/TermsDialog";
