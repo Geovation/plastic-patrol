@@ -1,16 +1,22 @@
 // see https://firebase.google.com/docs/web/setup
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/firestore';
+import "firebase/auth";
+import "firebase/database";
+import "firebase/firestore";
+import "firebase/performance";
 // import 'firebase/messaging';
 // import 'firebase/functions';
-import 'firebase/storage';
+import "firebase/storage";
 
 import config from './custom/config'
 // Initialize Firebase
 const firebaseApp = !firebase.apps.length ? firebase.initializeApp(config.FIREBASE) : firebase.app();
 const firestore = firebase.firestore();
+
+// measuring web performance. See https://firebase.google.com/docs/perf-mon/get-started-web
+firebase.performance();
+// const perf = firebase.performance(); //don't use the reference yet
+// TODO: to measure input delay: https://github.com/GoogleChromeLabs/first-input-delay
 
 function isInIframe () {
   try {
