@@ -83,4 +83,5 @@ scripts/config.json
 /cordova-app/GooglePlayAndroidDeveloper.json
 
 functions/config.json
+public/first-input-delay.min.js
 bks
