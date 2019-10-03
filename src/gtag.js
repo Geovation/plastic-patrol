@@ -2,12 +2,20 @@ import config from './custom/config';
 
 export const gtagInit = () => {
   if (window.cordova) {
-    window.ga.startTrackerWithId(config.GA_TRACKING_ID, 1, () => {
+    window.ga.startTrackerWithId(config.GA_PROPERTY_ID, 1, () => {
       window.ga.setAppVersion(process.env.REACT_APP_VERSION);
-      window.ga.trackEvent('Tech','type','mobile');
-      window.ga.trackEvent('Tech','app version',process.env.REACT_APP_VERSION);
-      window.ga.trackEvent('Tech','build number',process.env.REACT_APP_BUILD_NUMBER);
-      window.ga.trackView('/#/');
+      window.ga.trackEvent("Tech", "type", "mobile");
+      window.ga.trackEvent(
+        "Tech",
+        "app version",
+        process.env.REACT_APP_VERSION
+      );
+      window.ga.trackEvent(
+        "Tech",
+        "build number",
+        process.env.REACT_APP_BUILD_NUMBER
+      );
+      window.ga.trackView("/#/");
     });
   }
   else{
@@ -19,7 +27,9 @@ export const gtagInit = () => {
         gtag("js", new Date());
 
         // this is the new analytics
-        gtag("config", config.GA_PROPERTY_ID);
+        gtag("config", config.GA_PROPERTY_ID, {
+          page_path: "/#/"
+        });
 
         // it will phased out
         gtag("config", config.GA_TRACKING_ID, {
@@ -51,6 +61,10 @@ export const gtagPageView = (pathname) => {
     window.ga.trackView('/#' + pathname);
   }
   else{
+    gtag("config", config.GA_PROPERTY_ID, {
+      page_path: "/#" + pathname
+    });
+
     gtag('config', config.GA_TRACKING_ID, {
       'page_path' : '/#' + pathname
     });
