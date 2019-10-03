@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-import enums from '../../types/enums';
+import enums from '../../../types/enums';
 
 const styles = theme => ({
   cssUnderline: {

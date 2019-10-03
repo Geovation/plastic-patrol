@@ -1,27 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import loadImage from 'blueimp-load-image';
-import dms2dec from 'dms2dec';
-import firebase from 'firebase/app';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import loadImage from "blueimp-load-image";
+import dms2dec from "dms2dec";
+import firebase from "firebase/app";
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { withStyles } from '@material-ui/core/styles';
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
+import { withStyles } from "@material-ui/core/styles";
 
-import config from '../../custom/config';
-import { gtagEvent } from '../../gtag.js';
-import './style.scss';
-import dbFirebase from '../../dbFirebase';
-import { isIphoneWithNotchAndCordova, device } from '../../utils';
+import config from "../../custom/config";
+import { gtagEvent } from "../../gtag.js";
+import dbFirebase from "../../dbFirebase";
+import { isIphoneWithNotchAndCordova, device } from "../../utils";
 
-import PageWrapper from '../PageWrapper';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Fields from './Fields';
-import Link from '@material-ui/core/Link';
-import _ from 'lodash';
+import PageWrapper from "../PageWrapper";
+import Fields from "./Fields";
+import Dialogs from "./Dialogs";
+import "./style.scss";
 
 const emptyState = {
   imgSrc: null,
@@ -29,46 +24,39 @@ const emptyState = {
   imgIptc: null,
   imgLocation: null,
   open: false,
-  message: '',
+  message: "",
   sending: false,
   sendingProgress: 0,
   anyError: true,
-  enabledUploadButton:true,
+  enabledUploadButton: true,
   next: false,
   fieldsValues: {}
 };
 
 const styles = theme => ({
   cssUnderline: {
-    '&:after': {
-      borderBottomColor: theme.palette.secondary.main,
-    },
+    "&:after": {
+      borderBottomColor: theme.palette.secondary.main
+    }
   },
   progress: {
     margin: theme.spacing(2)
   },
   button: {
-    display: 'flex',
-    justifyContent:'center',
-    alignItems: 'center'
-  },
-  dialogContentProgress: {
-    display: 'flex',
-    flexDirection:'column',
-    alignItems: 'center'
-  },
-  linearProgress : {
-    width:'100%',
-    height:'100%'
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   link: {
     color: theme.palette.secondary.main
   },
   notchTop: {
-    paddingTop: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-top)' : 0
+    paddingTop: isIphoneWithNotchAndCordova() ? "env(safe-area-inset-top)" : 0
   },
   notchBottom: {
-    paddingBottom: isIphoneWithNotchAndCordova() ? 'env(safe-area-inset-bottom)' : 0
+    paddingBottom: isIphoneWithNotchAndCordova()
+      ? "env(safe-area-inset-bottom)"
+      : 0
   },
   fields: {
     margin: theme.spacing(1.5)
@@ -83,16 +71,14 @@ const styles = theme => ({
 class PhotoPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {...emptyState};
+    this.state = { ...emptyState };
     this.dialogCloseCallback = null;
     this.cancelClickUpload = false;
   }
 
   resetState = () => {
     this.setState(emptyState);
-  }
-
-
+  };
 
   openDialog = (message, fn) => {
     this.setState({
@@ -103,11 +89,13 @@ class PhotoPage extends Component {
     });
 
     this.dialogCloseCallback = fn;
-  }
+  };
 
   closeDialog = () => {
-    this.dialogCloseCallback ? this.dialogCloseCallback() : this.setState({ open: false });
-  }
+    this.dialogCloseCallback
+      ? this.dialogCloseCallback()
+      : this.setState({ open: false });
+  };
 
   /**
    * Given an exif object, return the coordinates {latitude, longitude} or undefined if an error occurs
@@ -124,18 +112,16 @@ class PhotoPage extends Component {
         const latLon = dms2dec(lat, latRef, lon, lonRef);
         latitude = latLon[0];
         longitude = latLon[1];
-      }
-      else {
-        if (device() === 'iOS') {
+      } else {
+        if (device() === "iOS") {
           const iosGPSMetadata = this.props.cordovaMetadata.GPS;
           const latRef = iosGPSMetadata.LatitudeRef;
           const lonRef = iosGPSMetadata.LongitudeRef;
           latitude = iosGPSMetadata.Latitude;
           longitude = iosGPSMetadata.Longitude;
-          latitude = latRef === 'N' ? latitude : -latitude;
-          longitude = lonRef === 'E' ? longitude : -longitude;
-        }
-        else if (device() === 'Android') {
+          latitude = latRef === "N" ? latitude : -latitude;
+          longitude = lonRef === "E" ? longitude : -longitude;
+        } else if (device() === "Android") {
           const androidMetadata = this.props.cordovaMetadata;
           const lat = androidMetadata.gpsLatitude;
           const latRef = androidMetadata.gpsLatitudeRef;
@@ -152,12 +138,12 @@ class PhotoPage extends Component {
     }
 
     return location;
-  }
+  };
 
   sendFile = async () => {
     let location = this.state.imgLocation;
 
-    gtagEvent('Upload', 'Photo');
+    gtagEvent("Upload", "Photo");
 
     if (!this.state.imgSrc) {
       this.openDialog("No picture is selected. Please choose a picture.");
@@ -165,71 +151,81 @@ class PhotoPage extends Component {
     }
 
     if (!this.props.online) {
-      this.openDialog("Can't Connect to our servers. You won't be able to upload an image.");
+      this.openDialog(
+        "Can't Connect to our servers. You won't be able to upload an image."
+      );
       return;
     }
 
-    const fieldsJustValues = _.reduce(this.state.fieldsValues, (a, v, k) => {
-      a[k] = v.value;
-      return a;
-    }, {});
-
-    let filteredFields = {};
-    Object.entries(fieldsJustValues).forEach(([key,value]) =>{
-      if(value){
-        filteredFields[key] = typeof value === 'string' ? value.trim() : value;
-
-        const fieldDefinition = config.PHOTO_FIELDS[key];
-        if (fieldDefinition.sanitize) {
-          fieldDefinition.sanitize(value);
-        }
-      }
+    const { fieldsValues } = this.state;
+    let totalCount = 0;
+    const fieldValuesToSend = fieldsValues.map(value => {
+      const {
+        values: { error, number, ...otherNonExtraneousFields }
+      } = value;
+      const numberAsNumber = Number(number);
+      totalCount += numberAsNumber;
+      return { number: numberAsNumber, ...otherNonExtraneousFields };
     });
 
-    const data = { ...location, ...filteredFields};
+    const data = {
+      ...location,
+      pieces: totalCount,
+      categories: fieldValuesToSend
+    };
 
-    this.setState({ sending: true, sendingProgress: 0, enabledUploadButton :false });
+    this.setState({
+      sending: true,
+      sendingProgress: 0,
+      enabledUploadButton: false
+    });
     this.uploadTask = null;
     this.cancelClickUpload = false;
 
     let photoRef;
-    try{
+    try {
       photoRef = await dbFirebase.saveMetadata(data);
-    }
-    catch(error){
+    } catch (error) {
       console.log(error);
     }
 
-    this.setState({ sendingProgress : 1 ,enabledUploadButton: true});
+    this.setState({ sendingProgress: 1, enabledUploadButton: true });
 
-    if(!this.cancelClickUpload){
-
+    if (!this.cancelClickUpload) {
       const base64 = this.state.imgSrc.split(",")[1];
       this.uploadTask = dbFirebase.savePhoto(photoRef.id, base64);
 
-      this.uploadTask.on('state_changed', snapshot => {
-          const sendingProgress = Math.ceil((snapshot.bytesTransferred / snapshot.totalBytes) * 98 + 1);
+      this.uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const sendingProgress = Math.ceil(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 98 + 1
+          );
           this.setState({ sendingProgress });
 
           switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused');
+              console.log("Upload is paused");
               break;
             case firebase.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running');
+              console.log("Upload is running");
               break;
             default:
               console.log(snapshot.state);
           }
-
-        }, error => {
-          this.openDialog('Photo upload was canceled');
-        }, () => {
-          this.openDialog("Photo was uploaded successfully. It will be reviewed by our moderation team.", this.handleClosePhotoPage);
+        },
+        error => {
+          this.openDialog("Photo upload was canceled");
+        },
+        () => {
+          this.openDialog(
+            "Photo was uploaded successfully. It will be reviewed by our moderation team.",
+            this.handleClosePhotoPage
+          );
         }
       );
     }
-  }
+  };
 
   loadImage = () => {
     let imgExif = null;
@@ -239,7 +235,8 @@ class PhotoPage extends Component {
     // https://github.com/blueimp/JavaScript-Load-Image#meta-data-parsing
     if (!window.cordova) {
       loadImage.parseMetaData(
-        this.props.file, data => {
+        this.props.file,
+        data => {
           imgExif = data.exif ? data.exif.getAll() : imgExif;
           imgIptc = data.iptc ? data.iptc.getAll() : imgIptc;
         },
@@ -251,25 +248,28 @@ class PhotoPage extends Component {
     }
 
     loadImage(
-      this.props.file, (img) =>{
+      this.props.file,
+      img => {
         let imgFromCamera;
         const imgSrc = img.toDataURL("image/jpeg");
         if (window.cordova) {
-          if (this.props.srcType === 'camera') {
+          if (this.props.srcType === "camera") {
             imgFromCamera = true;
           } else {
             imgFromCamera = false;
           }
         } else {
           const fileDate = this.props.file.lastModified;
-          const ageInMinutes = (new Date().getTime() - fileDate)/1000/60;
+          const ageInMinutes = (new Date().getTime() - fileDate) / 1000 / 60;
           imgFromCamera = isNaN(ageInMinutes) || ageInMinutes < 0.5;
         }
 
         if (imgFromCamera) {
           imgLocation = this.props.gpsLocation;
           if (!this.props.gpsLocation.online) {
-            this.openDialog("We couldn't find your location so you won't be able to upload an image right now. Enable GPS on your phone and retake the photo to upload it.");
+            this.openDialog(
+              "We couldn't find your location so you won't be able to upload an image right now. Enable GPS on your phone and retake the photo to upload it."
+            );
             return;
           }
         } else {
@@ -280,15 +280,18 @@ class PhotoPage extends Component {
 
         if (!imgLocation) {
           this.openDialog(
-            <span style={{fontWeight:500}}>
-            Your photo isn't geo-tagged so it can't be uploaded.
-            To fix this manually, you can geo-tag it online with a tool like&nbsp;
-              <Link href={'https://tool.geoimgr.com/'} className={this.props.classes.link}>
-              Geoimgr
-            </Link>.
-            In future, make sure GPS is enabled and your
-            camera has access to it.
-          </span>
+            <span style={{ fontWeight: 500 }}>
+              Your photo isn't geo-tagged so it can't be uploaded. To fix this
+              manually, you can geo-tag it online with a tool like&nbsp;
+              <Link
+                href={"https://tool.geoimgr.com/"}
+                className={this.props.classes.link}
+              >
+                Geoimgr
+              </Link>
+              . In future, make sure GPS is enabled and your camera has access
+              to it.
+            </span>
           );
 
           this.setState({ next: false, anyError: true });
@@ -300,13 +303,13 @@ class PhotoPage extends Component {
         maxHeight: config.MAX_IMAGE_SIZE
       }
     );
-  }
+  };
 
   retakePhoto = () => {
-    gtagEvent('Retake Photo', 'Photo');
+    gtagEvent("Retake Photo", "Photo");
     this.resetState();
     this.props.handleRetakeClick();
-  }
+  };
 
   handleClosePhotoPage = () => {
     this.resetState();
@@ -314,24 +317,23 @@ class PhotoPage extends Component {
   };
 
   handleCancel = () => {
-    this.setState({ sending:false });
+    this.setState({ sending: false });
 
     if (this.uploadTask) {
       this.uploadTask.cancel();
-    }
-    else {
+    } else {
       this.cancelClickUpload = true;
-      this.openDialog('Photo upload was canceled');
+      this.openDialog("Photo upload was canceled");
     }
-  }
+  };
 
   handleNext = () => {
-    this.setState({ next:true });
-  }
+    this.setState({ next: true });
+  };
 
   handlePrev = () => {
-    this.setState({ next:false });
-  }
+    this.setState({ next: false });
+  };
 
   componentDidMount() {
     this.loadImage();
@@ -344,13 +346,13 @@ class PhotoPage extends Component {
   }
 
   handleChangeFields = (anyError, fieldsValues) => {
-    this.setState({anyError, fieldsValues});
-  }
+    this.setState({ anyError, fieldsValues });
+  };
 
   render() {
     const { classes, label, fields } = this.props;
     return (
-      <div className='geovation-photos'>
+      <div className="geovation-photos">
         <PageWrapper
           handlePrev={this.handlePrev}
           handleNext={this.handleNext}
@@ -360,69 +362,47 @@ class PhotoPage extends Component {
           sendFile={this.sendFile}
           photoPage={true}
           label={label}
-          imgSrc={this.state.imgSrc}
-          handleClose={this.props.handleClose}>
-
-          {this.state.next
-            ?
+          handleClose={this.props.handleClose}
+        >
+          {this.state.next ? (
             <div className={classes.fields}>
               <Fields
                 handleChange={this.handleChangeFields}
-                sendFile={this.sendFile}
-                enabledUploadButton={this.state.enabledUploadButton}
                 imgSrc={this.state.imgSrc}
                 fields={fields}
                 error={this.state.anyError}
               />
             </div>
-            :
-            <div style={{display:'flex',flexDirection:'column',flex:1}} className={classes.photo}>
-              <div className='picture'>
-                <img src={this.state.imgSrc} alt={""}/>
+          ) : (
+            <div
+              style={{ display: "flex", flexDirection: "column", flex: 1 }}
+              className={classes.photo}
+            >
+              <div className="picture">
+                <img src={this.state.imgSrc} alt={""} />
               </div>
 
               <div className={classes.button}>
-                <Button variant="outlined" fullWidth={true} onClick={this.retakePhoto} color={"secondary"}>
+                <Button
+                  variant="outlined"
+                  fullWidth={true}
+                  onClick={this.retakePhoto}
+                  color={"secondary"}
+                >
                   Retake
                 </Button>
               </div>
             </div>
-          }
+          )}
 
-          <Dialog
-            open={this.state.open}
-            onClose={this.closeDialog}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
-          >
-            <DialogContent>
-              <DialogContentText id='alert-dialog-description'>
-                {this.state.message}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.closeDialog} color='secondary'>
-                Ok
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-          <Dialog open={this.state.sending}>
-            <DialogContent className={classes.dialogContentProgress}>
-              <DialogContentText id="loading-dialog-text">
-                {this.state.sendingProgress} % done. Be patient ;)
-              </DialogContentText>
-              <div className={classes.linearProgress}>
-                <br/>
-                <LinearProgress variant="determinate" color='secondary' value={this.state.sendingProgress} />
-              </div>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleCancel} color='secondary'>
-                Cancel
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <Dialogs
+            alertOpen={this.state.open}
+            alertMessage={this.state.message}
+            closeAlert={this.closeDialog}
+            sending={this.state.sending}
+            sendingProgress={this.state.sendingProgress}
+            handleCancelSend={this.handleCancel}
+          />
         </PageWrapper>
       </div>
     );

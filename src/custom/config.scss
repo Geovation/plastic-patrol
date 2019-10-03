@@ -1,6 +1,8 @@
 $primary: #000;
 $secondary: #099;
 
+$textSecondary: rgba(0, 0, 0, 0.54);
+
 // export scss vars as js object
 :export {
   primary: $primary;

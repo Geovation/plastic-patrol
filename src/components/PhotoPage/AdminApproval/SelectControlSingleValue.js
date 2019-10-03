@@ -15,13 +15,16 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import _ from 'lodash';
+import { getValueFromTree } from '../../../utils';
+
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    display:'flex',
+    flexDirection:'column',
     width:'100%',
-    // margin:15,
-    textAlign: 'center',
+    justifyContent:'flex-end'
   },
   input: {
     display: 'flex',
@@ -29,13 +32,13 @@ const styles = theme => ({
   },
   valueContainer: {
     display: 'flex',
-    flexWrap: 'wrap', //default
+    flexWrap: 'wrap',
     flex: 1,
     alignItems: 'center',
-    // overflow: 'hidden',  // default
+    overflow: 'hidden',
   },
   chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
   },
   chipFocused: {
     backgroundColor: emphasize(
@@ -44,7 +47,7 @@ const styles = theme => ({
     ),
   },
   noOptionsMessage: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
   },
   singleValue: {
     fontSize: 16,
@@ -57,12 +60,12 @@ const styles = theme => ({
   paper: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     left: 0,
     right: 0,
   },
   divider: {
-    height: theme.spacing.unit * 2,
+    height: theme.spacing(2),
   },
   cssUnderline: {
     '&:after': {
@@ -92,6 +95,7 @@ function Control(props) {
     <TextField
       fullWidth
       InputProps={{
+        className: props.selectProps.classes.cssUnderline,
         inputComponent,
         inputProps: {
           className: props.selectProps.classes.input,
@@ -113,7 +117,6 @@ function Option(props) {
       component="div"
       style={{
         fontWeight: props.isSelected ? 500 : 400,
-
       }}
       {...props.innerProps}
     >
@@ -143,7 +146,7 @@ function SingleValue(props) {
 }
 
 function ValueContainer(props) {
-  return <div id='valueContainer' className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
 
 function MultiValue(props) {
@@ -162,11 +165,30 @@ function MultiValue(props) {
 
 function Menu(props) {
   return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper elevation={2} square className={props.selectProps.classes.paper} {...props.innerProps}>
       {props.children}
     </Paper>
   );
 }
+
+function DropdownIndicator(props) {
+  return (
+    null
+  );
+};
+
+function IndicatorSeparator(props) {
+  return (
+    null
+  );
+};
+
+
+function ClearIndicator(props) {
+  return (
+    null
+  );
+};
 
 const components = {
   Control,
@@ -177,112 +199,39 @@ const components = {
   Placeholder,
   SingleValue,
   ValueContainer,
+  DropdownIndicator,
+  IndicatorSeparator,
+  ClearIndicator
 };
 
-class SelectControlMultipleValue extends React.Component {
+class SelectControlSingleValue extends React.Component {
   state = {
     single: null,
-    multi: null,
-    options: [],
-    menuIsOpen: false,
+    options: []
   };
 
-  onBlurMenuShouldClose = true;
-  options = [];
-  items = [];
-
-  handleInputChange = (input) => {
-    let options;
-    if (input==='') {
-      options = this.options;
-    }
-    else{
-      options = this.items;
-    }
-    this.setState({ options });
-  }
-
-  handleChange = name => values => {
-    const valueFormated = values.length ? values[values.length - 1].key : '';
-    this.props.handleChange(valueFormated);
-
-    if (values.length !== 0) {
-      let current_data = {...this.props.field.data};
-      const findvaluePath = this.findOptions(this.props.field.data,values[values.length - 1].key);
-
-      this.setState({ [name] : findvaluePath });
-      // this.props.getValuesSelected(findvaluePath,this.props.selectId);
-
-      Object.values(findvaluePath).forEach(value => {
-        current_data = current_data[value.key].children;
-        if (!current_data) {
-          current_data = {};
-        }
-      });
-      const new_values = this.changeOptions(current_data);
-      this.options = new_values;
-      this.setState({ options: new_values });
-      this.controlMenuVisibility(current_data,new_values);
-    }
-    else {
-      // this.props.getValuesSelected([],this.props.selectId);
-      this.setState({ [name]: [] });
-      this.initializeOptions(this.props.field.data)
-      this.controlMenuVisibility(this.props.field.data,[]);
-    }
-  };
-
-  controlMenuVisibility = (data,values) => {
-    if (values.length === 0) {
-      this.onBlurMenuShouldClose = true;
-    }
-    else {
-      this.onBlurMenuShouldClose = false;
-    }
-
-    if (Object.entries(data).length === 0) {
-      this.setState({ menuIsOpen: false });
-    }
-    else {
-      this.setState({ menuIsOpen: true });
-    }
-  }
-
-  changeOptions = (data) => {
-    let values = [];
-    Object.entries(data).forEach(([key,value])=>{
-      values.push({ label: value.label, key: key });
+  handleChange = name => value => {
+    this.setState({
+      [name]: value,
     });
-    return values;
-  }
 
-  findOptions = (tree,key_to_find) => {
-
-    const stack = [];
-    let listWithNodes = [];
-
-    function findPathOfFoundedNode(tree,key_to_find) {
-      Object.entries(tree).forEach(([key,value]) => {
-        if (key_to_find === key){
-          const foundedNode = { label:value.label,key:key }
-          listWithNodes = [...stack,foundedNode];
-        }
-        if(value.children){
-          stack.push({ label:value.label, key:key });
-          findPathOfFoundedNode(value.children,key_to_find);
-          stack.pop();
-        }
-      });
+    let selectedValue;
+    if (value) {
+      selectedValue = value.key;
     }
-    findPathOfFoundedNode(tree,key_to_find);
-    return listWithNodes;
-  }
+    else {
+      selectedValue = null;
+    }
+
+    this.props.handleChangeSelect(selectedValue)
+  };
+
 
   getItems = (tree) => {
-    let items = [];
+  let items = [];
 
-    function getNodesInLowestHierarchy(tree){
-      Object.entries(tree).forEach( ([key,value]) => {
+  function getNodesInLowestHierarchy(tree){
+    Object.entries(tree).forEach( ([key,value]) => {
         if (!value.children) {
           items.push({ label: value.label, key: key });
         }
@@ -297,16 +246,29 @@ class SelectControlMultipleValue extends React.Component {
   }
 
   initializeOptions = (data) => {
-    const options = Object
+    const unsortedOptions = Object
                   .entries(data)
-                  .map(([key,value]) => ({label: value.label, key: key }));
+                  .map(([key,value]) => ({label: value.label, key: value.key }));
+
+    const options = _.sortBy(unsortedOptions, "label");
+
     this.options = options;
     this.setState({ options });
   }
 
   componentDidMount(){
     this.items = this.getItems(this.props.field.data);
-    this.initializeOptions(this.props.field.data);
+    this.initializeOptions(this.items);
+  }
+
+  componentDidUpdate(prevProps){
+
+    if(prevProps.single!==this.props.single){
+      const label = getValueFromTree(this.props.field.data,this.props.single);
+      this.setState({
+        single: label ? {label: label, key:this.props.single} : null
+      });
+    }
   }
 
   render() {
@@ -329,22 +291,20 @@ class SelectControlMultipleValue extends React.Component {
             classes={classes}
             styles={selectStyles}
             components={components}
-            value={this.state.multi}
-            onChange={this.handleChange('multi')}
-            menuPosition='fixed'
-            placeholder={field.placeholder}
-            options={this.state.options}
-            isMulti
+            value={this.state.single}
+            onChange={this.handleChange('single')}
             getOptionValue={(option) => (option['label'])}
+            placeholder={field.placeholder}
             noOptionsMessage={() => field.noOptionsMessage}
-            onInputChange={(e) => this.handleInputChange(e)}
-            menuIsOpen={this.state.menuIsOpen}
-            onFocus={() => this.setState({ menuIsOpen: true })}
-            onBlur={() => {
-              if (this.onBlurMenuShouldClose) {
-                this.setState({ menuIsOpen: false });
+            options={this.state.options}
+            textFieldProps={{
+              label: 'Category',
+              InputLabelProps: {
+                shrink: true,
+                style: {color: '#000'}
               }
             }}
+            isClearable
           />
         </NoSsr>
       </div>
@@ -353,9 +313,9 @@ class SelectControlMultipleValue extends React.Component {
 }
 
 // TODO: describe the props.
-SelectControlMultipleValue.propTypes = {
+SelectControlSingleValue.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(SelectControlMultipleValue);
+export default withStyles(styles, { withTheme: true })(SelectControlSingleValue);

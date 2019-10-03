@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import _ from "lodash";
 
-import "./style.scss";
+import "../style.scss";
 
 const styles = theme => ({
   pictureThumbnail: {
