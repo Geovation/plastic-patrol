@@ -11,35 +11,39 @@ export const gtagInit = () => {
     });
   }
   else{
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${config.GA_TRACKING_ID}`;
-    document.body.appendChild(script);
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${config.GA_PROPERTY_ID}`;
+        document.body.appendChild(script);
 
-    gtag('js', new Date());
-    gtag('config', config.GA_TRACKING_ID, {
-      'page_path' : '/#/'
-    });
+        gtag("js", new Date());
 
-    gtag('event', 'app version', {
-      'event_category' : 'Tech',
-      'event_label' : process.env.REACT_APP_VERSION,
-      'non_interaction': true
-    });
+        // this is the new analytics
+        gtag("config", config.GA_PROPERTY_ID);
 
-    gtag('event', 'build number', {
-      'event_category' : 'Tech',
-      'event_label' : process.env.REACT_APP_BUILD_NUMBER,
-      'non_interaction': true
-    });
+        // it will phased out
+        gtag("config", config.GA_TRACKING_ID, {
+          page_path: "/#/"
+        });
 
-    gtag('event', 'type', {
-      'event_category' : 'Tech',
-      'event_label' : 'web',
-      'non_interaction': true
-    });
+        gtag("event", "app version", {
+          event_category: "Tech",
+          event_label: process.env.REACT_APP_VERSION,
+          non_interaction: true
+        });
 
-  }
+        gtag("event", "build number", {
+          event_category: "Tech",
+          event_label: process.env.REACT_APP_BUILD_NUMBER,
+          non_interaction: true
+        });
+
+        gtag("event", "type", {
+          event_category: "Tech",
+          event_label: "web",
+          non_interaction: true
+        });
+      }
 }
 
 export const gtagPageView = (pathname) => {

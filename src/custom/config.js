@@ -148,7 +148,8 @@ export default {
   // MAP_ATTRIBUTION: "Contains OS data &copy; Crown copyright and database rights 2018",
   MAPBOX_TOKEN:
     "pk.eyJ1Ijoic2ViYXN0aWFub3ZpZGVnZW92YXRpb251ayIsImEiOiJjanBqZzRmNHgwNXljM2tydHlkM29id3FwIn0.-1V8Ue9P6eQr8FGghaTYiw",
-  GA_TRACKING_ID: "189010506",
+  GA_TRACKING_ID: "UA-126516084-1",
+  GA_PROPERTY_ID: "189010506",
   PHOTO_ZOOMED_FIELDS: {
     updated: s => new Date(s).toDateString(),
     pieces: s => s
