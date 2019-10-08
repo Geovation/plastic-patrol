@@ -7,6 +7,7 @@ import "firebase/performance";
 // import 'firebase/messaging';
 // import 'firebase/functions';
 import "firebase/storage";
+import "firebase/analytics";
 
 import config from './custom/config'
 // Initialize Firebase
