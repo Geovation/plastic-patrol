@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import _ from 'lodash';
-import { getValueFromTree } from '../../../utils';
+import { getValueFromTree } from '../../../../utils';
 
 
 const styles = theme => ({

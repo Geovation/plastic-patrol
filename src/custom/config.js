@@ -14,8 +14,8 @@ import _ from "lodash";
 import styles from "./config.scss";
 import enums from "../types/enums";
 
-import TitleTextField from "../components/PhotoPage/AdminApproval/TitleTextField";
-import MultiFields from "../components/PhotoPage/AdminApproval/MultiFields";
+import TitleTextField from "../components/pages/PhotoPage/AdminApproval/TitleTextField";
+import MultiFields from "../components/pages/PhotoPage/AdminApproval/MultiFields";
 
 import { data } from "./categories";
 

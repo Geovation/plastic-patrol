@@ -15,7 +15,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 
 import TutorialPage from "./components/pages/TutorialPage";
 import WelcomePage from "./components/pages/WelcomePage";
-import PhotoPage from "./components/PhotoPage";
+import PhotoPage from "./components/pages/PhotoPage";
 import ProfilePage from "./components/ProfilePage";
 import Map from "./components/MapPage/Map";
 import CustomPhotoDialog from "./components/CustomPhotoDialog";

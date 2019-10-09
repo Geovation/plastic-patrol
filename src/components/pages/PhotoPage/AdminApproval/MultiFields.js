@@ -3,7 +3,7 @@ import SelectControlSingleValue from "./SelectControlSingleValue";
 import RemoveIcon from "@material-ui/icons/RemoveCircleOutline";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import { getValueAndAncestorsFromTree } from "../../../utils";
+import { getValueAndAncestorsFromTree } from "../../../../utils";
 
 const styles = theme => ({});
 
