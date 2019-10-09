@@ -96,6 +96,7 @@ matrix:
       -iv $encrypted_24a643539195_iv -in cordova-app/secrets.tar.enc -out cordova-app/secrets.tar
       -d && cd cordova-app && tar xvf secrets.tar && cd ..; fi
     - if [ "$TRAVIS_PULL_REQUEST" == false ]; then ./scripts/add-key.sh; fi
+    - pod repo update
     script:
     - npm run build
     - npm run build:ios
