@@ -8,6 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import StarsIcon from '@material-ui/icons/Stars';
 
+import { sortArrayByObjectKey } from "utils";
+
 import PageWrapper from '../../components/PageWrapper';
 import config from '../../custom/config';
 
@@ -41,7 +43,7 @@ class Leaderboard extends Component {
   renderTableBody() {
     const { usersLeaderboard, classes, config, user } = this.props
     const userId = user && user.id
-    usersLeaderboard.sort((a,b) => b[config.LEADERBOARD_FIELD.field] - a[config.LEADERBOARD_FIELD.field]);
+    const sortedLeaderboard = sortArrayByObjectKey(usersLeaderboard,config.LEADERBOARD_FIELD.field).reverse()
 
 
     return < TableBody >

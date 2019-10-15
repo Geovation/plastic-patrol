@@ -1,3 +1,5 @@
+import { sortArrayByObjectKey } from "utils";
+
 export const getDropdownOptions = categoriesObject => {
   const items = [];
 
@@ -12,5 +14,6 @@ export const getDropdownOptions = categoriesObject => {
   }
 
   getNodesInLowestHierarchy(categoriesObject);
-  return items;
+  
+  return sortArrayByObjectKey(items, "label");
 };
