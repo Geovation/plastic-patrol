@@ -21,6 +21,8 @@ const Fields = ({ imgSrc, handleChange }) => {
     categoryValues.push({ keyIndex: childIndex, values: {} });
     setNextChildIndex(childIndex + 1);
     setCategoryValues(categoryValues);
+    setAnyCategoryErrors(true);
+    handleChange(true, categoryValues);
   };
 
   const handleCategoryChange = index => newValue => {
@@ -65,7 +67,7 @@ const Fields = ({ imgSrc, handleChange }) => {
       setAnyCategoryErrors(anyErrors);
       handleChange(anyErrors, filteredCategoryValues);
     },
-    [categoryValues]
+    [categoryValues, handleChange]
   );
 
   const imgRef = useOnOutsideClick(() => setPhotoEnlarged(false));

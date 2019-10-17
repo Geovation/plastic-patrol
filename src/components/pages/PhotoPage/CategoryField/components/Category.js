@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import RemoveIcon from "@material-ui/icons/RemoveCircleOutline";
 
@@ -14,25 +14,42 @@ const CategoryField = ({ handleClickRemove, handleChange }) => {
   const [brand, setBrand] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
 
-  const handleChangeCallback = useCallback(value => handleChange(value), [
-    handleChange
-  ]);
-
+  const categoryValuesRef = useRef({
+    numberOfPiecesRef: numberOfPieces,
+    brandRef: brand,
+    selectedOptionRef: selectedOption
+  });
   //TODO: come up with a nicer way of doing this with the whole tree
   useEffect(() => {
-    const validBrand = validateString(brand);
-    const validCategory =
-      validBrand &&
-      validateIsPositiveNumber(numberOfPieces) &&
-      validateIsPositiveNumber(selectedOption && selectedOption.key);
+    const {
+      numberOfPiecesRef,
+      brandRef,
+      selectedOptionRef
+    } = categoryValuesRef.current;
 
-    handleChangeCallback({
-      leafKey: selectedOption && selectedOption.key,
-      number: numberOfPieces,
-      brand: validBrand && brand.trim(),
-      error: !validCategory
-    });
-  }, [numberOfPieces, brand, selectedOption]);
+    if (
+      numberOfPiecesRef !== numberOfPieces ||
+      brandRef !== brand ||
+      selectedOptionRef !== selectedOption
+    ) {
+      const validBrand = validateString(brand);
+      const validCategory =
+        validBrand &&
+        validateIsPositiveNumber(numberOfPieces) &&
+        validateIsPositiveNumber(selectedOption && selectedOption.key);
+
+      handleChange({
+        leafKey: selectedOption && selectedOption.key,
+        number: numberOfPieces,
+        brand: validBrand && brand.trim(),
+        error: !validCategory
+      });
+
+      categoryValuesRef.current.numberOfPiecesRef = numberOfPieces;
+      categoryValuesRef.current.brandRef = brand;
+      categoryValuesRef.current.selectedOptionRef = selectedOption;
+    }
+  }, [numberOfPieces, brand, selectedOption, handleChange]);
 
   return (
     <div className={"CategoryField__container"}>
