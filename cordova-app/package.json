@@ -5,8 +5,8 @@
   "homepage": "./",
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
@@ -22,6 +22,9 @@
       "cordova-plugin-androidx-adapter": {},
       "cordova-support-google-services": {}
     }
+  },
+  "scripts": {
+    "workaround:android": "sed -i 's/gradle:\\+/gradle:3.5.1/g' platforms/android/cordova-support-google-services/plasticpatrol-build.gradle"
   },
   "dependencies": {
     "cordova-android": "^8.1.0",
