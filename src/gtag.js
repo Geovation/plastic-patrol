@@ -21,15 +21,15 @@ export const gtagInit = () => {
 
   analytics.setCurrentScreen("/#");
 
-  analytics.logEvent('app version', {
+  analytics.logEvent("app_version", {
     event_category: "Tech",
-    event_label: process.env.REACT_APP_VERSION,
+    event_label: String(process.env.REACT_APP_VERSION),
     non_interaction: true
   });
 
-  analytics.logEvent("build number", {
+  analytics.logEvent("build_number", {
     event_category: "Tech",
-    event_label: process.env.REACT_APP_BUILD_NUMBER,
+    event_label: String(process.env.REACT_APP_BUILD_NUMBER),
     non_interaction: true
   });
 };
@@ -38,14 +38,19 @@ export const gtagPageView = (pathname) => {
   analytics.setCurrentScreen("/#" + pathname)
 };
 
-export const gtagEvent = (name, category=null, label=null,non_interaction=false) => {
-    analytics.logEvent( name, {
-      'event_category' : category,
-      'event_label' : label,
-      'non_interaction': non_interaction
-    });
+export const gtagEvent = (
+  name,
+  category = null,
+  label = null,
+  non_interaction = false
+) => {
+  analytics.logEvent(String(name).replace(/ /g, "_"), {
+    event_category: String(category),
+    event_label: String(label),
+    non_interaction: Boolean(non_interaction)
+  });
 };
 
 export const gtagSetId = (id) => {
-  analytics.setUserId(id)
+  analytics.setUserId(String(id));
 };

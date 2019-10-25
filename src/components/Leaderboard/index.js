@@ -41,15 +41,17 @@ const styles = theme => ({
 
 class Leaderboard extends Component {
   renderTableBody() {
-    const { usersLeaderboard, classes, config, user } = this.props
-    const userId = user && user.id
-    const sortedLeaderboard = sortArrayByObjectKey(usersLeaderboard,config.LEADERBOARD_FIELD.field).reverse()
-
+    const { usersLeaderboard, classes, config, user } = this.props;
+    const userId = user && user.id;
+    sortArrayByObjectKey(
+      usersLeaderboard,
+      config.LEADERBOARD_FIELD.field
+    ).reverse();
 
     return < TableBody >
       {
         usersLeaderboard.map((user, index) => {
-          const highlightRow = index === 0 || user.uid === userId
+          const highlightRow = index === 0 || user.uid === userId;
 
           return (
             <TableRow key={index}>
