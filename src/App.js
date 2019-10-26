@@ -209,7 +209,6 @@ class App extends Component {
     if (!_.isEqual(this.state.geojson, geojson)) {
       const stats = this.props.config.getStats(geojson, this.state.dbStats);
       this.setState({ geojson, stats });
-
       // after the first time, wait for a bit before updating.
       localforage.setItem("cachedGeoJson", geojson);
     }
@@ -302,6 +301,13 @@ class App extends Component {
           this.geojson = geojson;
           const stats = this.props.config.getStats(geojson, this.state.dbStats);
           this.setState({ geojson, stats });
+          this.featuresDict = geojson.features;
+        } else {
+          dbFirebase.fetchPhotos().then(photos => {
+            _.forEach(photos, photo => {
+              this.addFeature(photo)
+            })
+          })
         }
       })
       .catch(console.error);

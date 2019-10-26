@@ -10,31 +10,42 @@ const storageRef = firebase.storage().ref();
 
 // TODO: add caching
 
-function extractPhoto(doc) {
-  const prefix = `https://storage.googleapis.com/${storageRef.location.bucket}/photos/${doc.id}`;
+function extractPhoto(data, id) {
+  const prefix = `https://storage.googleapis.com/${storageRef.location.bucket}/photos/${id}`;
 
   // some data from Firebase cannot be stringified into json, so we need to convert it into other format first.
-  const photo = _.mapValues(doc.data(), (fieldValue, fieldKey, doc) => {
+  const photo = _.mapValues(data, (fieldValue, fieldKey, doc) => {
     if (fieldValue instanceof firebase.firestore.DocumentReference) {
       return fieldValue.path;
     } else {
       return fieldValue;
     }}
   );
-
+  
   photo.thumbnail = `${prefix}/thumbnail.jpg`;
   photo.main = `${prefix}/1024.jpg`;
-  photo.id = doc.id;
-  photo.updated = photo.updated && photo.updated.toDate();
-  photo.moderated = photo.moderated && photo.moderated.toDate();
+  photo.id = id;
+
+  photo.updated = photo.updated && (photo.updated.constructor.name === "Timestamp" ? photo.updated.toDate() : new Date(photo.updated));
+  photo.moderated = photo.moderated && (photo.moderated.constructor.name === "Timestamp" ? photo.moderated.toDate() : new Date(photo.moderated));
+
+  // when comming from json, it looses the type
+  if (photo.location.constructor.name !== "GeoPoint") {
+    photo.location = new firebase.firestore.GeoPoint(photo.location._latitude, photo.location._longitude)
+  }
 
   return photo;
 }
 
 function photosRT(addedFn, modifiedFn, removedFn, errorFn) {
-  firestore.collection("photos").where("published", "==", true).onSnapshot( snapshot => {
+  firestore.collection("photos")
+    .where("published", "==", true)
+    .orderBy('moderated', 'desc')
+    .limit(100)
+    .onSnapshot( snapshot => {
+
     snapshot.docChanges().forEach( change => {
-      const photo = extractPhoto(change.doc);
+      const photo = extractPhoto(change.doc.data(), change.doc.id);
       if (change.type === "added") {
         addedFn(photo);
       } else if (change.type === "modified") {
@@ -62,6 +73,14 @@ const configObserver = (onNext, onError) => {
 async function fetchStats() {
   return fetch(config.API.URL + "/stats", {mode: "cors"})
     .then(response => response.json());
+}
+
+async function fetchPhotos() {
+  const photosResponse = (await fetch(config.API.URL + "/photos.json", {mode: "cors"}));
+  const photosJson = await photosResponse.json();
+  const photos = photosJson.photos;
+
+  return _.map(photos, (data, id) => extractPhoto(data,id ));
 }
 
 function fetchFeedbacks(isShowAll) {
@@ -115,7 +134,7 @@ async function getFeedbackByID(id) {
 
 async function getPhotoByID(id) {
   const fbPhoto =  await firestore.collection("photos").doc(id).get();
-  const photo = extractPhoto(fbPhoto);
+  const photo = extractPhoto(fbPhoto.data(), fbPhoto.id);
   if(fbPhoto.exists) {
     return {
       "type": "Feature",
@@ -146,7 +165,7 @@ function photosToModerateRT(howMany, updatePhotoToModerate, removePhotoToModerat
     .limit(howMany)
     .onSnapshot(snapshot => {
       snapshot.docChanges().forEach( change => {
-        const photo = extractPhoto(change.doc);
+        const photo = extractPhoto(change.doc.data(), change.doc.id);
         if (change.type === "added" || change.type === "modified") {
           updatePhotoToModerate(photo);
         } else if (change.type === "removed") {
@@ -216,6 +235,7 @@ export default {
   photosRT,
   fetchStats,
   fetchFeedbacks,
+  fetchPhotos,
   getUser,
   getFeedbackByID,
   getPhotoByID,

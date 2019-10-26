@@ -24,8 +24,8 @@ const DB_CACHE_AGE_MS = 1000 * 60 * 60 * 24 * 1; // 1 day
 const WEB_CACHE_AGE_S =    1 * 60 * 60 * 24 * 1; // 1day
 
 const config = require("./config.json");
-// const DB_CACHE_AGE_MS = 0; // 1 day
-// const WEB_CACHE_AGE_S =    0; // 1day
+// const DB_CACHE_AGE_MS = 0; // none
+// const WEB_CACHE_AGE_S =    0; // noce
 
 
 admin.initializeApp();
