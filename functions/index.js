@@ -190,12 +190,22 @@ app.get('/photos.json', async (req, res) => {
   };
   querySnapshot.forEach( doc => {
     // doc.data() is never undefined for query doc snapshots
-    data.photos[doc.id] = doc.data();
+    data.photos[doc.id] = convertFirebaseTimestampFieldsIntoDate(doc.data());
   });
 
   res.json(data);
   return true;
 });
+
+function convertFirebaseTimestampFieldsIntoDate(photo) {
+  const newPhoto = _.cloneDeep(photo);
+  _.forEach(newPhoto, (value, field) => {
+    if (value.constructor.name == "Timestamp") {
+      newPhoto[field] = value.toDate();
+    }
+  });
+  return newPhoto;
+}
 
 function plainToFlattenObject(object) {
   const result = {}
@@ -210,7 +220,7 @@ function plainToFlattenObject(object) {
     })
   }
 
-  flatten(object)
+  flatten(JSON.parse(JSON.stringify(object)));
 
   return result
 }
@@ -225,7 +235,9 @@ app.get('/photos.csv', async (req, res) => {
   const querySnapshot = await firestore.collection('photos').where("published", "==", true).get();
   const photos = [];
   querySnapshot.forEach( doc => {
-    const newPhoto = plainToFlattenObject(_.extend(doc.data(), {id: doc.id}));
+    const photo = convertFirebaseTimestampFieldsIntoDate(doc.data());
+    const newPhoto = plainToFlattenObject(_.extend(photo, { id: doc.id }));
+
     photos.push(newPhoto);
   });
 
