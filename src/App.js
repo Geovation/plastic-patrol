@@ -802,8 +802,7 @@ class App extends Component {
 
           {!this.state.welcomeShown &&
             this.props.history.location.pathname !==
-              config.PAGES.embeddable.path &&
-            this.state.termsAccepted && (
+              config.PAGES.embeddable.path && (
               <WelcomePage handleClose={this.handleWelcomePageClose} />
             )}
 
