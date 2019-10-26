@@ -65,7 +65,10 @@ async function getPhotosFromMap() {
         if (line.match("var image_[0-9]")) {
           const latitude = Number(line.match("\\[(-?[0-9]+\.[0-9]+),")[1]);
           const longitude = Number(line.match(",(-?[0-9]+\.[0-9]+)\\],")[1]);
-          const location = new admin.firestore.GeoPoint(latitude, longitude);
+          const location = new admin.firestore.GeoPoint(
+            latitude || 0,
+            longitude || 0
+          );
 
           photo.location = location;
           searchPhase = 'url'

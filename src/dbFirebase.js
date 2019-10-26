@@ -19,19 +19,28 @@ function extractPhoto(data, id) {
       return fieldValue.path;
     } else {
       return fieldValue;
-    }}
-  );
-  
+    }
+  });
+
   photo.thumbnail = `${prefix}/thumbnail.jpg`;
   photo.main = `${prefix}/1024.jpg`;
   photo.id = id;
 
-  photo.updated = photo.updated && (photo.updated.constructor.name === "Timestamp" ? photo.updated.toDate() : new Date(photo.updated));
-  photo.moderated = photo.moderated && (photo.moderated.constructor.name === "Timestamp" ? photo.moderated.toDate() : new Date(photo.moderated));
+  photo.updated =
+    photo.updated instanceof firebase.firestore.Timestamp
+      ? photo.updated.toDate()
+      : new Date(photo.updated);
+  photo.moderated =
+    photo.moderated instanceof firebase.firestore.Timestamp
+      ? photo.moderated.toDate()
+      : new Date(photo.moderated);
 
   // when comming from json, it looses the type
-  if (photo.location.constructor.name !== "GeoPoint") {
-    photo.location = new firebase.firestore.GeoPoint(photo.location._latitude, photo.location._longitude)
+  if (!(photo.location instanceof firebase.firestore.GeoPoint)) {
+    photo.location = new firebase.firestore.GeoPoint(
+      Number(photo.location._latitude) || 0,
+      Number(photo.location._longitude) || 0
+    );
   }
 
   return photo;
@@ -95,7 +104,10 @@ function fetchFeedbacks(isShowAll) {
 }
 
 function saveMetadata(data) {
-  data.location = new firebase.firestore.GeoPoint(data.latitude, data.longitude);
+  data.location = new firebase.firestore.GeoPoint(
+    Number(data.latitude) || 0,
+    Number(data.longitude) || 0
+  );
   delete data.latitude;
   delete data.longitude;
 
@@ -213,7 +225,10 @@ async function writeFeedback(data) {
   }
   data.updated = firebase.firestore.FieldValue.serverTimestamp();
   if (data.latitude && data.longitude) {
-    data.location = new firebase.firestore.GeoPoint(data.latitude, data.longitude);
+    data.location = new firebase.firestore.GeoPoint(
+      Number(data.latitude) || 0,
+      Number(data.longitude) || 0
+    );
   }
 
   delete data.latitude;
