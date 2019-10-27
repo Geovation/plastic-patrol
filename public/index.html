@@ -32,14 +32,13 @@
         -->
 
     <meta http-equiv="Content-Security-Policy" content="
-        default-src * data: gap://ready https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline' file://* blob:;
-        connect-src * 'unsafe-inline';
-        style-src * data: blob: 'unsafe-inline';
+        default-src * blob: data: gap://ready https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline' file://* blob:;
+        connect-src * blob: 'unsafe-inline';
+        style-src * data: blob: 'self' 'unsafe-inline';
         font-src * data: blob: 'unsafe-inline';
-        media-src * 'unsafe-inline';
-        script-src * 'unsafe-inline' 'unsafe-eval';
-        worker-src * 'unsafe-inline' 'unsafe-eval' blob:;
-        frame-src * gap://ready;
+        media-src * blob: 'unsafe-inline';
+        script-src * data: gap: blob: https://ssl.gstatic.com http://localhost 'self' 'unsafe-inline' 'unsafe-eval';
+        frame-src * blob: gap://ready;
         img-src * 'self' data: content: blob: 'unsafe-inline';">
 
     <script>
