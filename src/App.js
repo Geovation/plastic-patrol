@@ -37,8 +37,6 @@ import FeedbackReportsSubrouter from "./components/FeedbackReports/FeedbackRepor
 import MapLocation from "./types/MapLocation";
 const placeholderImage = process.env.PUBLIC_URL + "/custom/images/logo.svg";
 
-const SET_GEOJSON_INTERVAL = 10000;
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -193,43 +191,32 @@ class App extends Component {
     );
   }
 
-  saveGeojson = () => {
-    let geojson = _.cloneDeep(this.state.geojson);
-
-    if (!geojson) {
-      geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-    }
-
-    geojson.features = _.map(this.featuresDict, f => f);
-
-    // save only if different
-    if (!_.isEqual(this.state.geojson, geojson)) {
-      const stats = this.props.config.getStats(geojson, this.state.dbStats);
-      this.setState({ geojson, stats });
-      // after the first time, wait for a bit before updating.
-      localforage.setItem("cachedGeoJson", geojson);
-    }
-  };
-
+  // Saving means also to update the state which means also tro re display the maop which is very slow.
+  // Wait 100 miliseconds before saving. That allows to enque few changes before actually saving it.
   delayedSaveGeojson = () => {
-    // checked automatically.
-    if (this.settingGeojsonInterval) {
-      return;
-    }
-
     if (this.settingGeojson) {
       clearTimeout(this.settingGeojson);
       delete this.settingGeojson;
     }
 
     this.settingGeojson = setTimeout(() => {
-      this.saveGeojson();
-      this.settingGeojsonInterval = setInterval(() => {
-        this.saveGeojson();
-      }, SET_GEOJSON_INTERVAL);
+      let geojson = _.cloneDeep(this.state.geojson);
+
+      if (!geojson) {
+        geojson = {
+          type: "FeatureCollection",
+          features: []
+        };
+      }
+
+      geojson.features = _.map(this.featuresDict, f => f);
+
+      // save only if different
+      if (!_.isEqual(this.state.geojson, geojson)) {
+        this.setState({ geojson });
+        // after the first time, wait for a bit before updating.
+        localforage.setItem("cachedGeoJson", geojson);
+      }
     }, 100);
   };
 
@@ -303,14 +290,18 @@ class App extends Component {
           this.setState({ geojson, stats });
           this.featuresDict = geojson.features;
         } else {
-          dbFirebase.fetchPhotos().then(photos => {
-            _.forEach(photos, photo => {
-              this.addFeature(photo)
-            })
-          })
+          this.fetchPhotos();
         }
       })
       .catch(console.error);
+  }
+
+  fetchPhotos() {
+    dbFirebase.fetchPhotos().then(photos => {
+      _.forEach(photos, photo => {
+        this.addFeature(photo);
+      });
+    });
   }
 
   async componentWillUnmount() {
@@ -325,6 +316,14 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const stats = this.props.config.getStats(
+      this.state.geojson,
+      this.state.dbStats
+    );
+    if (!_.isEqual(this.state.stats, stats)) {
+      this.setState({ stats });
+    }
+
     if (prevProps.location !== this.props.location) {
       gtagPageView(this.props.location.pathname);
 
@@ -628,6 +627,15 @@ class App extends Component {
     this.props.history.push(`${pathname}@${coordsUrl}`);
   };
 
+  reloadPhotos = () => {
+    // delete photos.
+    this.featuresDict = {};
+
+    // it will open the "loading photos" message
+    this.setState({ geojson: null }); 
+    this.fetchPhotos();
+  };
+
   render() {
     const { fields, config, history } = this.props;
     return (
@@ -669,6 +677,7 @@ class App extends Component {
                   {...props}
                   label={this.props.config.PAGES.about.label}
                   handleClose={history.goBack}
+                  reloadPhotos={this.reloadPhotos}
                 />
               )}
             />
