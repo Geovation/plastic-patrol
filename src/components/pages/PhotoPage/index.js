@@ -186,7 +186,11 @@ class PhotoPage extends Component {
     try {
       photoRef = await dbFirebase.saveMetadata(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+
+      // debugger
+      const extraInfo = error.code === "storage/canceled" ? "" : `Try again (${error.message})`
+      this.openDialog(`Photo upload was canceled. ${extraInfo}`);
     }
 
     this.setState({ sendingProgress: 1, enabledUploadButton: true });
@@ -215,7 +219,10 @@ class PhotoPage extends Component {
           }
         },
         error => {
-          this.openDialog("Photo upload was canceled");
+          // debugger
+          console.error(error);
+          const extraInfo = error.code === "storage/canceled" ? "" : `Try again (${error.message})`;
+          this.openDialog(`Photo upload was canceled. ${extraInfo}`);
         },
         () => {
           this.openDialog(
@@ -317,12 +324,14 @@ class PhotoPage extends Component {
   };
 
   handleCancel = () => {
-    this.setState({ sending: false });
+    this.setState({ sending: false, sendingProgress: 0, enabledUploadButton: true });
 
     if (this.uploadTask) {
       this.uploadTask.cancel();
     } else {
       this.cancelClickUpload = true;
+
+      // debugger
       this.openDialog("Photo upload was canceled");
     }
   };
