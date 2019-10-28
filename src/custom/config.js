@@ -32,7 +32,7 @@ const CUSTOM_STRING = {
     "Write info about the photos and upload it to the cloud":
       "Categorise the rubbish by amount, type and brand",
     "View your images in our interactive map":
-      "Upload your photograph and see how how you’ve helped fight the crisis"
+      "Upload your photograph and see how you’ve helped fight the crisis"
   },
   about: {
     "We are Geovation and we Geovate":
