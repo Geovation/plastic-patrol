@@ -30,7 +30,8 @@ const emptyState = {
   anyError: true,
   enabledUploadButton: true,
   next: false,
-  fieldsValues: {}
+  fieldsValues: {},
+  totalCount: null
 };
 
 const styles = theme => ({
@@ -189,7 +190,8 @@ class PhotoPage extends Component {
       console.error(error);
 
       // debugger
-      const extraInfo = error.code === "storage/canceled" ? "" : `Try again (${error.message})`
+      const extraInfo =
+        error.code === "storage/canceled" ? "" : `Try again (${error.message})`;
       this.openDialog(`Photo upload was canceled. ${extraInfo}`);
     }
 
@@ -221,7 +223,10 @@ class PhotoPage extends Component {
         error => {
           // debugger
           console.error(error);
-          const extraInfo = error.code === "storage/canceled" ? "" : `Try again (${error.message})`;
+          const extraInfo =
+            error.code === "storage/canceled"
+              ? ""
+              : `Try again (${error.message})`;
           this.openDialog(`Photo upload was canceled. ${extraInfo}`);
         },
         () => {
@@ -324,7 +329,11 @@ class PhotoPage extends Component {
   };
 
   handleCancel = () => {
-    this.setState({ sending: false, sendingProgress: 0, enabledUploadButton: true });
+    this.setState({
+      sending: false,
+      sendingProgress: 0,
+      enabledUploadButton: true
+    });
 
     if (this.uploadTask) {
       this.uploadTask.cancel();
@@ -358,6 +367,10 @@ class PhotoPage extends Component {
     this.setState({ anyError, fieldsValues });
   };
 
+  handleTotalCountChange = (anyError, totalCount) => {
+    this.setState({ anyError, totalCount });
+  };
+
   render() {
     const { classes, label, fields } = this.props;
     return (
@@ -377,6 +390,7 @@ class PhotoPage extends Component {
             <div className={classes.fields}>
               <Fields
                 handleChange={this.handleChangeFields}
+                handleTotalCountChange={this.handleTotalCountChange}
                 imgSrc={this.state.imgSrc}
                 fields={fields}
                 error={this.state.anyError}

@@ -5,17 +5,28 @@ import Button from "@material-ui/core/Button";
 import useOnOutsideClick from "hooks/useOnOutsideClick";
 
 import CategoryField from "../../CategoryField";
+import { FieldLabelWithInput } from "../../CategoryField/components/CategoryDropdown/FieldLabel";
+import { validateIsPositiveNumber } from "../../CategoryField/components/validation";
 
 import "./Fields.scss";
 
 const INITIAL_CATEGORY_VALUES = [{ keyIndex: 0, values: { error: true } }];
 
-const Fields = ({ imgSrc, handleChange }) => {
+const Fields = ({ imgSrc, handleChange, handleTotalCountChange }) => {
   const [categoryValues, setCategoryValues] = useState(INITIAL_CATEGORY_VALUES);
   const [childIndex, setNextChildIndex] = useState(categoryValues.length);
-  const [totalCount, setTotalCount] = useState(0);
-  const [anyCategoryErrors, setAnyCategoryErrors] = useState(false);
+  const [totalCount, setTotalCount] = useState(null);
+  const [anyCategoryErrors, setAnyCategoryErrors] = useState(true);
+  const [totalCountErrors, setTotalCountErrors] = useState(true);
   const [photoEnlarged, setPhotoEnlarged] = useState(false);
+
+  const handleSetTotalCount = newTotalCount => {
+    const countError = !validateIsPositiveNumber(newTotalCount);
+
+    setTotalCount(newTotalCount);
+    setTotalCountErrors(countError);
+    handleTotalCountChange(countError || anyCategoryErrors, totalCount);
+  };
 
   const handleClickAdd = categoryValues => {
     categoryValues.push({ keyIndex: childIndex, values: {} });
@@ -27,27 +38,21 @@ const Fields = ({ imgSrc, handleChange }) => {
 
   const handleCategoryChange = index => newValue => {
     let error = false;
-    let count = 0;
     const updatedCategoryValues = categoryValues.map(categoryValue => {
-      const { keyIndex, values } = categoryValue;
+      const { keyIndex } = categoryValue;
 
       if (newValue.error) error = true;
 
       if (index === keyIndex) {
-        if (!isNaN(newValue.number)) count += Number(newValue.number);
-
         return { keyIndex, values: newValue };
       }
-
-      if (!isNaN(values.number)) count += Number(values.number);
 
       return categoryValue;
     });
 
     setAnyCategoryErrors(error);
-    handleChange(error, updatedCategoryValues);
+    handleChange(totalCountErrors || error, updatedCategoryValues);
     setCategoryValues(updatedCategoryValues);
-    setTotalCount(count);
   };
 
   const handleClickRemove = useCallback(
@@ -65,9 +70,9 @@ const Fields = ({ imgSrc, handleChange }) => {
 
       setCategoryValues(filteredCategoryValues);
       setAnyCategoryErrors(anyErrors);
-      handleChange(anyErrors, filteredCategoryValues);
+      handleChange(totalCountErrors || anyErrors, filteredCategoryValues);
     },
-    [categoryValues, handleChange]
+    [categoryValues, handleChange, totalCountErrors]
   );
 
   const imgRef = useOnOutsideClick(() => setPhotoEnlarged(false));
@@ -86,9 +91,14 @@ const Fields = ({ imgSrc, handleChange }) => {
             onClick={() => setPhotoEnlarged(!photoEnlarged)}
           />
         </div>
-        <div className="Fields__numberOfPieces">
-          Total number of pieces in photo: {totalCount}
-        </div>
+        <FieldLabelWithInput
+          label="Total number of pieces in photo:"
+          placeholder="e.g. 0"
+          value={totalCount}
+          setValue={handleSetTotalCount}
+          validationFn={validateIsPositiveNumber}
+          className="Fields__numberOfPieces"
+        />
       </div>
       <div className="Fields__instruction">
         Identify each piece of rubbish in the photo
