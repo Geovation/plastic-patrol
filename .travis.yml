@@ -96,7 +96,7 @@ matrix:
     #    after_script:
     #    - npm run coveralls
     before_deploy:
-#      - pushd functions && npm install && popd
+      - pushd functions && npm install && popd
       - git config --local user.name "Geovation from Travis"
       - git config --local user.email "info@geovation.uk"
       - export ORIGINAL_TAG=$TRAVIS_TAG
