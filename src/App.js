@@ -632,7 +632,7 @@ class App extends Component {
     this.featuresDict = {};
 
     // it will open the "loading photos" message
-    this.setState({ geojson: null }); 
+    this.setState({ geojson: null });
     this.fetchPhotos();
   };
 
@@ -809,9 +809,9 @@ class App extends Component {
             />
           </Switch>
 
-          {!this.state.welcomeShown &&
-            this.props.history.location.pathname !==
-              config.PAGES.embeddable.path && (
+          { !this.state.welcomeShown &&
+            config.PAGES.embeddable.path &&
+            !this.props.history.location.pathname.includes(config.PAGES.embeddable.path) && (
               <WelcomePage handleClose={this.handleWelcomePageClose} />
             )}
 
