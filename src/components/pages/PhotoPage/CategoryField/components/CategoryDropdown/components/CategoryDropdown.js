@@ -7,7 +7,7 @@ import { data } from "custom/categories";
 
 import FieldLabel from "../FieldLabel";
 
-import { getDropdownOptions } from "../consts";
+import { customFilterOption, getDropdownOptions } from "../utils";
 import "./CategoryDropdown.scss";
 
 function Control(props) {
@@ -88,6 +88,7 @@ const FieldLabelWithDropdowns = ({
         components={customComponents}
         placeholder={placeholder}
         options={dropdownOptionsRef.current}
+        filterOption={customFilterOption}
         onChange={value => setValue(value)}
         value={value}
         isClearable
