@@ -10,13 +10,13 @@ import { validateIsPositiveNumber } from "../../CategoryField/components/validat
 
 import "./Fields.scss";
 
-const INITIAL_CATEGORY_VALUES = [{ keyIndex: 0, values: { error: true } }];
+const INITIAL_CATEGORY_VALUES = [{ keyIndex: 0, values: { error: false } }];
 
 const Fields = ({ imgSrc, handleChange, handleTotalCountChange }) => {
   const [categoryValues, setCategoryValues] = useState(INITIAL_CATEGORY_VALUES);
   const [childIndex, setNextChildIndex] = useState(categoryValues.length);
   const [totalCount, setTotalCount] = useState(null);
-  const [anyCategoryErrors, setAnyCategoryErrors] = useState(true);
+  const [anyCategoryErrors, setAnyCategoryErrors] = useState(false);
   const [totalCountErrors, setTotalCountErrors] = useState(true);
   const [photoEnlarged, setPhotoEnlarged] = useState(false);
 
@@ -25,7 +25,7 @@ const Fields = ({ imgSrc, handleChange, handleTotalCountChange }) => {
 
     setTotalCount(newTotalCount);
     setTotalCountErrors(countError);
-    handleTotalCountChange(countError || anyCategoryErrors, totalCount);
+    handleTotalCountChange(countError || anyCategoryErrors, newTotalCount);
   };
 
   const handleClickAdd = categoryValues => {

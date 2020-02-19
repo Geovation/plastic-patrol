@@ -30,7 +30,7 @@ const emptyState = {
   anyError: true,
   enabledUploadButton: true,
   next: false,
-  fieldsValues: {},
+  fieldsValues: [],
   totalCount: null
 };
 
@@ -158,14 +158,14 @@ class PhotoPage extends Component {
       return;
     }
 
-    const { fieldsValues } = this.state;
-    let totalCount = 0;
+    const { fieldsValues, totalCount } = this.state;
+
     const fieldValuesToSend = fieldsValues.map(value => {
       const {
         values: { error, number, ...otherNonExtraneousFields }
       } = value;
       const numberAsNumber = Number(number);
-      totalCount += numberAsNumber;
+
       return { number: numberAsNumber, ...otherNonExtraneousFields };
     });
 
