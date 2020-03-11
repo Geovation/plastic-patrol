@@ -809,11 +809,11 @@ class App extends Component {
             />
           </Switch>
 
-          { !this.state.welcomeShown &&
+          {!this.state.welcomeShown &&
             config.PAGES.embeddable.path &&
-            !this.props.history.location.pathname.includes(config.PAGES.embeddable.path) && (
-              <WelcomePage handleClose={this.handleWelcomePageClose} />
-            )}
+            !this.props.history.location.pathname.includes(
+              config.PAGES.embeddable.path
+            ) && <WelcomePage handleClose={this.handleWelcomePageClose} />}
 
           <Map
             history={this.props.history}

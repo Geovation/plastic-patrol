@@ -1,16 +1,16 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CachedIcon from "@material-ui/icons/Cached";
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
 import PageWrapper from "./PageWrapper";
 import utils from "../utils";
 
 const styles = theme => ({
-  typography : {
+  typography: {
     ...theme.mixins.gutters(),
-    whiteSpace: 'pre-wrap',
+    whiteSpace: "pre-wrap"
   }
 });
 

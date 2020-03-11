@@ -1,43 +1,42 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import StarsIcon from '@material-ui/icons/Stars';
+import { withStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import StarsIcon from "@material-ui/icons/Stars";
 
 import { sortArrayByObjectKey } from "utils";
 
-import PageWrapper from '../../components/PageWrapper';
-import config from '../../custom/config';
+import PageWrapper from "../../components/PageWrapper";
+import config from "../../custom/config";
 
 const styles = theme => ({
   th: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.palette.common.white,
-    backgroundColor: 'rgba(0, 0, 0, 0.54)',
+    backgroundColor: "rgba(0, 0, 0, 0.54)"
   },
   highlightRow: {
-    fontWeight: 'bold',
-    color: config.THEME.palette.secondary.main,
+    fontWeight: "bold",
+    color: config.THEME.palette.secondary.main
   },
   cell: {
-    position: 'relative',
+    position: "relative",
     padding: theme.spacing(1),
-    fontSize: 'inherit',
+    fontSize: "inherit"
   },
   truncate: {
-    position: 'absolute',
+    position: "absolute",
     top: theme.spacing(1.5),
-    maxWidth: '90%',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
+    maxWidth: "90%",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  }
 });
-
 
 class Leaderboard extends Component {
   renderTableBody() {
@@ -48,9 +47,9 @@ class Leaderboard extends Component {
       config.LEADERBOARD_FIELD.field
     ).reverse();
 
-    return < TableBody >
-      {
-        usersLeaderboard.map((user, index) => {
+    return (
+      <TableBody>
+        {usersLeaderboard.map((user, index) => {
           const highlightRow = index === 0 || user.uid === userId;
 
           return (
@@ -85,9 +84,9 @@ class Leaderboard extends Component {
               </TableCell>
             </TableRow>
           );
-        })
-      }
-    </TableBody >
+        })}
+      </TableBody>
+    );
   }
 
   render() {
@@ -95,19 +94,32 @@ class Leaderboard extends Component {
 
     return (
       <PageWrapper label={label} handleClose={handleClose} hasLogo={false}>
-          <Table>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                className={`${classes.th} ${classes.cell}`}
+                style={{ width: "10%", textAlign: "center" }}
+              >
+                Rank
+              </TableCell>
+              <TableCell
+                className={`${classes.th} ${classes.cell}`}
+                style={{ width: "60%" }}
+              >
+                User
+              </TableCell>
+              <TableCell
+                className={`${classes.th} ${classes.cell}`}
+                style={{ width: "10%" }}
+              >
+                {[config.LEADERBOARD_FIELD.label]}
+              </TableCell>
+            </TableRow>
+          </TableHead>
 
-            <TableHead>
-              <TableRow>
-                <TableCell className={`${classes.th} ${classes.cell}`} style={{width:'10%', textAlign:'center'}}>Rank</TableCell>
-                <TableCell className={`${classes.th} ${classes.cell}`} style={{width:'60%'}}>User</TableCell>
-                <TableCell className={`${classes.th} ${classes.cell}`} style={{width:'10%'}}>{[config.LEADERBOARD_FIELD.label]}</TableCell>
-              </TableRow>
-            </TableHead>
-
-            {this.renderTableBody()}
-
-          </Table>
+          {this.renderTableBody()}
+        </Table>
       </PageWrapper>
     );
   }

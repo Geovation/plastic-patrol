@@ -3,7 +3,11 @@ import firebase from "firebase/app";
 let analytics;
 
 export const gtagInit = () => {
-  if (window.cordova && window.cordova.plugins && window.cordova.plugins.firebase) {
+  if (
+    window.cordova &&
+    window.cordova.plugins &&
+    window.cordova.plugins.firebase
+  ) {
     analytics = window.cordova.plugins.firebase.analytics;
     analytics.logEvent("type", {
       event_category: "Tech",
@@ -34,8 +38,8 @@ export const gtagInit = () => {
   });
 };
 
-export const gtagPageView = (pathname) => {
-  analytics.setCurrentScreen("/#" + pathname)
+export const gtagPageView = pathname => {
+  analytics.setCurrentScreen("/#" + pathname);
 };
 
 export const gtagEvent = (
@@ -51,6 +55,6 @@ export const gtagEvent = (
   });
 };
 
-export const gtagSetId = (id) => {
+export const gtagSetId = id => {
   analytics.setUserId(String(id));
 };
