@@ -6,12 +6,16 @@ import _ from "lodash";
 
 import RootRef from "@material-ui/core/RootRef";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import CloseIcon from "@material-ui/icons/Close";
 
 import TutorialPage from "./components/pages/TutorialPage";
 import WelcomePage from "./components/pages/WelcomePage";
@@ -36,6 +40,14 @@ import "./App.scss";
 import FeedbackReportsSubrouter from "./components/FeedbackReports/FeedbackReportsSubrouter";
 import MapLocation from "./types/MapLocation";
 const placeholderImage = process.env.PUBLIC_URL + "/custom/images/logo.svg";
+
+const styles = theme => ({
+  dialogClose: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1)
+  }
+});
 
 class App extends Component {
   constructor(props) {
@@ -383,7 +395,7 @@ class App extends Component {
     if (this.props.config.SECURITY.UPLOAD_REQUIRES_LOGIN && !this.state.user) {
       this.setState({
         dialogOpen: true,
-        dialogTitle: "attention",
+        dialogTitle: "Please login to add a photo",
         dialogContentText:
           "Before adding photos, you must be logged into your account."
       });
@@ -456,10 +468,6 @@ class App extends Component {
       loginLogoutDialogOpen: true,
       dialogOpen: false
     });
-  };
-
-  handleRejectLoginPhotoAdd = () => {
-    this.setState({ dialogOpen: false });
   };
 
   handleNextClick = async () => {
@@ -637,7 +645,7 @@ class App extends Component {
   };
 
   render() {
-    const { fields, config, history } = this.props;
+    const { classes, fields, config, history } = this.props;
     return (
       <div className="geovation-app">
         {!this.state.termsAccepted &&
@@ -880,7 +888,16 @@ class App extends Component {
         />
 
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
-          <DialogTitle>{this.state.dialogTitle}</DialogTitle>
+          <DialogTitle disableTypography>
+            <Typography variant="h6">{this.state.dialogTitle}</Typography>
+            <IconButton
+              className={classes.dialogClose}
+              aria-label="close"
+              onClick={this.handleDialogClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
           <DialogContent>
             <DialogContentText>
               {this.state.dialogContentText}
@@ -888,10 +905,6 @@ class App extends Component {
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={this.handleRejectLoginPhotoAdd} color="secondary">
-              No thanks!
-            </Button>
-
             {/* clicking ok should either open a login box or there should be a text field in the box to enter your email address */}
             <Button onClick={this.handleLoginPhotoAdd} color="secondary">
               Login
@@ -921,4 +934,5 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter(withStyles(styles, { withTheme: true })(App));
+
