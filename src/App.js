@@ -17,6 +17,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import CloseIcon from "@material-ui/icons/Close";
 
+import { dbFirebase, authFirebase } from "features/firebase";
+
 import TutorialPage from "./components/pages/TutorialPage";
 import WelcomePage from "./components/pages/WelcomePage";
 import PhotoPage from "./components/pages/PhotoPage";
@@ -33,8 +35,7 @@ import DrawerContainer from "./components/DrawerContainer";
 import TermsDialog from "./components/TermsDialog";
 import EmailVerifiedDialog from "./components/EmailVerifiedDialog";
 import DisplayPhoto from "./components/MapPage/DisplayPhoto";
-import authFirebase from "./authFirebase";
-import dbFirebase from "./dbFirebase";
+
 import { gtagPageView, gtagEvent } from "./gtag.js";
 import "./App.scss";
 import FeedbackReportsSubrouter from "./components/FeedbackReports/FeedbackReportsSubrouter";

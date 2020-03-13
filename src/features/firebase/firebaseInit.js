@@ -9,11 +9,13 @@ import "firebase/performance";
 import "firebase/storage";
 import "firebase/analytics";
 
-import config from "./custom/config";
+import config from "./config";
+
 // Initialize Firebase
 const firebaseApp = !firebase.apps.length
-  ? firebase.initializeApp(config.FIREBASE)
+  ? firebase.initializeApp(config)
   : firebase.app();
+
 const firestore = firebase.firestore();
 
 // measuring web performance. See https://firebase.google.com/docs/perf-mon/get-started-web

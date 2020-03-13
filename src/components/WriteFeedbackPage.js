@@ -12,7 +12,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 
-import dbFirebase from "../dbFirebase";
+import { dbFirebase } from "features/firebase";
+
 import utils, { device } from "../utils";
 import PageWrapper from "./PageWrapper";
 

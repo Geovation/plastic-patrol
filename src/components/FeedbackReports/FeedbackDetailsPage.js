@@ -12,9 +12,10 @@ import withMobileDialog from "@material-ui/core/withMobileDialog";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import { dbFirebase } from "features/firebase";
+
 import { isIphoneWithNotchAndCordova, isIphoneAndCordova } from "../../utils";
 import config from "../../custom/config";
-import dbFirebase from "../../dbFirebase";
 
 const styles = theme => ({
   notchTop: {

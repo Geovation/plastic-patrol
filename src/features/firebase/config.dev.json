@@ -1,0 +1,11 @@
+{
+  "apiKey": "AIzaSyBm_X-Jiz0TmfQOcd89FoHHLiNi_Ef6xtg",
+  "authDomain": "plastic-patrol-dev-722eb.firebaseapp.com",
+  "databaseURL": "https://plastic-patrol-dev-722eb.firebaseio.com",
+  "projectId": "plastic-patrol-dev-722eb",
+  "storageBucket": "plastic-patrol-dev-722eb.appspot.com",
+  "messagingSenderId": "664053532725",
+  "appId": "1:664053532725:web:6556617240a6813503097c",
+  "measurementId": "G-7ZS2821F9N",
+  "apiURL": "https://us-central1-plastic-patrol-dev-722eb.cloudfunctions.net/api"
+}

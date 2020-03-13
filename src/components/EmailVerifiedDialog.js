@@ -14,7 +14,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import { withStyles } from "@material-ui/core/styles";
 
-import authFirebase from "../authFirebase";
+import { authFirebase } from "features/firebase";
+
 import { isIphoneWithNotchAndCordova, isIphoneAndCordova } from "../utils";
 
 const styles = theme => ({

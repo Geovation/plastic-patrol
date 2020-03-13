@@ -9,7 +9,8 @@ import * as firebaseui from "firebaseui";
 import firebase from "firebase/app";
 import "firebase/auth";
 
-import authFirebase from "../authFirebase";
+import { authFirebase } from "features/firebase";
+
 // TODO: change theme: https://github.com/firebase/firebaseui-web-react/tree/master/dist
 
 class LoginFirebase extends React.Component {

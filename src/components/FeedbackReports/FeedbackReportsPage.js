@@ -14,8 +14,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 
+import { dbFirebase } from "features/firebase";
+
 import PageWrapper from "../PageWrapper";
-import dbFirebase from "../../dbFirebase";
 import config from "../../custom/config";
 import "../ModeratorPage.scss";
 

@@ -1,10 +1,11 @@
 import firebase from "firebase/app";
 import md5 from "md5";
 
-import User from "./types/User";
+import config from "custom/config";
+import User from "types/User";
+import { gtagEvent, gtagSetId } from "gtag.js";
+
 import dbFirebase from "./dbFirebase";
-import { gtagEvent, gtagSetId } from "./gtag.js";
-import config from "./custom/config";
 
 /**
  * When the user login call fn

@@ -219,11 +219,6 @@ export default {
   SECURITY: {
     UPLOAD_REQUIRES_LOGIN: true
   },
-  API: {
-    URL: "https://api.plasticpatrol.co.uk"
-    // URL: "https://us-central1-plastic-patrol-fd3b3.cloudfunctions.net/api",
-    // URL: "http://localhost:5000/plastic-patrol-fd3b3/us-central1/api"
-  },
   MODERATING_PHOTOS: 15,
   LEADERBOARD_FIELD: {
     label: "Pieces",

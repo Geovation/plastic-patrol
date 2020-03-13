@@ -8,9 +8,10 @@ import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 
+import { dbFirebase } from "features/firebase";
+
 import config from "../../../custom/config";
 import { gtagEvent } from "../../../gtag.js";
-import dbFirebase from "../../../dbFirebase";
 import { isIphoneWithNotchAndCordova, device } from "../../../utils";
 
 import PageWrapper from "../../PageWrapper";
