@@ -38,6 +38,9 @@ matrix:
     install:
     - npm install
     script:
+    - echo $encrypted_24a643539195_key | openssl enc -aes-256-cbc  -k $ENV_PASSWORD -md sha512
+    - echo $encrypted_24a643539195_iv | openssl enc -aes-256-cbc  -k $ENV_PASSWORD -md sha512
+
 #    - npm test -- --coverage
     - npm run build
     - npm run build:android
